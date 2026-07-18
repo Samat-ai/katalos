@@ -1,0 +1,2 @@
+import type { MediaEntry } from '@/lib/media/types';
+export const buildTastePrompt = (entries: MediaEntry[]) => `Use only these public entries: ${JSON.stringify(entries.map(({ title, type, status, rating, note }) => ({ title, type, status, rating, note })))}. Return JSON: archetype, profile, signals (exactly 3), firstPick {title, reason}. Be affectionate and lightly funny, spoiler-safe, and never infer demographics or sensitive traits. firstPick.title must be a supplied title.`;
