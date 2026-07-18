@@ -1,0 +1,6 @@
+:root { color-scheme: dark; font-family: Arial, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #18242a; color: #fff7e6; }
+main { min-height: 100vh; display: grid; place-items: center; padding: 2rem; text-align: center; }
+h1 { margin: 0; font-size: clamp(3rem, 12vw, 7rem); letter-spacing: -0.08em; }
+p { color: #ffcf70; }
