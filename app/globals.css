@@ -3,7 +3,7 @@
 html, body { max-width: 100%; overflow-x: hidden; }
 body { margin: 0; background: #18242a; color: #fff7e6; }
 button, input, select, textarea { font: inherit; }
-button, input, select { min-height: 44px; }
+button, input, select { min-width: 44px; min-height: 44px; }
 .home-page { min-height: 100vh; padding: 2rem; }
 .hero { max-width: 72rem; margin: 0 auto 2rem; }
 h1 { margin: 0; font-size: clamp(3rem, 12vw, 7rem); letter-spacing: -.08em; }
