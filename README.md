@@ -28,6 +28,8 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 TASTE_PROFILER_URL=https://YOUR-CLOUD-RUN-URL
 TASTE_PROFILER_SHARED_TOKEN=a-long-random-shared-secret
+TMDB_READ_ACCESS_TOKEN=your-tmdb-read-access-token
+OPEN_LIBRARY_CONTACT_EMAIL=you@example.com
 ```
 
 ## Supabase
@@ -62,5 +64,11 @@ npm run build
 ```
 
 Hosted checks: sign in as a new user, create a profile, add public and private entries, open `/u/<username>` anonymously, confirm the private control entry is absent, generate a Taste Profile, and verify its retry state if Cloud Run is unavailable.
+
+## Catalog credits and delivery
+
+Catalog search is available to signed-in owners: Open Library powers books, Jikan powers manga and anime, and TMDB powers movies. Add the TMDB token and Open Library contact address only to Vercel/server environments. See [/credits](/credits) for provider attribution and disclaimers.
+
+GitHub Actions runs tests, a production build, and a Cloud Run container build on pull requests and `master`. Connect the repository to Vercel for preview deployments and production deployment from `master`.
 
 See [docs/demo-checklist.md](docs/demo-checklist.md) for the recording flow.
