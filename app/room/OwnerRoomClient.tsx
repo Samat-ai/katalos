@@ -9,7 +9,7 @@ type ApiResult = { entry?: MediaEntry; error?: string };
 
 export function OwnerRoomClient({ initialEntries, username }: { initialEntries: MediaEntry[]; username: string }) {
   const [entries, setEntries] = useState(initialEntries);
-  const [editing, setEditing] = useState<MediaEntry | null | undefined>(undefined);
+  const [editing, setEditing] = useState<MediaEntry | null | undefined>(initialEntries.length ? undefined : null);
   const [message, setMessage] = useState('');
 
   async function save(entry: MediaEntryInput) {
