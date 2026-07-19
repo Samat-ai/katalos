@@ -2,6 +2,7 @@
 * { box-sizing: border-box; }
 html, body { max-width: 100%; overflow-x: hidden; }
 body { margin: 0; background: #18242a; color: #fff7e6; }
+.site-footer { max-width: 72rem; margin: 0 auto; padding: 1.5rem 2rem; color: #ffcf70; font-size: .8rem; }.site-footer a { color: inherit; }
 button, input, select, textarea { font: inherit; }
 button, input, select { min-width: 44px; min-height: 44px; }
 .home-page { min-height: 100vh; padding: 2rem; }
