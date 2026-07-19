@@ -1,5 +1,7 @@
 import type { CatalogCandidate, CatalogSearchRequest } from './schema';
+import type { MediaType } from '@/lib/media/types';
 import { CatalogCandidateSchema } from './schema';
+import type { CatalogPrefill } from './schema';
 
 export type CatalogProviderConfig = {
   fetcher?: typeof fetch;
@@ -36,4 +38,21 @@ export async function searchCatalog(request: CatalogSearchRequest, config: Catal
     data?: Array<{ mal_id?: number; title?: string; title_english?: string; images?: { jpg?: { image_url?: string } } }>;
   };
   return (body.data ?? []).map((item) => candidate({ source: 'jikan', externalId: item.mal_id?.toString(), title: item.title_english ?? item.title, thumbnailUrl: item.images?.jpg?.image_url })).filter((item): item is CatalogCandidate => item !== null);
+}
+
+export async function getCatalogDetails(candidate: CatalogCandidate, type: MediaType, config: CatalogProviderConfig): Promise<CatalogPrefill> {
+  const fetcher = config.fetcher ?? fetch;
+  if (candidate.source === 'open_library') {
+    const body = await readJson(await fetcher(`https://openlibrary.org/works/${candidate.externalId}.json`, { headers: { 'user-agent': `Katalos (${config.openLibraryContact})` } })) as { title?: string; description?: string | { value?: string } };
+    const synopsis = typeof body.description === 'string' ? body.description : body.description?.value ?? '';
+    return { title: body.title ?? candidate.title, coverUrl: candidate.thumbnailUrl, synopsis };
+  }
+  if (candidate.source === 'tmdb') {
+    if (!config.tmdbToken) throw new Error('TMDB is not configured. Set TMDB_READ_ACCESS_TOKEN.');
+    const body = await readJson(await fetcher(`https://api.themoviedb.org/3/movie/${candidate.externalId}`, { headers: { authorization: `Bearer ${config.tmdbToken}` } })) as { title?: string; overview?: string; poster_path?: string };
+    return { title: body.title ?? candidate.title, coverUrl: body.poster_path ? `https://image.tmdb.org/t/p/w500${body.poster_path}` : candidate.thumbnailUrl, synopsis: body.overview ?? '' };
+  }
+  const kind = type === 'manga' ? 'manga' : 'anime';
+  const body = await readJson(await fetcher(`https://api.jikan.moe/v4/${kind}/${candidate.externalId}/full`)) as { data?: { title?: string; title_english?: string; synopsis?: string; images?: { jpg?: { large_image_url?: string } } } };
+  return { title: body.data?.title_english ?? body.data?.title ?? candidate.title, coverUrl: body.data?.images?.jpg?.large_image_url ?? candidate.thumbnailUrl, synopsis: body.data?.synopsis ?? '' };
 }
