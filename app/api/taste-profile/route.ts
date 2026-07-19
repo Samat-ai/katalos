@@ -1,2 +1,26 @@
-import OpenAI from 'openai'; import { NextResponse } from 'next/server'; import { createClient } from '@/lib/supabase/server'; import { buildTastePrompt } from '@/lib/taste/prompt'; import { TasteProfileSchema } from '@/lib/taste/schema';
-export async function POST(request: Request) { try { const { username } = await request.json(); if (typeof username !== 'string') return NextResponse.json({ error: 'A username is required.' }, { status: 400 }); const db = await createClient(); const { data: profile } = await db.from('profiles').select('id').eq('username', username).maybeSingle(); if (!profile) return NextResponse.json({ error: 'Profile not found.' }, { status: 404 }); const { data } = await db.from('media_entries').select('id,title,type,status,cover_url,synopsis,rating,note,visibility').eq('profile_id', profile.id).eq('visibility', 'public'); if (!data?.length) return NextResponse.json({ error: 'This room has no public media yet.' }, { status: 422 }); const entries = data.map((x) => ({ id:x.id,title:x.title,type:x.type,status:x.status,coverUrl:x.cover_url ?? undefined,synopsis:x.synopsis,rating:x.rating ?? undefined,note:x.note ?? undefined,visibility:'public' })) as any; const response = await new OpenAI({ apiKey: process.env.OPENAI_API_KEY }).responses.create({ model: 'gpt-5.6', input: buildTastePrompt(entries) }); const result = TasteProfileSchema.parse(JSON.parse(response.output_text)); if (!entries.some((x: any) => x.title === result.firstPick.title)) throw new Error(); return NextResponse.json({ profile: result }); } catch { return NextResponse.json({ error: 'The profiler is taking a tea break. Please retry.' }, { status: 502 }); } }
+import { z } from 'zod';
+import { NextResponse } from 'next/server';
+import { publicEntriesForProfiler, type MediaRow } from '@/lib/media/serialization';
+import { createClient } from '@/lib/supabase/server';
+import { getTasteProfilerConfig, requestTasteProfile } from '@/lib/taste/profiler';
+
+const RequestSchema = z.object({ username: z.string().trim().toLowerCase().regex(/^[a-z0-9_]{3,32}$/) });
+const fields = 'id, title, type, status, cover_url, synopsis, rating, note, visibility';
+
+export async function POST(request: Request) {
+  const parsed = RequestSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: 'A valid username is required.' }, { status: 400 });
+
+  try {
+    const supabase = await createClient();
+    const { data: profile } = await supabase.from('profiles').select('id').eq('username', parsed.data.username).maybeSingle();
+    if (!profile) return NextResponse.json({ error: 'Profile not found.' }, { status: 404 });
+    const { data, error } = await supabase.from('media_entries').select(fields).eq('profile_id', profile.id).eq('visibility', 'public');
+    if (error) throw error;
+    if (!data?.length) return NextResponse.json({ error: 'This room has no public media yet.' }, { status: 422 });
+    const profileResult = await requestTasteProfile(publicEntriesForProfiler(data as MediaRow[]), getTasteProfilerConfig());
+    return NextResponse.json({ profile: profileResult });
+  } catch {
+    return NextResponse.json({ error: 'The profiler is taking a tea break. Please retry.' }, { status: 502 });
+  }
+}

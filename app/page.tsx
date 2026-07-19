@@ -1,14 +1,13 @@
-import { MediaRoom } from '@/components/room/MediaRoom';
-import { demoEntries } from '@/lib/media/demo-data';
+import { MagicLinkForm } from '@/components/auth/MagicLinkForm';
 
 export default function Home() {
   return (
     <main className="home-page">
       <header className="hero">
         <h1>Katalos</h1>
-        <p>Your taste, made explorable.</p>
+        <p>Make your media taste tangible and shareable—without sharing what you keep private.</p>
+        <MagicLinkForm />
       </header>
-      <MediaRoom entries={demoEntries} readOnly />
     </main>
   );
 }

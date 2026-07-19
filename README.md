@@ -1,62 +1,66 @@
-# Katalos Media Room
+# Katalos
 
-Katalos turns books, manga, anime, and movies into a small, shareable media room. Covers are grouped by status in a reading nook or TV nook; visitors can explore public entries and request a spoiler-safe Taste Profiler.
+Katalos makes your media taste tangible and shareable—without sharing what you keep private. Owners sign in with an email magic link, curate books, manga, anime, and movies, then share a public media room. Visitors can generate a spoiler-safe Taste Profile from public entries only.
 
-## Requirements
+## Architecture
 
-- Node.js 20 or newer
-- A Supabase project for accounts and persistence
-- An OpenAI API key for the Taste Profiler
-
-## Environment
-
-Copy `.env.example` to `.env.local`, then set these variables:
-
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-OPENAI_API_KEY=your-server-only-openai-key
+```text
+Browser → Vercel Next.js → Supabase Auth + Postgres
+                         → Cloud Run Taste Profiler → Gemini via ADC
 ```
 
-`OPENAI_API_KEY` is used only by the server route at `/api/taste-profile`; never expose it with a `NEXT_PUBLIC_` prefix or commit it to source control.
+The Next.js server queries the room owner's public rows, sends only bounded public fields to Cloud Run, and authenticates that call with a server-only bearer token. Cloud Run uses its attached service account's Application Default Credentials (ADC) for Gemini. No browser receives the shared token, Google credentials, or a Supabase privileged key.
 
-## Supabase setup
+## Local setup
 
-1. Create a Supabase project and configure the authentication providers you intend to use.
-2. In the Supabase SQL editor, run `supabase/migrations/001_initial_schema.sql`.
-3. Follow `supabase/README.md` to verify the row-level security policies with an authenticated owner session and an anonymous session.
-4. Create a profile for the signed-in user's ID with a unique lowercase username. Public rooms are served at `/u/<username>`.
+Requirements: Node.js 20+ and a Supabase project.
 
-The migration permits owners to manage only their own entries, while public pages and the profiler query only entries whose visibility is `public`.
-
-## Local development
-
-```bash
+```powershell
 npm install
+Copy-Item .env.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000` for the demo room, `http://localhost:3000/room` for the owner room, and `http://localhost:3000/u/<username>` for a public profile. The owner room keeps demo data in memory until Supabase is configured and the user is signed in.
+Set these server/runtime variables in `.env.local` and in Vercel:
 
-## Tests and production build
+```text
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+TASTE_PROFILER_URL=https://YOUR-CLOUD-RUN-URL
+TASTE_PROFILER_SHARED_TOKEN=a-long-random-shared-secret
+```
+
+## Supabase
+
+1. Run `supabase/migrations/001_initial_schema.sql` in the Supabase SQL editor.
+2. In **Authentication → URL Configuration**, add `http://localhost:3000/auth/callback` and `https://YOUR-VERCEL-DOMAIN/auth/callback` to redirect URLs.
+3. Enable Email authentication and configure your production email sender as needed.
+4. Follow [supabase/README.md](supabase/README.md) to verify row-level security with owner and anonymous sessions.
+
+The app redirects unauthenticated `/room` requests to sign-in, redirects first-time owners to `/onboarding`, and serves public rooms at `/u/<username>`.
+
+## Cloud Run Taste Profiler
+
+Deploy the separate service from `cloud-run-taste-profiler/`. Build it with Cloud Build or a container registry, attach a service account that can call Vertex AI, and set `TASTE_PROFILER_SHARED_TOKEN` to the same secret used by Vercel.
+
+```bash
+gcloud run deploy katalos-taste-profiler \
+  --source cloud-run-taste-profiler \
+  --region us-central1 \
+  --service-account KATALOS_PROFILER_SERVICE_ACCOUNT \
+  --set-secrets TASTE_PROFILER_SHARED_TOKEN=katalos-profiler-token:latest \
+  --set-env-vars GOOGLE_CLOUD_LOCATION=us-central1,GEMINI_MODEL=gemini-2.5-flash
+```
+
+Grant the attached service account the minimum Vertex AI role needed to generate content. The service validates its bearer token and request body, asks Gemini for JSON, validates the returned schema, and rejects a `firstPick` that is not in the supplied entries.
+
+## Verification
 
 ```bash
 npm run test
 npm run build
 ```
 
-For the accessibility regression alone:
+Hosted checks: sign in as a new user, create a profile, add public and private entries, open `/u/<username>` anonymously, confirm the private control entry is absent, generate a Taste Profile, and verify its retry state if Cloud Run is unavailable.
 
-```bash
-npm run test -- components/room/MediaRoom.test.tsx
-```
-
-## Deploy to Vercel
-
-1. Push this repository to a Git provider and import it into Vercel.
-2. Add `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `OPENAI_API_KEY` in the Vercel project environment variables for Production (and Preview if desired).
-3. Deploy with Vercel's default Next.js build settings (`npm run build`).
-4. In Supabase Authentication, add the deployed Vercel URL to the allowed redirect URLs for your chosen sign-in flow.
-5. Verify `/room` as a signed-in owner and `/u/<username>` in an anonymous browser session. Confirm private entries are absent from the public room and that the Taste Profiler can only use public entries.
-
-See `docs/demo-checklist.md` for the recording flow.
+See [docs/demo-checklist.md](docs/demo-checklist.md) for the recording flow.
