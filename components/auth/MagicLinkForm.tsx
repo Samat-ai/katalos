@@ -15,7 +15,7 @@ export function MagicLinkForm() {
       const response = await fetch('/api/auth/magic-link', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email }) });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error);
-      setMessage('Check your email for your Katalos sign-in link.');
+      setMessage('Link sent! It works once and expires in 15 minutes.');
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'We could not send that link. Please retry.');
     } finally {
@@ -24,9 +24,8 @@ export function MagicLinkForm() {
   }
 
   return <form className="magic-link-form" onSubmit={submit} noValidate>
-    <label htmlFor="email">Email</label>
-    <input id="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" required />
-    <button disabled={sending} type="submit">{sending ? 'Sending link…' : 'Email me a sign-in link'}</button>
+    <label htmlFor="email">EMAIL ADDRESS</label>
+    <div className="magic-link-controls"><input id="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@somewhere.com" required /><button disabled={sending} type="submit">{sending ? 'SENDING…' : 'SEND LINK'}</button></div>
     {message && <p role="status">{message}</p>}
   </form>;
 }

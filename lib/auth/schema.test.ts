@@ -11,3 +11,7 @@ it('normalizes a valid public profile handle to lowercase', () => {
 it('rejects a public profile handle outside the allowed format', () => {
   expect(() => OnboardingSchema.parse({ displayName: 'Miyu', username: 'not a handle' })).toThrow(/username/i);
 });
+
+it('keeps the selected room avatar', () => {
+  expect(OnboardingSchema.parse({ displayName: 'Miyu', username: 'miyu_room', avatar: 'boy' }).avatar).toBe('boy');
+});

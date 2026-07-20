@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { ThemeManager } from '@/components/ui/ThemeSwitcher';
 
 export const metadata: Metadata = {
   title: 'Katalos',
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}<footer className="site-footer"><a href="/credits">Credits</a></footer></body></html>;
+  return <html lang="en"><head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" /><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" /></head><body><ThemeManager />{children}<footer className="site-footer"><a href="/credits">Credits</a></footer></body></html>;
 }
