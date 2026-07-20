@@ -11,6 +11,7 @@ export default function CreditsPage() {
     </section>
     <section className="taste-card">
       <h2>TMDB</h2>
+      <a className="tmdb-logo" href="https://www.themoviedb.org/about/logos-attribution" aria-label="TMDB logos and attribution"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" alt="The Movie Database (TMDB)" /></a>
       <p>Movie data and images are provided by <a href="https://www.themoviedb.org/">TMDB</a>. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
     </section>
     <section className="taste-card">

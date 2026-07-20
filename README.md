@@ -34,7 +34,7 @@ OPEN_LIBRARY_CONTACT_EMAIL=you@example.com
 
 ## Supabase
 
-1. Run `supabase/migrations/001_initial_schema.sql` in the Supabase SQL editor.
+1. Run `supabase/migrations/001_initial_schema.sql`, `002_catalog_search_safeguards.sql`, and `003_profile_avatar.sql` in the Supabase SQL editor, in order.
 2. In **Authentication → URL Configuration**, add `http://localhost:3000/auth/callback` and `https://YOUR-VERCEL-DOMAIN/auth/callback` to redirect URLs.
 3. Enable Email authentication and configure your production email sender as needed.
 4. Follow [supabase/README.md](supabase/README.md) to verify row-level security with owner and anonymous sessions.
@@ -63,7 +63,7 @@ npm run test
 npm run build
 ```
 
-Hosted checks: sign in as a new user, create a profile, add public and private entries, open `/u/<username>` anonymously, confirm the private control entry is absent, generate a Taste Profile, and verify its retry state if Cloud Run is unavailable.
+Hosted checks: sign in as a new user, create a profile and avatar, add public and private entries, open `/u/<username>` anonymously, confirm the private control entry is absent, copy the room link, generate a Taste Profile, and verify its retry state if Cloud Run is unavailable.
 
 ## Catalog credits and delivery
 

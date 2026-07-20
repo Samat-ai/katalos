@@ -5,14 +5,25 @@ import type { MediaEntry } from '@/lib/media/types';
 
 export function MediaDetailDrawer({ entry, onClose }: { entry: MediaEntry | null; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
     if (!entry) return;
-    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key !== 'Tab' || !drawerRef.current) return;
+      const focusable = [...drawerRef.current.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter((element) => !element.hasAttribute('disabled'));
+      if (!focusable.length) return;
+      const first = focusable[0]; const last = focusable.at(-1)!;
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
     document.addEventListener('keydown', closeOnEscape);
     closeButtonRef.current?.focus();
-    return () => document.removeEventListener('keydown', closeOnEscape);
+    return () => { document.removeEventListener('keydown', closeOnEscape); returnFocusRef.current?.focus(); };
   }, [entry, onClose]);
   if (!entry) return null;
   const rating = entry.rating ? `${'★'.repeat(entry.rating)}${'☆'.repeat(5 - entry.rating)}` : 'No rating yet';
-  return <div className="drawer-layer"><button className="drawer-scrim" aria-label="Close details" onClick={onClose} /><aside className="detail-drawer" role="dialog" aria-modal="true" aria-label={`${entry.title} details`}><button ref={closeButtonRef} className="drawer-close" onClick={onClose} aria-label="Close details">×</button><p className="eyebrow">{entry.type} · {entry.status.replace('_', ' ')}</p><div className="drawer-content"><div className="drawer-cover">{entry.coverUrl ? <img src={entry.coverUrl} alt="" /> : entry.title.slice(0, 2).toUpperCase()}</div><div><h2>{entry.title}</h2><p className="drawer-rating">{rating}</p></div></div><p>{entry.synopsis}</p>{entry.note && <p className="drawer-note"><strong>My note</strong>{entry.note}</p>}</aside></div>;
+  return <div className="drawer-layer"><button className="drawer-scrim" aria-label="Close details" onClick={onClose} /><aside ref={drawerRef} className="detail-drawer" role="dialog" aria-modal="true" aria-label={`${entry.title} details`}><button ref={closeButtonRef} className="drawer-close" onClick={onClose} aria-label="Close details">×</button><p className="eyebrow">{entry.type} · {entry.status.replace('_', ' ')}</p><div className="drawer-content"><div className="drawer-cover">{entry.coverUrl ? <img src={entry.coverUrl} alt="" /> : entry.title.slice(0, 2).toUpperCase()}</div><div><h2>{entry.title}</h2><p className="drawer-rating">{rating}</p></div></div><p>{entry.synopsis}</p>{entry.note && <p className="drawer-note"><strong>My note</strong>{entry.note}</p>}</aside></div>;
 }

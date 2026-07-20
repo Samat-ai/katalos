@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, it } from 'vitest';
 import { demoEntries } from '@/lib/media/demo-data';
@@ -22,4 +22,11 @@ it('exposes labeled reading and TV regions with selectable media covers', () => 
   expect(screen.getByRole('region', { name: /reading nook/i })).toBeVisible();
   expect(screen.getByRole('region', { name: /tv nook/i })).toBeVisible();
   expect(screen.getAllByRole('button').length).toBeGreaterThan(0);
+});
+
+it('shows a themed title tooltip instead of relying on a browser title tooltip', () => {
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  fireEvent.mouseEnter(screen.getByRole('button', { name: /spirited away/i }));
+
+  expect(screen.getByRole('tooltip')).toHaveTextContent(/spirited away.*movie/i);
 });
