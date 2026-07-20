@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="330" viewBox="0 0 880 330" shape-rendering="crispEdges" font-family="monospace" role="img" aria-label="Katalos room layout: a reading nook and a TV nook, each split into zones by status">
+  <rect width="880" height="330" fill="#18242a"/>
+
+  <!-- ============ READING NOOK ============ -->
+  <rect x="28" y="26" width="8" height="8" fill="#101817"/>
+  <rect x="20" y="18" width="410" height="292" fill="#284338" stroke="#547d71" stroke-width="4"/>
+  <rect x="38" y="38" width="18" height="18" fill="#ffcf70" stroke="#1e2836" stroke-width="3"/>
+  <text x="66" y="53" fill="#fff7e6" font-size="14" letter-spacing="1.5">READING NOOK</text>
+  <text x="38" y="74" fill="#d9eedc" font-size="11" opacity=".75">books &#183; manga</text>
+
+  <!-- zone: finished shelf -->
+  <rect x="38" y="86" width="178" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="46" y="103" fill="#d9eedc" font-size="9" letter-spacing="1">FINISHED SHELF</text>
+  <g stroke="#171a27" stroke-width="2">
+    <rect x="46" y="115" width="26" height="52" fill="#ffcf70"/>
+    <rect x="78" y="115" width="26" height="52" fill="#e98c78"/>
+    <rect x="110" y="115" width="26" height="52" fill="#a8d5c2"/>
+    <rect x="142" y="115" width="26" height="52" fill="#ffcf70"/>
+  </g>
+
+  <!-- zone: reading nearby -->
+  <rect x="234" y="86" width="178" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="242" y="103" fill="#d9eedc" font-size="9" letter-spacing="1">READING NEARBY</text>
+  <g stroke="#171a27" stroke-width="2">
+    <rect x="242" y="115" width="26" height="52" fill="#a8d5c2"/>
+    <rect x="274" y="115" width="26" height="52" fill="#ffcf70"/>
+  </g>
+
+  <!-- zone: abandoned -->
+  <rect x="38" y="195" width="374" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="46" y="212" fill="#d9eedc" font-size="9" letter-spacing="1">ABANDONED PILE</text>
+  <g stroke="#171a27" stroke-width="2">
+    <rect x="46" y="224" width="26" height="52" fill="#e98c78"/>
+  </g>
+
+  <!-- ============ TV NOOK ============ -->
+  <rect x="458" y="26" width="8" height="8" fill="#101817"/>
+  <rect x="450" y="18" width="410" height="292" fill="#35405a" stroke="#8291ba" stroke-width="4"/>
+  <rect x="468" y="38" width="18" height="18" fill="#b8d6ed" stroke="#1e2836" stroke-width="3"/>
+  <text x="496" y="53" fill="#fff7e6" font-size="14" letter-spacing="1.5">TV NOOK</text>
+  <text x="468" y="74" fill="#d9eedc" font-size="11" opacity=".75">anime &#183; movies</text>
+
+  <!-- zone: finished cabinet -->
+  <rect x="468" y="86" width="178" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="476" y="103" fill="#d9eedc" font-size="9" letter-spacing="1">FINISHED CABINET</text>
+  <g stroke="#171a27" stroke-width="2">
+    <rect x="476" y="115" width="26" height="52" fill="#e98c78"/>
+    <rect x="508" y="115" width="26" height="52" fill="#a8d5c2"/>
+    <rect x="540" y="115" width="26" height="52" fill="#ffcf70"/>
+  </g>
+
+  <!-- zone: now playing -->
+  <rect x="664" y="86" width="178" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="672" y="103" fill="#d9eedc" font-size="9" letter-spacing="1">NOW PLAYING</text>
+  <g stroke="#171a27" stroke-width="2">
+    <rect x="672" y="115" width="26" height="52" fill="#ffcf70"/>
+  </g>
+
+  <!-- zone: watch next -->
+  <rect x="468" y="195" width="178" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="476" y="212" fill="#d9eedc" font-size="9" letter-spacing="1">WATCH NEXT STACK</text>
+  <g stroke="#171a27" stroke-width="2">
+    <rect x="476" y="224" width="26" height="52" fill="#a8d5c2"/>
+    <rect x="508" y="224" width="26" height="52" fill="#e98c78"/>
+  </g>
+
+  <!-- zone: abandoned -->
+  <rect x="664" y="195" width="178" height="95" fill="none" stroke="#d9eedc" stroke-width="2" stroke-dasharray="5 4" opacity=".45"/>
+  <text x="672" y="212" fill="#d9eedc" font-size="9" letter-spacing="1">ABANDONED PILE</text>
+</svg>
