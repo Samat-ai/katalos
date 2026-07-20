@@ -22,6 +22,7 @@ it('exposes labeled reading and TV regions with selectable media covers', () => 
   expect(screen.getByRole('region', { name: /reading nook/i })).toBeVisible();
   expect(screen.getByRole('region', { name: /tv nook/i })).toBeVisible();
   expect(screen.getAllByRole('button').length).toBeGreaterThan(0);
+  expect(screen.getByRole('region', { name: /reading nook/i }).closest('.knookwrap')).not.toBeNull();
 });
 
 it('shows a themed title tooltip instead of relying on a browser title tooltip', () => {
