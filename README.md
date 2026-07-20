@@ -9,9 +9,13 @@
 Curate the books, manga, anime and movies you love into a cozy two-nook room,<br>
 then share it with one public link. Private entries never leave your side of the wall.
 
-[![Live demo](https://img.shields.io/badge/live_demo-katalos--black.vercel.app-f2a65a?style=for-the-badge&labelColor=241611)](https://katalos-black.vercel.app)
+<br>
 
-<sub>Rooms live behind a magic link — sign in with your email to build one in about a minute.</sub>
+<img src=".github/assets/katalos-room.png" width="100%" alt="A pixel-art media room: a reading nook with a bookshelf, a lamp, a cat and a character reading in an armchair, beside a TV nook with a CRT, a VHS cabinet and a character watching from the floor.">
+
+<br><br>
+
+[![Live demo](https://img.shields.io/badge/live_demo-katalos--black.vercel.app-f2a65a?style=for-the-badge&labelColor=241611)](https://katalos-black.vercel.app)
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
@@ -28,10 +32,6 @@ then share it with one public link. Private entries never leave your side of the
 ## The room
 
 Katalos replaces the card grid every media tracker gives you. Your entries live as objects in a room, and **where a thing sits is its status** — no badges to read, just a glance.
-
-<div align="center">
-<img src=".github/assets/room-layout.svg" width="100%" alt="The reading nook holds books and manga across a finished shelf, a reading-nearby zone and an abandoned pile. The TV nook holds anime and movies across a finished cabinet, now playing, watch next and abandoned.">
-</div>
 
 | | Reading nook — books & manga | TV nook — anime & movies |
 |---|---|---|
@@ -141,7 +141,9 @@ cloud-run-taste-profiler/ standalone Gemini service
 
 ## Roadmap
 
-A full hi-fi pixel-art redesign is specified and waiting to be built: hand-placed CSS sprites, three time-of-day themes that follow the visitor's clock, catalog search against Open Library / Jikan / TMDB, and a working CRT in the TV nook. The current app ships the room model and the privacy guarantees; the pixel dressing comes next.
+The pixel room above is built on [`feat/katalos-build-week-launch`](https://github.com/Samat-ai/katalos/tree/feat/katalos-build-week-launch) and lands on `master` next — hand-placed CSS sprites with no image assets, three time-of-day themes that follow the visitor's clock, and catalog search against Open Library, Jikan and TMDB with caching and per-user quota.
+
+Still ahead: the interactive CRT (channel-switching and a playable Pong on CH2) and the clickable toys tucked into each nook.
 
 <div align="center">
 <br>
