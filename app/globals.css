@@ -11,7 +11,7 @@ button { font-family: var(--k-font-head); font-size: 9px; letter-spacing: 1px; b
 button:hover:not(:disabled),.pixel-link-button:hover,.site-nav > a:last-child:hover { transform:translateY(-2px); box-shadow:0 6px 0 var(--k-ink); background:var(--k-accentT); color:var(--k-accent); }
 button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--k-ink); }
 :focus-visible { outline: 3px solid var(--k-accent); outline-offset: 3px; }
-.site-footer { max-width: 72rem; margin: 0 auto; padding: 2rem; color: var(--k-panelDim); font-size: 17px; text-align:center; }
+.site-footer { max-width: 72rem; margin: 0 auto; padding: 2rem; color: var(--k-panelDim); font-size: 17px; text-align:center; }.site-footer-link { display:inline-flex; min-width:44px; min-height:44px; align-items:center; justify-content:center; }
 .theme-switcher { display:flex; border:3px solid var(--k-ink); background:var(--k-panel); box-shadow:3px 3px 0 var(--k-sh); }
 .theme-switcher button { min-width:44px; min-height:44px; padding:5px 8px; border:0; border-left:3px solid var(--k-ink); box-shadow:none; color:var(--k-panelText); background:transparent; font-family:var(--k-font-body); font-size:16px; text-transform:capitalize; }
 .theme-switcher button:first-child { border-left:0; }.theme-switcher button[aria-pressed=true] { background:var(--k-accent); color:var(--k-accentT); }.theme-switcher-label { margin-left:4px; }
