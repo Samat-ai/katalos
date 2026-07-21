@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, it, vi } from 'vitest';
 import { demoEntries } from '@/lib/media/demo-data';
@@ -72,4 +72,54 @@ it('cycles the TV into its playable Pong channel', () => {
   fireEvent.click(screen.getByRole('button', { name: /change channel/i }));
 
   expect(screen.getByRole('application', { name: /playable pong/i })).toBeVisible();
+});
+
+it('cycles the TV from channel one through five and back to one', () => {
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  const channel = screen.getByRole('button', { name: /change channel/i });
+
+  fireEvent.click(channel);
+  fireEvent.click(channel);
+  fireEvent.click(channel);
+  fireEvent.click(channel);
+  expect(screen.getByLabelText('TV channel 5')).toBeVisible();
+
+  fireEvent.click(channel);
+  expect(screen.getByLabelText('TV channel 1')).toBeVisible();
+});
+
+it('removes the active Pong canvas when the TV is powered off', () => {
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  fireEvent.click(screen.getByRole('button', { name: /change channel/i }));
+  expect(screen.getByRole('application', { name: /playable pong/i })).toBeVisible();
+
+  fireEvent.click(screen.getByRole('button', { name: /power on or off/i }));
+  expect(screen.queryByRole('application', { name: /playable pong/i })).not.toBeInTheDocument();
+  expect(screen.getByLabelText('TV off')).toBeVisible();
+});
+
+it('uses themed tooltips for toy labels and cleans up locally rendered particles', () => {
+  vi.useFakeTimers();
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  const cat = screen.getByRole('button', { name: /pet the cat/i });
+
+  fireEvent.focus(cat);
+  expect(screen.getByRole('tooltip')).toHaveTextContent(/pet the cat/i);
+  fireEvent.click(cat);
+  expect(cat.closest('[aria-label="Reading nook"]')?.querySelector('.particle-burst .pixel-particle.heart')).not.toBeNull();
+
+  act(() => vi.advanceTimersByTime(800));
+  expect(cat.closest('[aria-label="Reading nook"]')?.querySelector('.particle-burst')).toBeNull();
+  vi.useRealTimers();
+});
+
+it('toggles only the lamp glow', () => {
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  const lamp = screen.getByRole('button', { name: /toggle reading lamp/i });
+  const nook = lamp.closest('[aria-label="Reading nook"]');
+
+  fireEvent.click(lamp);
+  expect(nook?.querySelector('.lamp-glow')).not.toHaveClass('is-on');
+  expect(nook?.querySelector('.particle-burst')).toBeNull();
 });
