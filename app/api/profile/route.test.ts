@@ -57,19 +57,19 @@ describe('POST /api/profile', () => {
     expect(update).not.toHaveBeenCalled();
   });
 
-  it('returns a validated default avatar after profile creation', async () => {
-    const single = vi.fn().mockResolvedValue({ data: { username: 'momo', avatar: 'girl' }, error: null });
+  it('creates a dashed username with a validated default avatar', async () => {
+    const single = vi.fn().mockResolvedValue({ data: { username: 'momo-room', avatar: 'girl' }, error: null });
     const insert = vi.fn(() => ({ select: vi.fn(() => ({ single })) }));
     const from = vi.fn().mockReturnValueOnce(existingProfile(null)).mockReturnValueOnce({ insert });
     mocks.createClient.mockResolvedValue({ auth: { getUser: vi.fn().mockResolvedValue({ data: { user } }) }, from });
 
     const response = await POST(new Request('http://localhost/api/profile', {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ displayName: 'Momo', username: 'momo' }),
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ displayName: 'Momo', username: 'momo-room' }),
     }));
 
     expect(response.status).toBe(201);
-    expect(insert).toHaveBeenCalledWith({ id: user.id, username: 'momo', display_name: 'Momo', avatar: 'girl' });
-    await expect(response.json()).resolves.toEqual({ profile: { username: 'momo', avatar: 'girl' } });
+    expect(insert).toHaveBeenCalledWith({ id: user.id, username: 'momo-room', display_name: 'Momo', avatar: 'girl' });
+    await expect(response.json()).resolves.toEqual({ profile: { username: 'momo-room', avatar: 'girl' } });
   });
 
   it('preserves the username conflict response', async () => {

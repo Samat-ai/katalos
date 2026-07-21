@@ -17,6 +17,6 @@ it('keeps the selected room avatar', () => {
   expect(OnboardingSchema.parse({ displayName: 'Miyu', username: 'miyu_room', avatar: 'boy' }).avatar).toBe('boy');
 });
 
-it('rejects dashes that the stored public username format does not support', () => {
-  expect(() => OnboardingSchema.parse({ displayName: 'Miyu', username: 'miyu-room' })).toThrow(/username/i);
+it('accepts lowercase public profile handles with dashes', () => {
+  expect(OnboardingSchema.parse({ displayName: 'Miyu', username: 'miyu-room' }).username).toBe('miyu-room');
 });

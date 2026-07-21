@@ -34,7 +34,7 @@ export function OnboardingForm() {
     <h2>NAME YOUR ROOM</h2>
     <label>Display name<input value={displayName} onChange={(event) => setDisplayName(event.target.value)} maxLength={80} /></label>
     <label>Username<input value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} maxLength={32} aria-describedby="username-help" /></label>
-    <p id="username-help">Use 3–32 lowercase letters, numbers, or underscores — this becomes your public room link.</p>
+    <p id="username-help">Use 3–32 lowercase letters, numbers, underscores, or dashes — this becomes your public room link.</p>
     <p className="room-url">www.katalos.tech/u/{username || '<username>'}</p>
     <AvatarPicker value={avatar} onChange={setAvatar} />
     {error && <p role="alert">{error}</p>}
