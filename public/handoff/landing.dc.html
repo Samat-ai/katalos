@@ -473,6 +473,20 @@ class Component extends DCLogic {
       E('Neon Genesis Evangelion', 'anime', 'abandoned', 0, 'Episode 16. I know, I know.', 'Teenagers pilot bio-machines against angels; it becomes something else.', '#8a5a8f', 48, 14),
       E('2001: A Space Odyssey', 'movie', 'abandoned', 3, '', 'From bone to satellite to whatever the ending is.', '#a89a85', 44, 14)
     ], [[20, 394], [24, 378]]);
+    const liveShelves = window.__KATALOS_ENTRIES;
+    if (liveShelves) {
+      const slot = (target, source, w, h, positions) => {
+        const hydrated = (source || []).map((item, index) => Object.assign(E(item.t, item.ty, item.st, item.r, item.n, item.syn, item.c, w, h), positions ? { l: positions[index % positions.length][0], tp: positions[index % positions.length][1] } : {}));
+        if (hydrated.length) target.splice(0, target.length, ...hydrated);
+      };
+      slot(shelf1, liveShelves.shelf1, 16, 60); slot(shelf2, liveShelves.shelf2, 16, 56);
+      slot(cabinet, liveShelves.cabinet, 13, 44);
+      slot(nowStack, liveShelves.nowStack, 42, 10, [[282,316],[286,326],[290,336]]);
+      slot(pileBooks, liveShelves.pileBooks, 44, 10, [[46,364],[50,352]]);
+      slot(nowPlaying, liveShelves.nowPlaying, 44, 10, [[240,183]]);
+      slot(watchNext, liveShelves.watchNext, 56, 14, [[322,362],[324,346],[321,330]]);
+      slot(pausedTapes, liveShelves.pausedTapes, 44, 14, [[20,394],[24,378]]);
+    }
     const stMap = { 'planned': ['var(--k-panel)', 'var(--k-panelText)'], 'in progress': ['var(--k-stProg)', '#241611'], 'finished': ['var(--k-stDone)', '#241611'], 'abandoned': ['var(--k-stPaused)', '#241611'] };
     const dot = (t) => theme === t ? React.createElement('span', { style: { width: '8px', height: '8px', background: 'var(--k-accent)', display: 'inline-block', border: '2px solid var(--k-ink)' } }) : React.createElement('span', { style: { width: '8px', height: '8px', display: 'inline-block', border: '2px solid var(--k-ink)', opacity: .35 } });
     const initials = sel ? sel.t.split(/\s+/).filter(w => /[a-z0-9]/i.test(w[0])).slice(0, 2).map(w => w[0].toUpperCase()).join('') : '';

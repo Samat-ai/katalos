@@ -1,8 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import { expect, it } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { afterEach, expect, it, vi } from 'vitest';
 import { HandoffFrame } from './HandoffFrame';
+
+afterEach(() => vi.unstubAllGlobals());
 
 it('mounts the supplied landing document without rewriting it', () => {
   render(<HandoffFrame src="/handoff/landing.dc.html" title="Katalos landing" />);
   expect(screen.getByTitle('Katalos landing')).toHaveAttribute('src', '/handoff/landing.dc.html');
+});
+
+it('injects live shelf data before mounting a literal room document', async () => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('<html><head></head><body></body></html>')));
+  render(<HandoffFrame src="/handoff/landing.dc.html" title="Momo's room" shelves={{ shelf1: [{ id: 'book-1', t: 'Book One', ty: 'book', st: 'finished', r: 0, n: '', syn: '', c: '#6fb3a4' }], shelf2: [], nowStack: [], pileBooks: [], cabinet: [], nowPlaying: [], watchNext: [], pausedTapes: [] }} />);
+
+  await waitFor(() => expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('window.__KATALOS_ENTRIES')));
+  expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('Book One'));
 });
