@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#17121c;font-family:'VT323',monospace;color:#e8dfc8}
+a{color:#f2a65a}a:hover{color:#ffd98e}
+.dv-turn{padding:36px 40px 30px;border-bottom:1px solid rgba(255,255,255,.07);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:12px;margin:0 0 22px}
+.dv-tid{font-family:'Press Start 2P',monospace;font-size:9px;padding:5px 8px;background:#f6e7c9;color:#241611;text-decoration:none;box-shadow:3px 3px 0 rgba(0,0,0,.5)}
+.dv-tname{font-size:19px;color:#e8dfc8}
+.dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{font-family:'Press Start 2P',monospace;font-size:8px;padding:4px 7px;background:rgba(255,255,255,.14);color:#e8dfc8;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:9px;font-size:16px;color:rgba(232,223,200,.75)}
+.dv-card{max-width:100%}
+.dv-opt:target .dv-oid{background:#f2a65a;color:#241611}
+.dv-next{margin:24px 0 0;font-size:16px;color:rgba(232,223,200,.6)}
+@keyframes kflick{0%,100%{opacity:1}50%{opacity:.88}}
+@media (prefers-reduced-motion: reduce){.kf{animation:none !important}}
+</style>
+</helmet>
+<section style="padding:34px 40px 10px">
+<div style="font-family:'Press Start 2P',monospace;font-size:16px;color:#f6e7c9;letter-spacing:2px;margin:0 0 16px">KATALOS &#183; PIXEL ROOM EXPLORATIONS</div>
+<div style="max-width:880px;background:#f6e7c9;color:#241611;border:3px solid #241611;box-shadow:6px 6px 0 rgba(0,0,0,.5);padding:16px 20px;font-size:18px;line-height:1.5">
+<div><b>Locked from your answers:</b> finer 16-bit scale (3px pixel unit), pixel type everywhere &#8212; Press Start 2P for headings/buttons, VT323 for body &#8212; fixed cute sprites, everything built in CSS (no image assets).</div>
+<div style="margin-top:8px"><b>The room is the interface.</b> Placement encodes status: shelf / cabinet = finished &#183; beside the reader / in the player = in progress &#183; small stack = planned &#183; floor pile = paused.</div>
+<div style="margin-top:8px"><b>This turn varies one thing:</b> mood + palette. Identical layout three times so the comparison is honest. Pick one (or a mix) and I build the full landing page, then every screen.</div>
+</div>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Mood &amp; palette &#8212; the demo room at three times of day</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a" data-screen-label="1a Warm Evening">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Warm Evening &#8212; amber lamplight, rust &amp; cream (Stardew cozy)</div>
+<div class="dv-card" style="width:846px;border:3px solid #241611;box-shadow:8px 8px 0 rgba(0,0,0,.5);background:#f6e7c9">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;background:#6b4130;border-bottom:3px solid #241611">
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="font-family:'Press Start 2P',monospace;font-size:15px;color:#f6e7c9;letter-spacing:2px">KATALOS</div>
+<div style="font-size:17px;color:#e8d4ae">Your books &amp; screens, arranged in a little room.</div>
+</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:11px 14px;background:#f2a65a;color:#241611;border:3px solid #241611;box-shadow:0 4px 0 #241611;white-space:nowrap;cursor:pointer">MAKE YOUR ROOM</div>
+</div>
+<div style="position:relative;width:840px;height:440px;background:#a06a50;overflow:hidden">
+<div style="position:absolute;left:0;top:200px;width:840px;height:60px;background:#7c5138;border-top:4px solid #63402c"></div>
+<div style="position:absolute;left:0;top:260px;width:840px;height:180px;background:#8a5a3c;background-image:repeating-linear-gradient(90deg,#7a4e34 0 4px,transparent 4px 52px);border-top:6px solid #5f3b2c"></div>
+<div style="position:absolute;left:412px;top:0;width:8px;height:440px;background:rgba(36,22,17,.22)"></div>
+<div style="position:absolute;left:180px;top:300px;width:110px;height:40px;background:rgba(255,217,142,.16)"></div>
+<div style="position:absolute;left:200px;top:306px;width:70px;height:26px;background:rgba(255,217,142,.14)"></div>
+<div style="position:absolute;left:26px;top:36px;width:158px;height:264px;background:#6b4130;border:4px solid #241611;box-shadow:5px 5px 0 rgba(36,22,17,.35)">
+<div style="position:absolute;left:0;top:0;width:150px;height:10px;background:#7e5240"></div>
+<div style="position:absolute;left:8px;top:16px;width:134px;height:62px;background:#503023;border:3px solid #402616;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfA1 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);box-shadow:inset 0 3px 0 rgba(255,255,255,.18)"></div></sc-for></div>
+<div style="position:absolute;left:8px;top:94px;width:134px;height:62px;background:#503023;border:3px solid #402616;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfA2 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);box-shadow:inset 0 3px 0 rgba(255,255,255,.18)"></div></sc-for></div>
+<div style="position:absolute;left:8px;top:172px;width:134px;height:62px;background:#503023;border:3px solid #402616;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfA3 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);box-shadow:inset 0 3px 0 rgba(255,255,255,.18)"></div></sc-for></div>
+</div>
+<div style="position:absolute;left:238px;top:44px;width:104px;height:92px;border:6px solid #63402c;background:#f2b46a;box-shadow:4px 4px 0 rgba(36,22,17,.3)">
+<div style="position:absolute;left:0;top:32px;width:92px;height:28px;background:#e8935f"></div>
+<div style="position:absolute;left:0;top:60px;width:92px;height:20px;background:#d4704c"></div>
+<div style="position:absolute;left:58px;top:8px;width:18px;height:18px;background:#ffe8b0;border:3px solid #e8935f"></div>
+<div style="position:absolute;left:44px;top:0;width:4px;height:80px;background:#63402c"></div>
+<div style="position:absolute;left:0;top:38px;width:92px;height:4px;background:#63402c"></div>
+</div>
+<div style="position:absolute;left:196px;top:150px;width:64px;height:150px">
+<div style="position:absolute;left:10px;top:0;width:44px;height:11px;background:#f2a65a;border:3px solid #241611"></div>
+<div style="position:absolute;left:4px;top:11px;width:56px;height:12px;background:#e0954e;border:3px solid #241611"></div>
+<div style="position:absolute;left:28px;top:23px;width:8px;height:111px;background:#5f3b2c"></div>
+<div style="position:absolute;left:14px;top:134px;width:36px;height:10px;background:#5f3b2c;border:2px solid #241611"></div>
+</div>
+<div style="position:absolute;left:246px;top:312px;width:150px;height:88px;background:#c9955c;border:4px solid #a5713c;background-image:repeating-linear-gradient(0deg,rgba(165,113,60,.5) 0 4px,transparent 4px 18px)"></div>
+<div style="position:absolute;left:268px;top:192px;width:132px;height:118px">
+<div style="position:absolute;left:14px;top:0;width:104px;height:96px;background:#b5533c;border:4px solid #241611;box-shadow:inset 0 6px 0 rgba(255,255,255,.12)"></div>
+<div style="position:absolute;left:20px;top:66px;width:92px;height:24px;background:#d97b4e;border:3px solid #241611"></div>
+<div style="position:absolute;left:0;top:52px;width:20px;height:52px;background:#b5533c;border:3px solid #241611"></div>
+<div style="position:absolute;left:112px;top:52px;width:20px;height:52px;background:#b5533c;border:3px solid #241611"></div>
+<div style="position:absolute;left:22px;top:104px;width:12px;height:12px;background:#5f3b2c"></div>
+<div style="position:absolute;left:98px;top:104px;width:12px;height:12px;background:#5f3b2c"></div>
+</div>
+<div style="position:absolute;left:310px;top:219px">{{ readerA }}</div>
+<div style="position:absolute;left:288px;top:330px;width:44px;height:9px;background:#4e7a9a;border:2px solid #241611"></div>
+<div style="position:absolute;left:292px;top:339px;width:40px;height:9px;background:#7a9a4e;border:2px solid #241611"></div>
+<div style="position:absolute;left:284px;top:352px;font-size:14px;color:rgba(36,22,17,.6)">reading now</div>
+<div style="position:absolute;left:56px;top:356px;width:52px;height:34px">
+<div style="position:absolute;left:2px;top:22px;width:48px;height:10px;background:#8a5a8f;border:2px solid #241611"></div>
+<div style="position:absolute;left:0;top:12px;width:46px;height:10px;background:#c4523e;border:2px solid #241611"></div>
+<div style="position:absolute;left:5px;top:2px;width:42px;height:10px;background:#e0a458;border:2px solid #241611"></div>
+</div>
+<div style="position:absolute;left:58px;top:392px;font-size:14px;color:rgba(36,22,17,.6)">paused</div>
+<div style="position:absolute;left:362px;top:268px">{{ plantA }}</div>
+<div style="position:absolute;left:148px;top:370px">{{ catA }}</div>
+<div style="position:absolute;left:744px;top:42px;width:68px;height:92px;background:#f6e7c9;border:4px solid #241611;box-shadow:4px 4px 0 rgba(36,22,17,.3)">
+<div style="position:absolute;left:6px;top:6px;width:48px;height:26px;background:#8a5a8f"></div>
+<div style="position:absolute;left:6px;top:32px;width:48px;height:10px;background:#f2a65a"></div>
+<div style="position:absolute;left:6px;top:42px;width:48px;height:8px;background:#c4523e"></div>
+<div style="position:absolute;left:6px;top:58px;font-family:'Press Start 2P',monospace;font-size:7px;color:#241611">FILM</div>
+<div style="position:absolute;left:6px;top:72px;font-family:'Press Start 2P',monospace;font-size:7px;color:#241611">NIGHT</div>
+</div>
+<div style="position:absolute;left:466px;top:236px">{{ glowA }}</div>
+<div style="position:absolute;left:496px;top:322px;width:196px;height:88px;background:#c9955c;border:4px solid #a5713c;background-image:repeating-linear-gradient(0deg,rgba(165,113,60,.5) 0 4px,transparent 4px 18px)"></div>
+<div style="position:absolute;left:452px;top:232px;width:268px;height:78px;background:#6b4130;border:4px solid #241611;box-shadow:5px 5px 0 rgba(36,22,17,.35)">
+<div style="position:absolute;left:0;top:0;width:260px;height:8px;background:#7e5240"></div>
+<div style="position:absolute;left:10px;top:14px;width:240px;height:50px;background:#503023;border:3px solid #402616;display:flex;align-items:flex-end;gap:3px;padding:0 4px;overflow:hidden"><sc-for list="{{ tapesA }}" as="s" hint-placeholder-count="12"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);box-shadow:inset 0 3px 0 rgba(255,255,255,.18)"></div></sc-for></div>
+</div>
+<div style="position:absolute;left:486px;top:94px;width:168px;height:140px;background:#8a7a68;border:4px solid #241611;box-shadow:5px 5px 0 rgba(36,22,17,.35)">
+<div style="position:absolute;left:10px;top:10px;width:112px;height:96px;background:#241611"></div>
+<div style="position:absolute;left:14px;top:14px;width:104px;height:88px;overflow:hidden">{{ tvA }}</div>
+<div style="position:absolute;left:134px;top:16px;width:14px;height:14px;background:#241611;box-shadow:inset 3px 3px 0 #6e5f50"></div>
+<div style="position:absolute;left:134px;top:38px;width:14px;height:14px;background:#241611;box-shadow:inset 3px 3px 0 #6e5f50"></div>
+<div style="position:absolute;left:132px;top:66px;width:20px;height:4px;background:rgba(36,22,17,.5)"></div>
+<div style="position:absolute;left:132px;top:74px;width:20px;height:4px;background:rgba(36,22,17,.5)"></div>
+<div style="position:absolute;left:132px;top:82px;width:20px;height:4px;background:rgba(36,22,17,.5)"></div>
+</div>
+<div style="position:absolute;left:662px;top:206px;width:52px;height:24px;background:#3a2e26;border:3px solid #241611">
+<div style="position:absolute;left:6px;top:6px;width:26px;height:4px;background:#241611"></div>
+<div style="position:absolute;left:38px;top:5px;width:5px;height:5px;background:#7fe36b"></div>
+</div>
+<div style="position:absolute;left:748px;top:342px;width:64px;height:40px">
+<div style="position:absolute;left:0;top:26px;width:60px;height:12px;background:#4e7a9a;border:2px solid #241611"></div>
+<div style="position:absolute;left:3px;top:14px;width:56px;height:12px;background:#c4523e;border:2px solid #241611"></div>
+<div style="position:absolute;left:1px;top:2px;width:58px;height:12px;background:#e0a458;border:2px solid #241611"></div>
+</div>
+<div style="position:absolute;left:748px;top:384px;font-size:14px;color:rgba(36,22,17,.6)">watch next</div>
+<div style="position:absolute;left:428px;top:390px;width:48px;height:10px;background:#8a5a8f;border:2px solid #241611"></div>
+<div style="position:absolute;left:434px;top:402px;width:44px;height:10px;background:#6b8f6b;border:2px solid #241611"></div>
+<div style="position:absolute;left:430px;top:414px;font-size:14px;color:rgba(36,22,17,.6)">paused</div>
+<div style="position:absolute;left:570px;top:354px">{{ watcherA }}</div>
+<div style="position:absolute;left:16px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:#f6e7c9;color:#241611;border:3px solid #241611;box-shadow:3px 3px 0 rgba(36,22,17,.45)">READING NOOK</div>
+<div style="position:absolute;left:428px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:#f6e7c9;color:#241611;border:3px solid #241611;box-shadow:3px 3px 0 rgba(36,22,17,.45)">TV NOOK</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px 20px;background:#eedcb4;border-top:3px solid #241611;color:#241611">
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<div style="width:26px;height:26px;background:#a06a50;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#7c5138;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#8a5a3c;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#f6e7c9;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#f2a65a;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#c4523e;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#7a9a4e;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#8a5a8f;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<div style="width:26px;height:26px;background:#4e7a9a;border:3px solid #241611;box-shadow:2px 2px 0 #241611"></div>
+<span style="font-size:15px;color:rgba(36,22,17,.6);margin-left:6px">wall &#183; wainscot &#183; floor &#183; cream &#183; amber &#183; rust &#183; leaf &#183; plum &#183; sea</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+<span style="font-family:'Press Start 2P',monospace;font-size:12px">Aa PRESS START 2P</span>
+<span style="font-size:20px">Aa VT323 &#8212; body copy, synopsis, notes. Long titles clamp to two lines.</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:#f2a65a;color:#241611;border:3px solid #241611;box-shadow:0 4px 0 #241611">MAKE YOUR ROOM</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:#f6e7c9;color:#241611;border:3px solid #241611;box-shadow:0 4px 0 #241611">COPY LINK</div>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #241611;color:#241611">PLANNED</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #241611;background:#f2a65a">IN PROGRESS</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #241611;background:#7a9a4e;color:#fdf3dc">FINISHED</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #241611;background:#a89a85">PAUSED</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b" data-screen-label="1b Night Glow">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Night Glow &#8212; dark den lit by the TV &amp; reading lamp (Coffee Talk)</div>
+<div class="dv-card" style="width:846px;border:3px solid #0e0c18;box-shadow:8px 8px 0 rgba(0,0,0,.55);background:#232741">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;background:#171b31;border-bottom:3px solid #0e0c18">
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="font-family:'Press Start 2P',monospace;font-size:15px;color:#ece6f2;letter-spacing:2px">KATALOS</div>
+<div style="font-size:17px;color:#b8b0cc">Your books &amp; screens, arranged in a little room.</div>
+</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:11px 14px;background:#7fe3de;color:#0e0c18;border:3px solid #0e0c18;box-shadow:0 4px 0 #0e0c18;white-space:nowrap;cursor:pointer">MAKE YOUR ROOM</div>
+</div>
+<div style="position:relative;width:840px;height:440px;background:#262c4a;overflow:hidden">
+<div style="position:absolute;left:0;top:200px;width:840px;height:60px;background:#1f2440;border-top:4px solid #171b31"></div>
+<div style="position:absolute;left:0;top:260px;width:840px;height:180px;background:#2f3654;background-image:repeating-linear-gradient(90deg,#272d47 0 4px,transparent 4px 52px);border-top:6px solid #171b31"></div>
+<div style="position:absolute;left:412px;top:0;width:8px;height:440px;background:rgba(14,12,24,.35)"></div>
+<div style="position:absolute;left:176px;top:170px;width:104px;height:130px;background:rgba(255,217,142,.08)"></div>
+<div style="position:absolute;left:164px;top:300px;width:130px;height:44px;background:rgba(255,217,142,.14)"></div>
+<div style="position:absolute;left:190px;top:308px;width:80px;height:28px;background:rgba(255,217,142,.13)"></div>
+<div style="position:absolute;left:26px;top:36px;width:158px;height:264px;background:#3f3654;border:4px solid #0e0c18;box-shadow:5px 5px 0 rgba(0,0,0,.45)">
+<div style="position:absolute;left:0;top:0;width:150px;height:10px;background:#4c4266"></div>
+<div style="position:absolute;left:8px;top:16px;width:134px;height:62px;background:#241f38;border:3px solid #1a1630;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfB1 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.4);box-shadow:inset 0 3px 0 rgba(255,255,255,.14)"></div></sc-for></div>
+<div style="position:absolute;left:8px;top:94px;width:134px;height:62px;background:#241f38;border:3px solid #1a1630;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfB2 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.4);box-shadow:inset 0 3px 0 rgba(255,255,255,.14)"></div></sc-for></div>
+<div style="position:absolute;left:8px;top:172px;width:134px;height:62px;background:#241f38;border:3px solid #1a1630;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfB3 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.4);box-shadow:inset 0 3px 0 rgba(255,255,255,.14)"></div></sc-for></div>
+</div>
+<div style="position:absolute;left:238px;top:44px;width:104px;height:92px;border:6px solid #171b31;background:#10142a;box-shadow:4px 4px 0 rgba(0,0,0,.4)">
+<div style="position:absolute;left:58px;top:10px;width:16px;height:16px;background:#f4ecd8"></div>
+<div style="position:absolute;left:14px;top:14px;width:3px;height:3px;background:#f4ecd8"></div>
+<div style="position:absolute;left:30px;top:52px;width:3px;height:3px;background:#f4ecd8"></div>
+<div style="position:absolute;left:70px;top:60px;width:3px;height:3px;background:#f4ecd8"></div>
+<div style="position:absolute;left:44px;top:0;width:4px;height:80px;background:#171b31"></div>
+<div style="position:absolute;left:0;top:38px;width:92px;height:4px;background:#171b31"></div>
+</div>
+<div style="position:absolute;left:196px;top:150px;width:64px;height:150px">
+<div style="position:absolute;left:10px;top:0;width:44px;height:11px;background:#ffd98e;border:3px solid #0e0c18"></div>
+<div style="position:absolute;left:4px;top:11px;width:56px;height:12px;background:#f5b761;border:3px solid #0e0c18"></div>
+<div style="position:absolute;left:28px;top:23px;width:8px;height:111px;background:#2c2540"></div>
+<div style="position:absolute;left:14px;top:134px;width:36px;height:10px;background:#2c2540;border:2px solid #0e0c18"></div>
+</div>
+<div style="position:absolute;left:246px;top:312px;width:150px;height:88px;background:#46406b;border:4px solid #332e52;background-image:repeating-linear-gradient(0deg,rgba(51,46,82,.6) 0 4px,transparent 4px 18px)"></div>
+<div style="position:absolute;left:268px;top:192px;width:132px;height:118px">
+<div style="position:absolute;left:14px;top:0;width:104px;height:96px;background:#5a4a78;border:4px solid #0e0c18;box-shadow:inset 0 6px 0 rgba(255,255,255,.1)"></div>
+<div style="position:absolute;left:20px;top:66px;width:92px;height:24px;background:#6e5c96;border:3px solid #0e0c18"></div>
+<div style="position:absolute;left:0;top:52px;width:20px;height:52px;background:#5a4a78;border:3px solid #0e0c18"></div>
+<div style="position:absolute;left:112px;top:52px;width:20px;height:52px;background:#5a4a78;border:3px solid #0e0c18"></div>
+<div style="position:absolute;left:22px;top:104px;width:12px;height:12px;background:#2c2540"></div>
+<div style="position:absolute;left:98px;top:104px;width:12px;height:12px;background:#2c2540"></div>
+</div>
+<div style="position:absolute;left:310px;top:219px">{{ readerB }}</div>
+<div style="position:absolute;left:288px;top:330px;width:44px;height:9px;background:#5f7ac9;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:292px;top:339px;width:40px;height:9px;background:#4fae9e;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:284px;top:352px;font-size:14px;color:rgba(236,230,242,.55)">reading now</div>
+<div style="position:absolute;left:56px;top:356px;width:52px;height:34px">
+<div style="position:absolute;left:2px;top:22px;width:48px;height:10px;background:#9c5fb5;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:0;top:12px;width:46px;height:10px;background:#b55f6e;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:5px;top:2px;width:42px;height:10px;background:#c9a05f;border:2px solid #0e0c18"></div>
+</div>
+<div style="position:absolute;left:58px;top:392px;font-size:14px;color:rgba(236,230,242,.55)">paused</div>
+<div style="position:absolute;left:362px;top:268px">{{ plantB }}</div>
+<div style="position:absolute;left:148px;top:370px">{{ catB }}</div>
+<div style="position:absolute;left:744px;top:42px;width:68px;height:92px;background:#2e3452;border:4px solid #0e0c18;box-shadow:4px 4px 0 rgba(0,0,0,.4)">
+<div style="position:absolute;left:6px;top:6px;width:48px;height:26px;background:#10142a"></div>
+<div style="position:absolute;left:38px;top:10px;width:10px;height:10px;background:#f4ecd8"></div>
+<div style="position:absolute;left:6px;top:32px;width:48px;height:10px;background:#8a7bd8"></div>
+<div style="position:absolute;left:6px;top:42px;width:48px;height:8px;background:#d876a3"></div>
+<div style="position:absolute;left:6px;top:58px;font-family:'Press Start 2P',monospace;font-size:7px;color:#ece6f2">NIGHT</div>
+<div style="position:absolute;left:6px;top:72px;font-family:'Press Start 2P',monospace;font-size:7px;color:#ece6f2">OWL</div>
+</div>
+<div style="position:absolute;left:466px;top:236px">{{ glowB }}</div>
+<div style="position:absolute;left:496px;top:322px;width:196px;height:88px;background:#46406b;border:4px solid #332e52;background-image:repeating-linear-gradient(0deg,rgba(51,46,82,.6) 0 4px,transparent 4px 18px)"></div>
+<div style="position:absolute;left:452px;top:232px;width:268px;height:78px;background:#3f3654;border:4px solid #0e0c18;box-shadow:5px 5px 0 rgba(0,0,0,.45)">
+<div style="position:absolute;left:0;top:0;width:260px;height:8px;background:#4c4266"></div>
+<div style="position:absolute;left:10px;top:14px;width:240px;height:50px;background:#241f38;border:3px solid #1a1630;display:flex;align-items:flex-end;gap:3px;padding:0 4px;overflow:hidden"><sc-for list="{{ tapesB }}" as="s" hint-placeholder-count="12"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.4);box-shadow:inset 0 3px 0 rgba(255,255,255,.14)"></div></sc-for></div>
+</div>
+<div style="position:absolute;left:486px;top:94px;width:168px;height:140px;background:#4c4266;border:4px solid #0e0c18;box-shadow:5px 5px 0 rgba(0,0,0,.45)">
+<div style="position:absolute;left:10px;top:10px;width:112px;height:96px;background:#0e0c18"></div>
+<div style="position:absolute;left:14px;top:14px;width:104px;height:88px;overflow:hidden">{{ tvB }}</div>
+<div style="position:absolute;left:134px;top:16px;width:14px;height:14px;background:#0e0c18;box-shadow:inset 3px 3px 0 #6e6488"></div>
+<div style="position:absolute;left:134px;top:38px;width:14px;height:14px;background:#0e0c18;box-shadow:inset 3px 3px 0 #6e6488"></div>
+<div style="position:absolute;left:132px;top:66px;width:20px;height:4px;background:rgba(14,12,24,.6)"></div>
+<div style="position:absolute;left:132px;top:74px;width:20px;height:4px;background:rgba(14,12,24,.6)"></div>
+<div style="position:absolute;left:132px;top:82px;width:20px;height:4px;background:rgba(14,12,24,.6)"></div>
+</div>
+<div style="position:absolute;left:662px;top:206px;width:52px;height:24px;background:#2c2540;border:3px solid #0e0c18">
+<div style="position:absolute;left:6px;top:6px;width:26px;height:4px;background:#0e0c18"></div>
+<div style="position:absolute;left:38px;top:5px;width:5px;height:5px;background:#7fe36b"></div>
+</div>
+<div style="position:absolute;left:748px;top:342px;width:64px;height:40px">
+<div style="position:absolute;left:0;top:26px;width:60px;height:12px;background:#5f7ac9;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:3px;top:14px;width:56px;height:12px;background:#b55f6e;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:1px;top:2px;width:58px;height:12px;background:#c9a05f;border:2px solid #0e0c18"></div>
+</div>
+<div style="position:absolute;left:748px;top:384px;font-size:14px;color:rgba(236,230,242,.55)">watch next</div>
+<div style="position:absolute;left:428px;top:390px;width:48px;height:10px;background:#9c5fb5;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:434px;top:402px;width:44px;height:10px;background:#4fae9e;border:2px solid #0e0c18"></div>
+<div style="position:absolute;left:430px;top:414px;font-size:14px;color:rgba(236,230,242,.55)">paused</div>
+<div style="position:absolute;left:570px;top:354px">{{ watcherB }}</div>
+<div style="position:absolute;left:16px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:#ece6f2;color:#0e0c18;border:3px solid #0e0c18;box-shadow:3px 3px 0 rgba(0,0,0,.5)">READING NOOK</div>
+<div style="position:absolute;left:428px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:#ece6f2;color:#0e0c18;border:3px solid #0e0c18;box-shadow:3px 3px 0 rgba(0,0,0,.5)">TV NOOK</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px 20px;background:#1e2238;border-top:3px solid #0e0c18;color:#ece6f2">
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<div style="width:26px;height:26px;background:#262c4a;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#1f2440;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#2f3654;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#ece6f2;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#7fe3de;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#f5b761;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#d876a3;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#8a7bd8;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<div style="width:26px;height:26px;background:#5f7ac9;border:3px solid #0e0c18;box-shadow:2px 2px 0 #0e0c18"></div>
+<span style="font-size:15px;color:rgba(236,230,242,.55);margin-left:6px">wall &#183; wainscot &#183; floor &#183; cream &#183; signal &#183; lamp &#183; pink &#183; iris &#183; slate</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+<span style="font-family:'Press Start 2P',monospace;font-size:12px">Aa PRESS START 2P</span>
+<span style="font-size:20px">Aa VT323 &#8212; body copy, synopsis, notes. Long titles clamp to two lines.</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:#7fe3de;color:#0e0c18;border:3px solid #0e0c18;box-shadow:0 4px 0 #0e0c18">MAKE YOUR ROOM</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:#2e3452;color:#ece6f2;border:3px solid #0e0c18;box-shadow:0 4px 0 #0e0c18">COPY LINK</div>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #ece6f2;color:#ece6f2">PLANNED</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #0e0c18;background:#f5b761;color:#0e0c18">IN PROGRESS</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #0e0c18;background:#4fae9e;color:#0e0c18">FINISHED</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #0e0c18;background:#5a5470;color:#ece6f2">PAUSED</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c" data-screen-label="1c Daylight">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Daylight &#8212; sage walls, butter sun, coral &amp; teal (Habbo bright)</div>
+<div class="dv-card" style="width:846px;border:3px solid #33291f;box-shadow:8px 8px 0 rgba(0,0,0,.5);background:#fbf4e4">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;background:#6fb3a4;border-bottom:3px solid #33291f">
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="font-family:'Press Start 2P',monospace;font-size:15px;color:#1f342c;letter-spacing:2px">KATALOS</div>
+<div style="font-size:17px;color:#1f342c">Your books &amp; screens, arranged in a little room.</div>
+</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:11px 14px;background:#e8836b;color:#33291f;border:3px solid #33291f;box-shadow:0 4px 0 #33291f;white-space:nowrap;cursor:pointer">MAKE YOUR ROOM</div>
+</div>
+<div style="position:relative;width:840px;height:440px;background:#cfe3d6;overflow:hidden">
+<div style="position:absolute;left:0;top:200px;width:840px;height:60px;background:#b2d0be;border-top:4px solid #93b7a2"></div>
+<div style="position:absolute;left:0;top:260px;width:840px;height:180px;background:#dcb083;background-image:repeating-linear-gradient(90deg,#c99e73 0 4px,transparent 4px 52px);border-top:6px solid #a8825c"></div>
+<div style="position:absolute;left:412px;top:0;width:8px;height:440px;background:rgba(51,41,31,.14)"></div>
+<div style="position:absolute;left:242px;top:296px;width:110px;height:44px;background:rgba(248,216,120,.28)"></div>
+<div style="position:absolute;left:26px;top:36px;width:158px;height:264px;background:#a9713f;border:4px solid #33291f;box-shadow:5px 5px 0 rgba(51,41,31,.25)">
+<div style="position:absolute;left:0;top:0;width:150px;height:10px;background:#bd8552"></div>
+<div style="position:absolute;left:8px;top:16px;width:134px;height:62px;background:#6e4826;border:3px solid #5c3c20;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfC1 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.3);box-shadow:inset 0 3px 0 rgba(255,255,255,.25)"></div></sc-for></div>
+<div style="position:absolute;left:8px;top:94px;width:134px;height:62px;background:#6e4826;border:3px solid #5c3c20;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfC2 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.3);box-shadow:inset 0 3px 0 rgba(255,255,255,.25)"></div></sc-for></div>
+<div style="position:absolute;left:8px;top:172px;width:134px;height:62px;background:#6e4826;border:3px solid #5c3c20;display:flex;align-items:flex-end;gap:3px;padding:0 3px;overflow:hidden"><sc-for list="{{ shelfC3 }}" as="s" hint-placeholder-count="8"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.3);box-shadow:inset 0 3px 0 rgba(255,255,255,.25)"></div></sc-for></div>
+</div>
+<div style="position:absolute;left:238px;top:44px;width:104px;height:92px;border:6px solid #7e5230;background:#a8d8e8;box-shadow:4px 4px 0 rgba(51,41,31,.2)">
+<div style="position:absolute;left:56px;top:8px;width:20px;height:20px;background:#f8d878;border:3px solid #e8b84a"></div>
+<div style="position:absolute;left:8px;top:26px;width:26px;height:8px;background:#fbf4e4"></div>
+<div style="position:absolute;left:16px;top:52px;width:34px;height:8px;background:#fbf4e4"></div>
+<div style="position:absolute;left:44px;top:0;width:4px;height:80px;background:#7e5230"></div>
+<div style="position:absolute;left:0;top:38px;width:92px;height:4px;background:#7e5230"></div>
+</div>
+<div style="position:absolute;left:196px;top:150px;width:64px;height:150px">
+<div style="position:absolute;left:10px;top:0;width:44px;height:11px;background:#f0c96e;border:3px solid #33291f"></div>
+<div style="position:absolute;left:4px;top:11px;width:56px;height:12px;background:#e8b84a;border:3px solid #33291f"></div>
+<div style="position:absolute;left:28px;top:23px;width:8px;height:111px;background:#7e5230"></div>
+<div style="position:absolute;left:14px;top:134px;width:36px;height:10px;background:#7e5230;border:2px solid #33291f"></div>
+</div>
+<div style="position:absolute;left:246px;top:312px;width:150px;height:88px;background:#f0d9a8;border:4px solid #d8b877;background-image:repeating-linear-gradient(0deg,rgba(216,184,119,.55) 0 4px,transparent 4px 18px)"></div>
+<div style="position:absolute;left:268px;top:192px;width:132px;height:118px">
+<div style="position:absolute;left:14px;top:0;width:104px;height:96px;background:#e8836b;border:4px solid #33291f;box-shadow:inset 0 6px 0 rgba(255,255,255,.25)"></div>
+<div style="position:absolute;left:20px;top:66px;width:92px;height:24px;background:#f2a58a;border:3px solid #33291f"></div>
+<div style="position:absolute;left:0;top:52px;width:20px;height:52px;background:#e8836b;border:3px solid #33291f"></div>
+<div style="position:absolute;left:112px;top:52px;width:20px;height:52px;background:#e8836b;border:3px solid #33291f"></div>
+<div style="position:absolute;left:22px;top:104px;width:12px;height:12px;background:#7e5230"></div>
+<div style="position:absolute;left:98px;top:104px;width:12px;height:12px;background:#7e5230"></div>
+</div>
+<div style="position:absolute;left:310px;top:219px">{{ readerC }}</div>
+<div style="position:absolute;left:288px;top:330px;width:44px;height:9px;background:#7aa8d8;border:2px solid #33291f"></div>
+<div style="position:absolute;left:292px;top:339px;width:40px;height:9px;background:#88c47a;border:2px solid #33291f"></div>
+<div style="position:absolute;left:284px;top:352px;font-size:14px;color:rgba(51,41,31,.6)">reading now</div>
+<div style="position:absolute;left:56px;top:356px;width:52px;height:34px">
+<div style="position:absolute;left:2px;top:22px;width:48px;height:10px;background:#9a7bc9;border:2px solid #33291f"></div>
+<div style="position:absolute;left:0;top:12px;width:46px;height:10px;background:#e8836b;border:2px solid #33291f"></div>
+<div style="position:absolute;left:5px;top:2px;width:42px;height:10px;background:#e8a85f;border:2px solid #33291f"></div>
+</div>
+<div style="position:absolute;left:58px;top:392px;font-size:14px;color:rgba(51,41,31,.6)">paused</div>
+<div style="position:absolute;left:362px;top:268px">{{ plantC }}</div>
+<div style="position:absolute;left:148px;top:370px">{{ catC }}</div>
+<div style="position:absolute;left:744px;top:42px;width:68px;height:92px;background:#fbf4e4;border:4px solid #33291f;box-shadow:4px 4px 0 rgba(51,41,31,.2)">
+<div style="position:absolute;left:6px;top:6px;width:48px;height:26px;background:#6fb3a4"></div>
+<div style="position:absolute;left:36px;top:10px;width:12px;height:12px;background:#f8d878"></div>
+<div style="position:absolute;left:6px;top:32px;width:48px;height:10px;background:#e8836b"></div>
+<div style="position:absolute;left:6px;top:42px;width:48px;height:8px;background:#f0c96e"></div>
+<div style="position:absolute;left:6px;top:58px;font-family:'Press Start 2P',monospace;font-size:7px;color:#33291f">MOVIE</div>
+<div style="position:absolute;left:6px;top:72px;font-family:'Press Start 2P',monospace;font-size:7px;color:#33291f">CLUB</div>
+</div>
+<div style="position:absolute;left:466px;top:236px">{{ glowC }}</div>
+<div style="position:absolute;left:496px;top:322px;width:196px;height:88px;background:#f0d9a8;border:4px solid #d8b877;background-image:repeating-linear-gradient(0deg,rgba(216,184,119,.55) 0 4px,transparent 4px 18px)"></div>
+<div style="position:absolute;left:452px;top:232px;width:268px;height:78px;background:#a9713f;border:4px solid #33291f;box-shadow:5px 5px 0 rgba(51,41,31,.25)">
+<div style="position:absolute;left:0;top:0;width:260px;height:8px;background:#bd8552"></div>
+<div style="position:absolute;left:10px;top:14px;width:240px;height:50px;background:#6e4826;border:3px solid #5c3c20;display:flex;align-items:flex-end;gap:3px;padding:0 4px;overflow:hidden"><sc-for list="{{ tapesC }}" as="s" hint-placeholder-count="12"><div style="width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.3);box-shadow:inset 0 3px 0 rgba(255,255,255,.25)"></div></sc-for></div>
+</div>
+<div style="position:absolute;left:486px;top:94px;width:168px;height:140px;background:#a8c4b5;border:4px solid #33291f;box-shadow:5px 5px 0 rgba(51,41,31,.25)">
+<div style="position:absolute;left:10px;top:10px;width:112px;height:96px;background:#33291f"></div>
+<div style="position:absolute;left:14px;top:14px;width:104px;height:88px;overflow:hidden">{{ tvC }}</div>
+<div style="position:absolute;left:134px;top:16px;width:14px;height:14px;background:#33291f;box-shadow:inset 3px 3px 0 #88a494"></div>
+<div style="position:absolute;left:134px;top:38px;width:14px;height:14px;background:#33291f;box-shadow:inset 3px 3px 0 #88a494"></div>
+<div style="position:absolute;left:132px;top:66px;width:20px;height:4px;background:rgba(51,41,31,.4)"></div>
+<div style="position:absolute;left:132px;top:74px;width:20px;height:4px;background:rgba(51,41,31,.4)"></div>
+<div style="position:absolute;left:132px;top:82px;width:20px;height:4px;background:rgba(51,41,31,.4)"></div>
+</div>
+<div style="position:absolute;left:662px;top:206px;width:52px;height:24px;background:#7e5230;border:3px solid #33291f">
+<div style="position:absolute;left:6px;top:6px;width:26px;height:4px;background:#33291f"></div>
+<div style="position:absolute;left:38px;top:5px;width:5px;height:5px;background:#7fe36b"></div>
+</div>
+<div style="position:absolute;left:748px;top:342px;width:64px;height:40px">
+<div style="position:absolute;left:0;top:26px;width:60px;height:12px;background:#7aa8d8;border:2px solid #33291f"></div>
+<div style="position:absolute;left:3px;top:14px;width:56px;height:12px;background:#e8836b;border:2px solid #33291f"></div>
+<div style="position:absolute;left:1px;top:2px;width:58px;height:12px;background:#e8a85f;border:2px solid #33291f"></div>
+</div>
+<div style="position:absolute;left:748px;top:384px;font-size:14px;color:rgba(51,41,31,.6)">watch next</div>
+<div style="position:absolute;left:428px;top:390px;width:48px;height:10px;background:#9a7bc9;border:2px solid #33291f"></div>
+<div style="position:absolute;left:434px;top:402px;width:44px;height:10px;background:#88c47a;border:2px solid #33291f"></div>
+<div style="position:absolute;left:430px;top:414px;font-size:14px;color:rgba(51,41,31,.6)">paused</div>
+<div style="position:absolute;left:570px;top:354px">{{ watcherC }}</div>
+<div style="position:absolute;left:16px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:#fbf4e4;color:#33291f;border:3px solid #33291f;box-shadow:3px 3px 0 rgba(51,41,31,.35)">READING NOOK</div>
+<div style="position:absolute;left:428px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:#fbf4e4;color:#33291f;border:3px solid #33291f;box-shadow:3px 3px 0 rgba(51,41,31,.35)">TV NOOK</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px 20px;background:#f2e6cc;border-top:3px solid #33291f;color:#33291f">
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<div style="width:26px;height:26px;background:#cfe3d6;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#b2d0be;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#dcb083;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#fbf4e4;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#e8836b;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#6fb3a4;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#f0c96e;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#9a7bc9;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<div style="width:26px;height:26px;background:#7aa8d8;border:3px solid #33291f;box-shadow:2px 2px 0 #33291f"></div>
+<span style="font-size:15px;color:rgba(51,41,31,.6);margin-left:6px">wall &#183; wainscot &#183; floor &#183; cream &#183; coral &#183; teal &#183; butter &#183; lilac &#183; sky</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+<span style="font-family:'Press Start 2P',monospace;font-size:12px">Aa PRESS START 2P</span>
+<span style="font-size:20px">Aa VT323 &#8212; body copy, synopsis, notes. Long titles clamp to two lines.</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:#e8836b;color:#33291f;border:3px solid #33291f;box-shadow:0 4px 0 #33291f">MAKE YOUR ROOM</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:#fbf4e4;color:#33291f;border:3px solid #33291f;box-shadow:0 4px 0 #33291f">COPY LINK</div>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #33291f;color:#33291f">PLANNED</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #33291f;background:#f0c96e">IN PROGRESS</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #33291f;background:#88c47a">FINISHED</span>
+<span style="font-size:16px;padding:3px 9px;border:2px solid #33291f;background:#c4b49a">PAUSED</span>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: &#8220;go with <a class="dv-oid" href="#1b">1b</a>, build the landing page&#8221; &#183; &#8220;<a class="dv-oid" href="#1a">1a</a> but with <a class="dv-oid" href="#1c">1c</a>&#8217;s teal accents&#8221; &#183; &#8220;show a mobile stack of the winner&#8221;</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;tvOn&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Scene state&quot;}, &quot;showCat&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Scene state&quot;}}">
+class Component extends DCLogic {
+  px(map, pal, s) {
+    const sh = [];
+    map.forEach((row, y) => {
+      for (let x = 0; x < row.length; x++) {
+        const c = pal[row[x]];
+        if (row[x] !== '.' && c) sh.push(((x + 1) * s) + 'px ' + (y * s) + 'px 0 ' + c);
+      }
+    });
+    return React.createElement('div', { style: { position: 'relative', width: (map[0].length * s) + 'px', height: (map.length * s) + 'px' } },
+      React.createElement('div', { style: { position: 'absolute', left: (-s) + 'px', top: 0, width: s + 'px', height: s + 'px', boxShadow: sh.join(',') } }));
+  }
+  rnd(seed) { let t = seed; return () => (t = (t * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; }
+  spines(colors, n, seed, hMin, hMax, wMin, wMax) {
+    const r = this.rnd(seed); const out = [];
+    for (let i = 0; i < n; i++) out.push({
+      w: Math.round(wMin + r() * (wMax - wMin)),
+      h: Math.round(hMin + r() * (hMax - hMin)),
+      c: colors[Math.floor(r() * colors.length)]
+    });
+    return out;
+  }
+  tv(colors, on) {
+    if (!on) return React.createElement('div', { style: { width: '100%', height: '100%', background: '#16121c', position: 'relative' } },
+      React.createElement('div', { style: { position: 'absolute', left: '8px', top: '8px', width: '14px', height: '10px', background: '#2c2536' } }));
+    const rows = colors.map((c, i) => React.createElement('div', { key: i, style: { position: 'absolute', left: 0, top: (i * 25) + '%', width: '100%', height: '25%', background: c } }));
+    rows.push(React.createElement('div', { key: 'sl', style: { position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 2px, transparent 2px 4px)' } }));
+    return React.createElement('div', { className: 'kf', style: { width: '100%', height: '100%', position: 'relative', overflow: 'hidden', animation: 'kflick 2.4s steps(2) infinite' } }, rows);
+  }
+  glow(color, k) {
+    const mk = (l, t, w, h, o) => React.createElement('div', { key: l + '_' + t, style: { position: 'absolute', left: l + 'px', top: t + 'px', width: w + 'px', height: h + 'px', background: color, opacity: o * k } });
+    return React.createElement('div', { style: { position: 'absolute', left: 0, top: 0 } }, [mk(0, 0, 210, 124, .07), mk(30, 22, 150, 86, .07), mk(62, 42, 92, 52, .09)]);
+  }
+  renderVals() {
+    const tvOn = this.props.tvOn ?? true, showCat = this.props.showCat ?? true;
+    const R = [
+      '....HHHHHHHH....', '...HHHHHHHHHH...', '..HHHHHHHHHHHH..', '..HHFFFFFFFFHH..',
+      '..HFFEFFFFEFFH..', '..HFFFFFFFFFFH..', '...FFFFFFFFFF...', '....FFFFFFFF....',
+      '...SSSSSSSSSS...', '..SSSSSSSSSSSS..', '..FSSSSSSSSSSF..', '..CBBBBBBBBBBC..',
+      '.CBBBBBBBBBBBBC.', '..PPPP....PPPP..', '..KKKK....KKKK..'
+    ];
+    const W = [
+      '....HHHHHHHH....', '...HHHHHHHHHH...', '...HHHHHHHHHH...', '...HHHHHHHHHH...',
+      '....HHHHHHHH....', '...TTTTTTTTTT...', '..TTTTTTTTTTTT..', '.FTTTTTTTTTTTTF.',
+      '.FTTTTTTTTTTTTF.', '..TTTTTTTTTTTT..', '.PPPPPP..PPPPPP.', 'PPPPPPP..PPPPPPP'
+    ];
+    const CT = ['.OO......OO.', '.OOOOOOOOOO.', 'OOOOOOOOOOOO', 'OOOOOOOOOOOO', '.OOOOOOOOODD'];
+    const PL = [
+      '....LLL.....', '..LLLLLGG...', '.LLLGLLGGG..', '.LLGGLLLGG..', '..LGLLLLG...',
+      '....LLL.....', '..TTTTTTT...', '..TTTTTTT...', '..TTTTTTT...', '...TTTTT....'
+    ];
+    const spA = ['#c4523e', '#7a9a4e', '#e0a458', '#8a5a8f', '#4e7a9a', '#d97b4e', '#b5533c', '#6b8f6b'];
+    const spB = ['#8a7bd8', '#d876a3', '#7fe3de', '#5f7ac9', '#c9a05f', '#9c5fb5', '#4fae9e', '#b55f6e'];
+    const spC = ['#e8836b', '#6fb3a4', '#f0c96e', '#9a7bc9', '#7aa8d8', '#e8a85f', '#88c47a', '#d87a9a'];
+    return {
+      readerA: this.px(R, { H: '#5a3825', F: '#f2c9a2', E: '#241611', S: '#c4523e', B: '#fdf3dc', C: '#7a9a4e', P: '#5c4a3a', K: '#241611' }, 3),
+      readerB: this.px(R, { H: '#3a3348', F: '#e8c4a8', E: '#0e0c18', S: '#8a7bd8', B: '#ece6f2', C: '#d876a3', P: '#2c3350', K: '#0e0c18' }, 3),
+      readerC: this.px(R, { H: '#a5642f', F: '#f2c9a2', E: '#33291f', S: '#6fb3a4', B: '#fffaf0', C: '#e8836b', P: '#8a6a4a', K: '#5a4632' }, 3),
+      watcherA: this.px(W, { H: '#2e2a33', F: '#f2c9a2', T: '#e0a458', P: '#4e6a8a' }, 3),
+      watcherB: this.px(W, { H: '#241f30', F: '#e8c4a8', T: '#d876a3', P: '#3a4468' }, 3),
+      watcherC: this.px(W, { H: '#4a3a2c', F: '#f2c9a2', T: '#e8836b', P: '#6a8a9a' }, 3),
+      catA: showCat ? this.px(CT, { O: '#e0954e', D: '#a5642f' }, 3) : null,
+      catB: showCat ? this.px(CT, { O: '#8a7bd8', D: '#5f54a0' }, 3) : null,
+      catC: showCat ? this.px(CT, { O: '#f0c96e', D: '#c99a3e' }, 3) : null,
+      plantA: this.px(PL, { L: '#7a9a4e', G: '#55703a', T: '#b5623e' }, 3),
+      plantB: this.px(PL, { L: '#5fae8e', G: '#3d7a63', T: '#6e5a8a' }, 3),
+      plantC: this.px(PL, { L: '#7ab55f', G: '#559a44', T: '#c9865a' }, 3),
+      tvA: this.tv(['#ffe3a0', '#f2a65a', '#d4704c', '#8a5a8f'], tvOn),
+      tvB: this.tv(['#b8f4ef', '#7fe3de', '#3fa8a2', '#1f5f5c'], tvOn),
+      tvC: this.tv(['#fdf7e0', '#e8836b', '#6fb3a4', '#f0c96e'], tvOn),
+      glowA: tvOn ? this.glow('#ffd98e', 1) : null,
+      glowB: tvOn ? this.glow('#7fe3de', 1.4) : null,
+      glowC: tvOn ? this.glow('#fff3c9', .6) : null,
+      shelfA1: this.spines(spA, 9, 11, 26, 48, 8, 13), shelfA2: this.spines(spA, 8, 22, 26, 48, 8, 13), shelfA3: this.spines(spA, 9, 33, 26, 48, 8, 13),
+      shelfB1: this.spines(spB, 9, 12, 26, 48, 8, 13), shelfB2: this.spines(spB, 8, 23, 26, 48, 8, 13), shelfB3: this.spines(spB, 9, 34, 26, 48, 8, 13),
+      shelfC1: this.spines(spC, 9, 13, 26, 48, 8, 13), shelfC2: this.spines(spC, 8, 24, 26, 48, 8, 13), shelfC3: this.spines(spC, 9, 35, 26, 48, 8, 13),
+      tapesA: this.spines(spA, 16, 44, 28, 40, 9, 12),
+      tapesB: this.spines(spB, 16, 45, 28, 40, 9, 12),
+      tapesC: this.spines(spC, 16, 46, 28, 40, 9, 12)
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'VT323',monospace}
+a{color:var(--k-accent,#f2a65a)}a:hover{opacity:.8}
+#kroot{
+--k-wall:#a06a50;--k-wains:#7c5138;--k-trim:#63402c;--k-floor:#8a5a3c;--k-skirt:#5f3b2c;
+--k-ink:#241611;--k-panel:#f6e7c9;--k-panelAlt:#eedcb4;--k-panelText:#241611;--k-panelDim:rgba(36,22,17,.6);
+--k-wood:#6b4130;--k-accent:#f2a65a;--k-accentT:#241611;--k-tv:#8a7a68;--k-knob:#6e5f50;
+--k-pageBg:#efe0bd;--k-pageText:#241611;--k-tag:rgba(36,22,17,.6);
+--k-stProg:#f2a65a;--k-stDone:#7a9a4e;--k-stPaused:#a89a85;--k-err:#c4523e;--k-ok:#7a9a4e;--k-sh:rgba(36,22,17,.35)}
+#kroot[data-ktheme="morning"]{
+--k-wall:#cfe3d6;--k-wains:#b2d0be;--k-trim:#93b7a2;--k-floor:#dcb083;--k-skirt:#a8825c;
+--k-ink:#33291f;--k-panel:#fbf4e4;--k-panelAlt:#f2e6cc;--k-panelText:#33291f;--k-panelDim:rgba(51,41,31,.6);
+--k-wood:#a9713f;--k-accent:#e8836b;--k-accentT:#33291f;--k-tv:#a8c4b5;--k-knob:#88a494;
+--k-pageBg:#ece2cc;--k-pageText:#33291f;--k-tag:rgba(51,41,31,.6);
+--k-stProg:#f0c96e;--k-stDone:#88c47a;--k-stPaused:#c4b49a;--k-err:#d0553f;--k-ok:#5f9e4a;--k-sh:rgba(51,41,31,.25)}
+#kroot[data-ktheme="night"]{
+--k-wall:#262c4a;--k-wains:#1f2440;--k-trim:#171b31;--k-floor:#2f3654;--k-skirt:#171b31;
+--k-ink:#0e0c18;--k-panel:#232741;--k-panelAlt:#1e2238;--k-panelText:#ece6f2;--k-panelDim:rgba(236,230,242,.6);
+--k-wood:#3f3654;--k-accent:#7fe3de;--k-accentT:#0e0c18;--k-tv:#4c4266;--k-knob:#6e6488;
+--k-pageBg:#14172a;--k-pageText:#ece6f2;--k-tag:rgba(236,230,242,.55);
+--k-stProg:#f5b761;--k-stDone:#4fae9e;--k-stPaused:#5a5470;--k-err:#ff8f7a;--k-ok:#6fd9a0;--k-sh:rgba(0,0,0,.45)}
+</style>
+</helmet>
+<div id="kroot" data-ktheme="{{ theme }}" style="min-height:100vh;background:var(--k-pageBg);color:var(--k-pageText)">
+
+<div style="position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 24px;background:var(--k-pageBg);border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:2px">KATALOS &#183; SCREENS &amp; STATES</div>
+<div style="display:flex;border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink);background:var(--k-panel)" role="group" aria-label="Theme">
+<button onClick="{{ setMorning }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:16px;padding:7px 10px;background:none;border:none;color:var(--k-panelText);cursor:pointer">{{ dotMorning }}MORNING</button>
+<button onClick="{{ setAfternoon }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:16px;padding:7px 10px;background:none;border-left:3px solid var(--k-ink);border-top:none;border-right:none;border-bottom:none;color:var(--k-panelText);cursor:pointer">{{ dotAfternoon }}AFTERNOON</button>
+<button onClick="{{ setNight }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:16px;padding:7px 10px;background:none;border-left:3px solid var(--k-ink);border-top:none;border-right:none;border-bottom:none;color:var(--k-panelText);cursor:pointer">{{ dotNight }}NIGHT</button>
+</div>
+<div style="font-size:16px;color:var(--k-panelDim)">every screen re-skins with the room&#8217;s clock &#183; flip it</div>
+<div style="flex:1"></div>
+<a href="Katalos Landing.dc.html" style="font-size:17px">&#8592; interactive landing</a>
+</div>
+
+<section data-screen-label="01 Sign in" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">01 &#183; MAGIC-LINK SIGN-IN</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">/signin &#8212; one field. The panel stays inside the room world (a slice of wall above it), never a bare admin card. Interactive version lives on the landing page.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:500px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim);margin:0 0 6px">DESKTOP &#183; centered, max 520px</div>
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh)">
+<div style="position:relative;height:70px;background:var(--k-wall);border-bottom:3px solid var(--k-ink);overflow:hidden">
+<div style="position:absolute;left:0;bottom:0;width:100%;height:20px;background:var(--k-floor);border-top:4px solid var(--k-skirt)"></div>
+<div style="position:absolute;left:22px;bottom:16px;width:64px;height:42px;background:var(--k-wood);border:3px solid var(--k-ink)"></div>
+<div style="position:absolute;left:110px;bottom:16px;width:50px;height:34px;background:var(--k-tv);border:3px solid var(--k-ink)"></div>
+<div style="position:absolute;right:16px;top:14px;font-family:'Press Start 2P',monospace;font-size:8px;background:var(--k-panel);border:3px solid var(--k-ink);padding:6px 8px">WELCOME BACK</div>
+</div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:12px">
+<div style="font-family:'Press Start 2P',monospace;font-size:10px">GET YOUR MAGIC LINK</div>
+<div style="font-size:18px;color:var(--k-panelDim)">No password. We email you a key to your room.</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<input type="email" placeholder="you@somewhere.com" aria-label="Email" style="flex:1;min-width:170px;font-family:'VT323',monospace;font-size:20px;padding:10px 12px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:12px 14px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">SEND LINK</div>
+</div>
+<div style="font-size:16px;color:var(--k-panelDim)">New here? The same link creates your room on first use.</div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:340px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim)">STATES</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;display:flex;gap:10px;align-items:center"><div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:9px 10px;background:var(--k-panelAlt);color:var(--k-panelDim);border:3px solid var(--k-ink)">SENDING&#8230;</div><span style="font-size:16px;color:var(--k-panelDim)">loading &#8212; button locks, label swaps</span></div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ok);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-ok)">&#10003;</span> Link sent! It works once and expires in 15 minutes.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> That doesn&#8217;t look like an email &#8212; try again?</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> That link expired or was already used. <u>Send a fresh one.</u></div>
+<div style="font-size:15px;color:var(--k-panelDim)">Phone: identical panel, full-width minus 16px gutters; wall slice shrinks to 48px.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="02 Onboarding" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">02 &#183; ONBOARDING</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">/onboarding &#8212; completion = getting the key to a new room. The username IS the public URL; say it plainly and validate live.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:500px;max-width:100%;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:22px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:16px;align-items:center">
+<div style="width:54px;height:74px;flex:none;background:var(--k-wood);border:3px solid var(--k-ink);position:relative;box-shadow:4px 4px 0 var(--k-sh)">
+<div style="position:absolute;right:7px;top:34px;width:8px;height:8px;background:var(--k-accent);border:2px solid var(--k-ink)"></div>
+<div style="position:absolute;left:7px;top:9px;width:32px;height:13px;background:var(--k-panel);border:2px solid var(--k-ink)"></div>
+</div>
+<div>
+<div style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.7">NAME YOUR ROOM</div>
+<div style="font-size:18px;color:var(--k-panelDim)">Two things and the door opens.</div>
+</div>
+</div>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:17px">DISPLAY NAME
+<input value="Momo" style="font-family:'VT323',monospace;font-size:20px;padding:10px 12px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+</label>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:17px">USERNAME &#183; <span style="color:var(--k-panelDim)">lowercase, becomes your public address</span>
+<input value="momo" style="font-family:'VT323',monospace;font-size:20px;padding:10px 12px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+</label>
+<div style="font-size:18px;background:var(--k-panelAlt);border:3px solid var(--k-ink);padding:8px 12px">your room will live at <b>katalos.app/u/momo</b></div>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:17px">WHO&#8217;S IN YOUR ROOM? <span style="color:var(--k-panelDim)">same sprite reads &amp; watches in both nooks &#183; changeable later</span>
+<div style="display:flex;gap:10px">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 1px 0 var(--k-ink);transform:translateY(2px)">
+<div style="width:24px;height:24px;background:#6b3f26;border:3px solid #1a1210;position:relative"><span style="position:absolute;left:4px;top:10px;width:12px;height:10px;background:#f2c9a2"></span><span style="position:absolute;left:-5px;top:8px;width:6px;height:8px;background:#e8e4dc;border:2px solid #1a1210"></span><span style="position:absolute;right:-5px;top:8px;width:6px;height:8px;background:#e8e4dc;border:2px solid #1a1210"></span></div>
+<span style="font-family:'Press Start 2P',monospace;font-size:7px">GIRL &#10003;</span></div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;background:var(--k-panelAlt);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink)">
+<div style="width:24px;height:24px;background:#2e2620;border:3px solid #1a1210;position:relative"><span style="position:absolute;left:4px;top:10px;width:14px;height:12px;background:#f2c9a2"></span><span style="position:absolute;left:3px;top:2px;width:8px;height:4px;background:#4a4038"></span></div>
+<span style="font-family:'Press Start 2P',monospace;font-size:7px">BOY</span></div>
+</div>
+</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:13px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink);text-align:center">OPEN YOUR ROOM &#8594;</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:340px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim)">STATES</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> Usernames: lowercase letters, numbers, dashes only.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> <b>momo</b> is taken &#8212; try <u>momo-reads</u> or <u>momo2</u>.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ok);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-ok)">&#10003;</span> <b>katalos.app/u/momo</b> is yours. Opening the door&#8230;</div>
+<div style="font-size:16px;color:var(--k-panelDim)">On success route straight into /room, which opens Add Media (03) &#8212; never an empty dashboard.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="03 First add" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">03 &#183; NEW OWNER &#183; FIRST ADD</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">/room with zero entries &#8212; the empty room stays visible behind, dashed outlines show where things will live, and the Add form (04) is already open with the type step focused.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:420px;max-width:100%;display:flex;flex-direction:column;gap:12px">
+<div style="position:relative;height:170px;background:var(--k-wall);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);overflow:hidden">
+<div style="position:absolute;left:0;bottom:0;width:100%;height:48px;background:var(--k-floor);border-top:4px solid var(--k-skirt)"></div>
+<div style="position:absolute;left:20px;top:16px;width:84px;height:110px;border:3px dashed var(--k-tag)"></div>
+<div style="position:absolute;left:126px;top:16px;font-size:15px;color:var(--k-tag)">&#8592; your shelf</div>
+<div style="position:absolute;right:110px;top:44px;width:96px;height:80px;border:3px dashed var(--k-tag)"></div>
+<div style="position:absolute;right:20px;top:52px;font-size:15px;color:var(--k-tag)">your tv &#8594;</div>
+<div style="position:absolute;left:20px;bottom:8px;font-size:15px;color:var(--k-tag)">nothing here yet &#8212; and that&#8217;s fine</div>
+</div>
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:12px 14px;font-size:18px;line-height:1.35">Your room is ready &#8212; it just needs its first thing. Add whatever you&#8217;re reading or watching <i>right now</i>; it appears beside your chair.</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:340px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim)">RULES</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">First save triggers a small moment: the item drops into place in the scene (one 300ms step animation; skipped under reduced motion).</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">Empty zones never render as blank walls &#8212; each keeps a dashed footprint + one quiet line of copy.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">Cancel/close on the form is allowed &#8212; owner lands in the room with the dashed footprints, plus a persistent ADD MEDIA button.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="04 Add media form" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">04 &#183; ADD / EDIT MEDIA</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">Existing fields preserved: title, type, status, cover URL, synopsis, rating, note, visibility. The form reads top to bottom as the required sequence: type &#8594; find &#8594; your take &#8594; save. Catalog is type-specific.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:560px;max-width:100%;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:20px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+<div style="font-family:'Press Start 2P',monospace;font-size:10px">ADD MEDIA</div>
+<div style="font-size:15px;color:var(--k-panelDim)">1 type &#183; 2 find &#183; 3 your take &#183; 4 save</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:16px;color:var(--k-panelDim)">1 &#183; WHAT IS IT?</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;align-items:center;gap:7px;width:86px;padding:10px 0;background:var(--k-panelAlt);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink)">
+<div style="width:24px;height:32px;background:#c4523e;border:3px solid var(--k-ink);position:relative"><div style="position:absolute;left:3px;top:0;width:3px;height:26px;background:rgba(0,0,0,.3)"></div></div>
+<div style="font-family:'Press Start 2P',monospace;font-size:7px">BOOK</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:7px;width:86px;padding:10px 0;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 1px 0 var(--k-ink);transform:translateY(2px)">
+<div style="width:24px;height:32px;background:#d876a3;border:3px solid var(--k-ink);position:relative"><div style="position:absolute;right:0;top:0;width:8px;height:8px;background:#f2e9d4;border-left:2px solid var(--k-ink);border-bottom:2px solid var(--k-ink)"></div></div>
+<div style="font-family:'Press Start 2P',monospace;font-size:7px">MANGA</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:7px;width:86px;padding:10px 0;background:var(--k-panelAlt);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink)">
+<div style="width:34px;height:26px;background:var(--k-tv);border:3px solid var(--k-ink);position:relative"><div style="position:absolute;left:3px;top:3px;width:16px;height:14px;background:#7fe3de"></div><div style="position:absolute;right:2px;top:4px;width:4px;height:4px;background:var(--k-ink)"></div></div>
+<div style="font-family:'Press Start 2P',monospace;font-size:7px">ANIME</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:7px;width:86px;padding:10px 0;background:var(--k-panelAlt);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink)">
+<div style="width:36px;height:22px;background:#4e5a66;border:3px solid var(--k-ink);position:relative"><div style="position:absolute;left:8px;top:3px;width:14px;height:10px;background:rgba(244,236,216,.85);border:2px solid rgba(0,0,0,.25)"></div></div>
+<div style="font-family:'Press Start 2P',monospace;font-size:7px">MOVIE</div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:16px;color:var(--k-panelDim)">2 &#183; FIND IT &#8212; manga searches <b>Jikan</b> (books &#8594; Open Library, movies &#8594; TMDB)</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<input value="berserk" aria-label="Search catalog" style="flex:1;min-width:170px;font-family:'VT323',monospace;font-size:20px;padding:10px 12px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:12px 14px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">SEARCH</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--k-pageBg);border:2px solid var(--k-ink)">
+<div style="width:26px;height:36px;flex:none;background:#4e5a66;border:2px solid var(--k-ink)"></div>
+<div style="min-width:0;flex:1"><div style="font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Berserk</div><div style="font-size:15px;color:var(--k-panelDim)">manga &#183; 1989 &#183; Kentaro Miura</div></div>
+<div style="font-size:16px;padding:4px 10px;border:2px solid var(--k-ink)">USE</div>
+</div>
+<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--k-pageBg);border:3px solid var(--k-accent)">
+<div style="width:26px;height:36px;flex:none;background:#8a5a8f;border:2px solid var(--k-ink)"></div>
+<div style="min-width:0;flex:1"><div style="font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Berserk: The Prototype</div><div style="font-size:15px;color:var(--k-panelDim)">manga &#183; 1988 &#183; one-shot</div></div>
+<div style="font-size:16px;padding:4px 10px;border:2px solid var(--k-ink);background:var(--k-accent);color:var(--k-accentT)">USING &#10003;</div>
+</div>
+<div style="font-size:16px;color:var(--k-panelDim)">Results are throwaway finds, not cards &#8212; picking one only prefills title, cover &amp; synopsis. <u>Enter manually instead</u> is always visible.</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="font-size:16px;color:var(--k-panelDim)">3 &#183; YOUR TAKE &#8212; yours to change, search never overwrites these</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<label style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;font-size:16px">TITLE
+<input value="Berserk: The Prototype" style="font-family:'VT323',monospace;font-size:19px;padding:8px 10px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+</label>
+<label style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;font-size:16px">COVER URL <span style="color:var(--k-panelDim)">optional</span>
+<input value="https://cdn.jikan.moe/&#8230;/cover.jpg" style="font-family:'VT323',monospace;font-size:19px;padding:8px 10px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+</label>
+</div>
+<label style="display:flex;flex-direction:column;gap:5px;font-size:16px">SYNOPSIS <span style="color:var(--k-panelDim)">prefilled from Jikan &#8212; trim freely</span>
+<textarea rows="2" style="font-family:'VT323',monospace;font-size:19px;padding:8px 10px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText);resize:vertical">The one-shot that started it: a lone swordsman with a cursed brand.</textarea>
+</label>
+<div style="display:flex;gap:18px;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:6px;font-size:16px">STATUS
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<span style="font-size:16px;padding:5px 10px;border:2px solid var(--k-ink);color:var(--k-panelText)">PLANNED</span>
+<span style="font-size:16px;padding:5px 10px;border:2px solid var(--k-ink);background:var(--k-stProg);color:#241611">IN PROGRESS</span>
+<span style="font-size:16px;padding:5px 10px;border:2px solid var(--k-ink);color:var(--k-panelText)">FINISHED</span>
+<span style="font-size:16px;padding:5px 10px;border:2px solid var(--k-ink);color:var(--k-panelText)">ABANDONED</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:16px">RATING <span style="color:var(--k-panelDim)">optional &#183; 44px targets</span>
+<div style="font-size:26px;letter-spacing:6px">&#9733;&#9733;&#9733;&#9734;&#9734;</div>
+</div>
+</div>
+<label style="display:flex;flex-direction:column;gap:5px;font-size:16px">NOTE <span style="color:var(--k-panelDim)">only you + room visitors see this</span>
+<input placeholder="why it matters to you&#8230;" style="font-family:'VT323',monospace;font-size:19px;padding:8px 10px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText)">
+</label>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:16px">VISIBILITY
+<div style="display:flex;border:3px solid var(--k-ink)">
+<span style="padding:6px 12px;background:var(--k-stDone);color:#241611;font-size:17px">PUBLIC</span>
+<span style="padding:6px 12px;border-left:3px solid var(--k-ink);font-size:17px;color:var(--k-panelText)">PRIVATE</span>
+</div>
+<span style="color:var(--k-panelDim)">private = never shown, hinted or counted in your public room</span>
+</div>
+</div>
+<div style="display:flex;gap:12px;align-items:center;border-top:3px solid var(--k-ink);padding-top:14px">
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;padding:13px 16px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">SAVE TO ROOM</div>
+<div style="font-size:18px;text-decoration:underline;color:var(--k-panelDim)">cancel</div>
+<div style="flex:1"></div>
+<div style="font-size:15px;color:var(--k-panelDim)">4 &#183; it lands in the right spot by status</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:360px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim)">CATALOG &amp; SAVE STATES</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><b>Searching&#8230;</b> three stepping squares next to the field; input stays editable.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">No matches for &#8220;priorry&#8221;. Check the spelling &#8212; or <u>add it manually</u>; the fields below work without search.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> Jikan is catching its breath (rate limit). Wait ~30s or add manually.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> Open Library isn&#8217;t answering right now. Manual entry works fine.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText);display:flex;gap:10px;align-items:center"><div style="width:34px;height:46px;flex:none;background:#8a5a8f;border:2px solid var(--k-ink);display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:8px;color:rgba(255,255,255,.85)">BP</div>Cover URL failed to load &#8212; the entry shows its initials block instead. Never a broken-image icon.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> Title is required &#8212; field gets the red border + this line, focus moves to it.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><b>SAVING&#8230;</b> on the button; form locks; no double-submit.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ok);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-ok)">&#10003;</span> Shelved! &#8212; toast, then the room scrolls/pans to where it landed.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> Couldn&#8217;t save &#8212; nothing was lost, your fields are intact. Try again.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="05 Owner room" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">05 &#183; OWNER ROOM</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">/room &#8212; the same two-nook scene as the landing demo (owner sees private items too), with a management list BELOW the scene. Edit/delete never clutters the room itself.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:560px;max-width:100%;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--k-panel);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:14px 16px">
+<div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--k-panelText)">MOMO&#8217;S ROOM</div>
+<div style="font-size:16px;color:var(--k-panelDim)">katalos.app/u/momo</div>
+<div style="flex:1"></div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">+ ADD MEDIA</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 12px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">COPY PUBLIC LINK</div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+<div style="font-size:17px;padding:5px 12px;background:var(--k-stDone);color:#241611;border:2px solid var(--k-ink)">&#10003; link copied</div>
+<div style="font-size:16px;color:var(--k-panelDim)">copy states: COPY &#8594; &#10003; copied (2s) &#8594; back. Failure: &#8220;couldn&#8217;t copy &#8212; long-press the URL&#8221;.</div>
+</div>
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh)">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:3px solid var(--k-ink);background:var(--k-panelAlt)">
+<div style="font-family:'Press Start 2P',monospace;font-size:9px">MANAGE &#183; 14 ENTRIES &#183; 3 PRIVATE</div>
+<div style="font-size:16px;color:var(--k-panelDim)">filter: all &#183; books &#183; manga &#183; anime &#183; movies</div>
+</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid var(--k-panelAlt)">
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink)">MANGA</span>
+<span style="font-size:18px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Berserk</span>
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink);background:var(--k-stProg);color:#241611">IN PROGRESS</span>
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink)">PUB</span>
+<u style="font-size:16px">edit</u><u style="font-size:16px">delete</u>
+</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid var(--k-panelAlt)">
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink)">BOOK</span>
+<span style="font-size:18px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">The Priory of the Orange Tree &#8212; and every long title clamps like this instead of wrapping the row&#8230;</span>
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink);background:var(--k-stProg);color:#241611">IN PROGRESS</span>
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink)">PUB</span>
+<u style="font-size:16px">edit</u><u style="font-size:16px">delete</u>
+</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid var(--k-panelAlt);border-left:6px solid var(--k-tag)">
+<span style="font-size:14px;padding:2px 7px;border:2px dashed var(--k-ink)">BOOK</span>
+<span style="font-size:18px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--k-panelDim)">My Secret Diary Vol. 3</span>
+<span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink);background:var(--k-stDone);color:#241611">FINISHED</span>
+<span style="font-size:14px;padding:2px 7px;border:2px dashed var(--k-ink);color:var(--k-panelDim)">PRI &#183; only you</span>
+<u style="font-size:16px">edit</u><u style="font-size:16px">delete</u>
+</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--k-pageBg);border:3px solid var(--k-err);margin:8px">
+<span style="font-size:18px;flex:1">Delete <b>&#8220;2001: A Space Odyssey&#8221;</b>? This can&#8217;t be undone.</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:8px;padding:9px 10px;background:var(--k-err);color:#fff;border:3px solid var(--k-ink)">DELETE</span>
+<span style="font-family:'Press Start 2P',monospace;font-size:8px;padding:9px 10px;border:3px solid var(--k-ink);color:var(--k-panelText)">KEEP</span>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:340px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim)">PRIVATE ENTRIES IN THE SCENE</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:12px;display:flex;gap:14px;align-items:flex-end">
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:18px;height:58px;background:#4e7a9a;border:2px solid rgba(0,0,0,.35)"></div><span style="font-size:14px;color:var(--k-panelDim)">public</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:18px;height:58px;background:#4e7a9a;border:2px dashed var(--k-ink);opacity:.75;position:relative"><span style="position:absolute;top:-10px;right:-8px;font-family:'Press Start 2P',monospace;font-size:7px;background:var(--k-panelAlt);border:2px solid var(--k-ink);padding:2px 3px;color:var(--k-panelText)">P</span></div><span style="font-size:14px;color:var(--k-panelDim)">private &#183; owner-only</span></div>
+<div style="font-size:16px;color:var(--k-panelText);flex:1">dashed edge + P badge &#8212; shape cue, not color-only. Absent entirely from the public room &amp; its counts.</div>
+</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">Overflow rule: each zone shows its newest 12; a wooden end-cap chip reads &#8220;+9 more&#8221; and opens the manage list pre-filtered to that zone.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">Phone: nooks stack (reading first), manage list becomes cards; action bar sticks to bottom, 44px targets.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="06 Public room" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">06 &#183; PUBLIC ROOM + TASTE PROFILER</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">/u/momo &#8212; read-only room, public entries only. Same scene, no manage list; identity + share are loud, and the Gemini Taste Profiler sits beneath the nooks.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:560px;max-width:100%;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--k-panel);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:14px 16px">
+<div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--k-panelText)">MOMO&#8217;S ROOM</div>
+<span style="font-size:15px;padding:3px 9px;border:2px solid var(--k-ink);color:var(--k-panelDim)">23 things shared</span>
+<div style="flex:1"></div>
+<div style="font-size:16px;color:var(--k-panelDim)">you&#8217;re visiting &#183; </div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">MAKE YOUR OWN</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:16px">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:30px;height:30px;flex:none;background:var(--k-accent);border:3px solid var(--k-ink);display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--k-accentT)">?</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:9px">TASTE PROFILER</div>
+<div style="flex:1"></div>
+<div style="font-size:14px;color:var(--k-panelDim)">powered by Gemini &#183; public entries only</div>
+</div>
+<div style="font-size:18px;line-height:1.4;background:var(--k-pageBg);border:3px solid var(--k-ink);padding:12px 14px">&#8220;Momo reads for texture, not plot &#8212; slow fantasy, gentle slice-of-life, and one annual attempt at a doorstopper. Screen taste runs warmer: found families, jazz, and bears with good manners.&#8221;</div>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink)">READ AGAIN</div>
+<span style="font-size:15px;color:var(--k-panelDim)">based on 23 public entries &#183; never sees private ones</span>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:360px;max-width:100%">
+<div style="font-size:15px;color:var(--k-panelDim)">PROFILER STATES</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><b>Idle:</b> one button &#8212; &#8220;READ MY TASTE&#8221; (visitor sees &#8220;READ MOMO&#8217;S TASTE&#8221;).</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><b>Loading:</b> &#8220;consulting the shelves&#8230;&#8221; + three stepping squares; button locked.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-err);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><span style="color:var(--k-err)">&#10007;</span> The profiler is napping. <u>TRY AGAIN</u> &#8212; the room works fine without it.</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)"><b>Not enough data:</b> under 3 public entries &#8594; &#8220;shelve a few more things first.&#8221;</div>
+<div style="font-size:15px;color:var(--k-panelDim);margin-top:6px">EMPTY PUBLIC ROOM</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:12px;display:flex;flex-direction:column;gap:8px">
+<div style="position:relative;height:84px;background:var(--k-wall);border:3px solid var(--k-ink);overflow:hidden">
+<div style="position:absolute;left:0;bottom:0;width:100%;height:26px;background:var(--k-floor);border-top:3px solid var(--k-skirt)"></div>
+<div style="position:absolute;left:16px;top:10px;width:48px;height:54px;border:3px dashed var(--k-tag)"></div>
+<div style="position:absolute;right:16px;top:18px;width:56px;height:44px;border:3px dashed var(--k-tag)"></div>
+</div>
+<div style="font-size:17px;color:var(--k-panelText)">Momo hasn&#8217;t put anything on the public shelves yet. Check back &#8212; or start your own room.</div>
+<div style="font-size:15px;color:var(--k-panelDim)">Private entries are never implied: no counts, no locked silhouettes, no &#8220;3 hidden&#8221;.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="07 Drawer states" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">07 &#183; DETAIL DRAWER STATES</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">Interactive on the landing (click any cover). Desktop: right panel over a scrim. Phone: bottom sheet, drag handle, same content. Esc / scrim / X all close; focus returns to the cover that opened it.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:330px;max-width:100%;background:var(--k-panel);color:var(--k-panelText);border:4px solid var(--k-ink);box-shadow:8px 8px 0 var(--k-sh)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:3px solid var(--k-ink);background:var(--k-panelAlt)">
+<div style="display:flex;gap:8px"><span style="font-size:15px;padding:2px 8px;border:2px solid var(--k-ink);background:var(--k-pageBg)">BOOK</span><span style="font-size:15px;padding:2px 8px;border:2px solid var(--k-ink);background:var(--k-stProg);color:#241611">IN PROGRESS</span></div>
+<div style="width:44px;height:44px;font-family:'Press Start 2P',monospace;font-size:11px;border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink);display:flex;align-items:center;justify-content:center">X</div>
+</div>
+<div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:12px">
+<div style="width:80px;height:110px;flex:none;background:#c4523e;border:3px solid var(--k-ink);box-shadow:4px 4px 0 var(--k-sh);background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 4px,transparent 4px 12px)"></div>
+<div style="min-width:0"><div style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.7;overflow-wrap:break-word">THE PRIORY OF THE ORANGE TREE</div><div style="font-size:18px;margin-top:6px;letter-spacing:2px">no rating yet</div></div>
+</div>
+<div style="font-size:18px;line-height:1.35;max-height:96px;overflow:auto;border-bottom:2px solid var(--k-panelAlt);padding-bottom:8px">Queens, dragonriders and a divided world braced for the Nameless One&#8217;s return &#8212; an 800-page standalone epic told from four corners of the map. Long synopses scroll inside the drawer; the header and actions never move.</div>
+<div style="font-size:15px;color:var(--k-panelDim)">long-title + long-synopsis + no-rating case</div>
+</div>
+</div>
+<div style="width:330px;max-width:100%;background:var(--k-panel);color:var(--k-panelText);border:4px solid var(--k-ink);box-shadow:8px 8px 0 var(--k-sh)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:3px solid var(--k-ink);background:var(--k-panelAlt)">
+<div style="display:flex;gap:8px"><span style="font-size:15px;padding:2px 8px;border:2px solid var(--k-ink);background:var(--k-pageBg)">MOVIE</span><span style="font-size:15px;padding:2px 8px;border:2px solid var(--k-ink);background:var(--k-stDone);color:#241611">FINISHED</span></div>
+<div style="width:44px;height:44px;font-family:'Press Start 2P',monospace;font-size:11px;border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink);display:flex;align-items:center;justify-content:center">X</div>
+</div>
+<div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:12px">
+<div style="width:80px;height:110px;flex:none;background:#6fb3a4;border:3px solid var(--k-ink);box-shadow:4px 4px 0 var(--k-sh);display:flex;align-items:center;justify-content:center;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 4px,transparent 4px 12px)"><span style="font-family:'Press Start 2P',monospace;font-size:13px;color:rgba(255,255,255,.9);text-shadow:2px 2px 0 rgba(0,0,0,.5)">P2</span></div>
+<div style="min-width:0"><div style="font-family:'Press Start 2P',monospace;font-size:10px;line-height:1.7">PADDINGTON 2</div><div style="font-size:19px;margin-top:6px;letter-spacing:2px">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+</div>
+<div style="font-size:18px;line-height:1.35">A small bear goes to prison and makes it kinder.</div>
+<div style="background:var(--k-pageBg);border:3px solid var(--k-ink);box-shadow:3px 3px 0 var(--k-sh);padding:9px 11px;font-size:17px"><div style="font-family:'Press Start 2P',monospace;font-size:7px;margin-bottom:5px;color:var(--k-panelDim)">MOMO&#8217;S NOTE</div>A perfect film. No notes.</div>
+<div style="font-size:15px;color:var(--k-panelDim)">missing-cover case: initials block in the entry&#8217;s color</div>
+</div>
+</div>
+<div style="width:300px;max-width:100%;display:flex;flex-direction:column;gap:10px">
+<div style="font-size:15px;color:var(--k-panelDim)">PHONE &#183; bottom sheet</div>
+<div style="border:4px solid var(--k-ink);background:var(--k-pageBg);box-shadow:6px 6px 0 var(--k-sh);height:300px;position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background:var(--k-wall);opacity:.5"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:190px;background:var(--k-panel);border-top:4px solid var(--k-ink);padding:10px 12px">
+<div style="width:44px;height:6px;background:var(--k-tag);margin:0 auto 10px"></div>
+<div style="display:flex;gap:8px;margin-bottom:8px"><span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-panelText)">ANIME</span><span style="font-size:14px;padding:2px 7px;border:2px solid var(--k-ink);background:var(--k-stPaused);color:#241611">ABANDONED</span></div>
+<div style="font-family:'Press Start 2P',monospace;font-size:9px;line-height:1.7;color:var(--k-panelText)">NEON GENESIS EVANGELION</div>
+<div style="font-size:16px;color:var(--k-panelDim);margin-top:6px">swipe down or tap the handle to close &#183; actions stay above the home bar</div>
+</div>
+</div>
+<div style="background:var(--k-panel);border:3px solid var(--k-ink);padding:10px 12px;font-size:17px;color:var(--k-panelText)">Focus is trapped inside while open; the opener cover regains focus on close. Sheet height caps at 80vh; content scrolls.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="08 Credits" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">08 &#183; CREDITS</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">/credits &#8212; plain readable page, linked from every footer. Notices verbatim.</div>
+<div style="width:560px;max-width:100%;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:22px;display:flex;flex-direction:column;gap:14px">
+<div style="font-family:'Press Start 2P',monospace;font-size:11px">CREDITS</div>
+<div style="font-size:19px;line-height:1.4"><b>Open Library</b> &#8212; book search &amp; covers. An Internet Archive project.</div>
+<div style="font-size:19px;line-height:1.4"><b>Jikan</b> &#8212; manga &amp; anime search. <i>Jikan is not affiliated with MyAnimeList.net.</i></div>
+<div style="font-size:19px;line-height:1.4"><b>TMDB</b> &#8212; movie search &amp; posters. <i>This product uses the TMDB API but is not endorsed or certified by TMDB.</i></div>
+<div style="font-size:19px;line-height:1.4"><b>Taste Profiler</b> &#8212; generated with Google Gemini from public entries only.</div>
+<div style="font-size:17px;color:var(--k-panelDim);border-top:3px solid var(--k-ink);padding-top:12px">Type: Press Start 2P &amp; VT323 (Google Fonts, OFL). Every other pixel here is hand-placed CSS. <u>&#8592; back to your room</u></div>
+</div>
+</section>
+
+<section data-screen-label="09 Tokens" style="padding:30px 36px;border-bottom:3px solid var(--k-ink)">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">09 &#183; TOKEN SYSTEM</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">One set of CSS custom properties; three theme values. Auto-picked by local clock (5&#8211;12 morning, 12&#8211;19 afternoon, else night), user override persists in localStorage.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="display:flex;gap:14px;flex-wrap:wrap">
+<div style="width:230px;background:#ece2cc;color:#33291f;border:3px solid #33291f;padding:12px;display:flex;flex-direction:column;gap:7px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px">MORNING</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#ece2cc;border:2px solid #33291f"></span>pageBg #ece2cc</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#fbf4e4;border:2px solid #33291f"></span>panel #fbf4e4</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#33291f;border:2px solid #33291f"></span>ink #33291f</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#e8836b;border:2px solid #33291f"></span>accent #e8836b</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#cfe3d6;border:2px solid #33291f"></span>wall #cfe3d6</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#dcb083;border:2px solid #33291f"></span>floor #dcb083</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#f0c96e;border:2px solid #33291f"></span>stProg #f0c96e</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#88c47a;border:2px solid #33291f"></span>stDone #88c47a</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#c4b49a;border:2px solid #33291f"></span>stPaused #c4b49a</div>
+</div>
+<div style="width:230px;background:#efe0bd;color:#241611;border:3px solid #241611;padding:12px;display:flex;flex-direction:column;gap:7px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px">AFTERNOON</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#efe0bd;border:2px solid #241611"></span>pageBg #efe0bd</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#f6e7c9;border:2px solid #241611"></span>panel #f6e7c9</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#241611;border:2px solid #241611"></span>ink #241611</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#f2a65a;border:2px solid #241611"></span>accent #f2a65a</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#a06a50;border:2px solid #241611"></span>wall #a06a50</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#8a5a3c;border:2px solid #241611"></span>floor #8a5a3c</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#f2a65a;border:2px solid #241611"></span>stProg #f2a65a</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#7a9a4e;border:2px solid #241611"></span>stDone #7a9a4e</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#a89a85;border:2px solid #241611"></span>stPaused #a89a85</div>
+</div>
+<div style="width:230px;background:#14172a;color:#ece6f2;border:3px solid #0e0c18;padding:12px;display:flex;flex-direction:column;gap:7px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px">NIGHT</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#14172a;border:2px solid #ece6f2"></span>pageBg #14172a</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#232741;border:2px solid #ece6f2"></span>panel #232741</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#0e0c18;border:2px solid #ece6f2"></span>ink #0e0c18</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#7fe3de;border:2px solid #ece6f2"></span>accent #7fe3de</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#262c4a;border:2px solid #ece6f2"></span>wall #262c4a</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#2f3654;border:2px solid #ece6f2"></span>floor #2f3654</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#f5b761;border:2px solid #ece6f2"></span>stProg #f5b761</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#4fae9e;border:2px solid #ece6f2"></span>stDone #4fae9e</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:15px"><span style="width:22px;height:22px;background:#5a5470;border:2px solid #ece6f2"></span>stPaused #5a5470</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;width:380px;max-width:100%">
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--k-panelDim)">TYPE SCALE</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:26px">Aa 26</div>
+<div style="font-size:15px;color:var(--k-panelDim)">Press Start 2P &#8212; hero 26 &#183; section 12 &#183; panel title 10 &#183; button 9 &#183; plaque 8 &#183; micro 7 (always line-height 1.6+, letter-spacing 1&#8211;3px, ALL CAPS)</div>
+<div style="font-size:22px">Aa 22 &#8212; VT323 lead</div>
+<div style="font-size:15px;color:var(--k-panelDim)">VT323 &#8212; lead 22 &#183; body 19 &#183; UI 17 &#183; meta 15 &#183; floor tag 14 (minimum). Never Press Start 2P for sentences.</div>
+</div>
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:14px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--k-panelDim)">PIXEL PRIMITIVES</div>
+<div style="font-size:17px;line-height:1.45">Borders: 3px solid ink (2px on sub-elements) &#183; radius 0 everywhere &#183; hard shadows only: 3/4/6px offset, no blur &#183; press = translateY(+3px) &amp; shadow shrinks &#183; hover = translateY(-3/-4px) on covers &#183; focus = 3px accent outline, offset 2 &#183; spacing on a 4px grid &#183; interactive targets &#8805; 44px &#183; prefers-reduced-motion kills flicker &amp; lifts.</div>
+<div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">DEFAULT</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink);outline:3px solid var(--k-accent);outline-offset:3px">FOCUS</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 1px 0 var(--k-ink);transform:translateY(3px)">PRESSED</div>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:10px 12px;background:var(--k-panelAlt);color:var(--k-panelDim);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink)">DISABLED</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="10 Handoff" style="padding:30px 36px 44px">
+<div style="font-family:'Press Start 2P',monospace;font-size:12px;margin:0 0 6px">10 &#183; HANDOFF NOTES</div>
+<div style="font-size:18px;color:var(--k-panelDim);margin:0 0 18px;max-width:760px">For the Next.js app &#8212; visuals only change; routes, auth, Supabase access and API contracts stay put. UI components keep calling existing route APIs.</div>
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+<div style="width:400px;max-width:100%;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:16px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--k-panelDim)">COMPONENT INVENTORY</div>
+<div style="font-size:17px;line-height:1.5">
+<b>PixelButton</b> &#8212; primary / secondary / small / danger / disabled / loading<br>
+<b>PixelPanel</b> &#8212; plain / with wall-slice header / toast<br>
+<b>Plaque</b> &#8212; room + nook labels<br>
+<b>StatusChip</b> &#8212; planned / in progress / finished / abandoned<br>
+<b>TypeTile</b> &#8212; book / manga / anime / movie picker<br>
+<b>SpineButton / TapeButton</b> &#8212; entry covers in-scene (page-edge &amp; label detail)<br>
+<b>CoverBlock</b> &#8212; remote image in ink frame, initials fallback<br>
+<b>RoomScene</b> &#8212; ReadingNook + TVNook, placement by status<br>
+<b>Sprite</b> &#8212; reader / watcher (girl + boy variants; one avatar choice drives both nooks) / cat / plant &#8212; CSS box-shadow pixel maps, 3&#8211;4px unit, 2-frame idle loops (rare blink for people, tail swish for cat)<br>
+<b>PixelTooltip</b> &#8212; themed hover title card on spines &amp; tapes (fixed position, pointer-events none)<br>
+<b>AvatarPicker</b> &#8212; girl / boy tiles in onboarding, persists to profile<br>
+<b>DetailDrawer</b> &#8212; right panel / bottom sheet<br>
+<b>ThemeSwitcher</b> &#8212; clock-driven, localStorage override<br>
+<b>ManageList</b> &#8212; rows, delete-confirm, private cue<br>
+<b>TasteProfilerCard</b> &#8212; idle / loading / success / error / not-enough-data<br>
+<b>SearchResultRow</b> &#8212; compact find, USE / USING states</div>
+</div>
+<div style="width:400px;max-width:100%;display:flex;flex-direction:column;gap:12px">
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:16px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--k-panelDim)">RESKIN VS REPLACE</div>
+<div style="font-size:17px;line-height:1.5">
+<b>Reskin:</b> media-entry form (fields unchanged, add step order + states) &#183; Taste Profiler (same calls, new card) &#183; auth screens &#183; credits &#183; manage table &#8594; ManageList.<br>
+<b>Replace markup, keep logic:</b> <b>MediaRoom</b> &#8212; same data + placement rules, rendered as RoomScene instead of a card grid.<br>
+<b>New:</b> ThemeSwitcher, sprites, drawer (replaces any modal), toasts.</div>
+</div>
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:16px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--k-panelDim)">PIXEL ASSET RECIPE &#8212; NO CANVAS, NO IMAGES</div>
+<div style="font-size:17px;line-height:1.5">Sprites = one div + box-shadow list from an ASCII map, 3&#8211;4px pixel unit; idle animation = two stacked frame divs with opposite steps(1) opacity keyframes (rare 90/10 split for blinks, 50/50 for tail swish). Scene loops: twinkling window stars + drifting clouds (stepped translateX), bouncing DVD screensaver on the idle CRT &#8212; all frozen under prefers-reduced-motion. Object recipe (matches the refs): ink outline &#8594; body fill &#8594; top-left highlight &#8594; bottom-right shade &#8594; 2&#8211;3 detail pixels (page edges, label stripe, LED). Remote covers stay photographic inside a 2&#8211;3px ink frame &#8212; the frame does the pixelating, don&#8217;t filter the art. <code>image-rendering:pixelated</code> only for thumbnails &#8804;40px.</div>
+</div>
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);padding:16px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--k-panelDim)">CONTENT EDGE RULES</div>
+<div style="font-size:17px;line-height:1.5">Long titles: 2-line clamp in drawers, 1-line ellipsis in rows, full title in the themed PixelTooltip &#183; book/tape hover = pull-out (translateY down), never a lift &#183; missing cover &#8594; initials block in entry color &#183; missing rating &#8594; &#8220;no rating yet&#8221;, never empty stars &#183; empty zones &#8594; dashed footprint + one line &#183; zone overflow &#8594; newest 12 + &#8220;+N more&#8221; chip &#183; every catalog failure path lands on manual entry.</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { theme: (h => h >= 5 && h < 12 ? 'morning' : h >= 12 && h < 19 ? 'afternoon' : 'night')(new Date().getHours()) };
+  componentDidMount() {
+    try { const t = localStorage.getItem('katalos_theme'); if (t === 'morning' || t === 'afternoon' || t === 'night') this.setState({ theme: t }); } catch (e) {}
+  }
+  setTheme(t) { this.setState({ theme: t }); try { localStorage.setItem('katalos_theme', t); } catch (e) {} }
+  renderVals() {
+    const theme = this.state.theme;
+    const dot = (t) => React.createElement('span', { style: { width: '8px', height: '8px', display: 'inline-block', border: '2px solid var(--k-ink)', background: theme === t ? 'var(--k-accent)' : 'transparent', opacity: theme === t ? 1 : .35 } });
+    return {
+      theme,
+      setMorning: () => this.setTheme('morning'), setAfternoon: () => this.setTheme('afternoon'), setNight: () => this.setTheme('night'),
+      dotMorning: dot('morning'), dotAfternoon: dot('afternoon'), dotNight: dot('night')
+    };
+  }
+}
+</script>
+</body>
+</html>

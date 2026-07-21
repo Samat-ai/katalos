@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'VT323',monospace}
+a{color:var(--k-accent,#f2a65a)}a:hover{opacity:.8}
+#kroot{
+--k-wall:#a06a50;--k-wains:#7c5138;--k-trim:#63402c;--k-floor:#8a5a3c;--k-plank:#7a4e34;--k-skirt:#5f3b2c;
+--k-ink:#241611;--k-panel:#f6e7c9;--k-panelAlt:#eedcb4;--k-panelText:#241611;--k-panelDim:rgba(36,22,17,.6);
+--k-wood:#6b4130;--k-woodL:#7e5240;--k-cav:#503023;--k-cavB:#402616;
+--k-accent:#f2a65a;--k-accentT:#241611;--k-chair:#b5533c;--k-cushion:#d97b4e;--k-feet:#5f3b2c;
+--k-rug:#c9955c;--k-rugB:#a5713c;--k-tv:#8a7a68;--k-knob:#6e5f50;--k-wframe:#63402c;
+--k-pageBg:#efe0bd;--k-pageText:#241611;--k-tag:rgba(36,22,17,.6);
+--k-stProg:#f2a65a;--k-stDone:#7a9a4e;--k-stPaused:#a89a85;
+--k-lamp1:#f2a65a;--k-lamp2:#e0954e;--k-pole:#5f3b2c;--k-sh:rgba(36,22,17,.35)}
+#kroot[data-ktheme="morning"]{
+--k-wall:#cfe3d6;--k-wains:#b2d0be;--k-trim:#93b7a2;--k-floor:#dcb083;--k-plank:#c99e73;--k-skirt:#a8825c;
+--k-ink:#33291f;--k-panel:#fbf4e4;--k-panelAlt:#f2e6cc;--k-panelText:#33291f;--k-panelDim:rgba(51,41,31,.6);
+--k-wood:#a9713f;--k-woodL:#bd8552;--k-cav:#6e4826;--k-cavB:#5c3c20;
+--k-accent:#e8836b;--k-accentT:#33291f;--k-chair:#e8836b;--k-cushion:#f2a58a;--k-feet:#7e5230;
+--k-rug:#f0d9a8;--k-rugB:#d8b877;--k-tv:#a8c4b5;--k-knob:#88a494;--k-wframe:#7e5230;
+--k-pageBg:#ece2cc;--k-pageText:#33291f;--k-tag:rgba(51,41,31,.6);
+--k-stProg:#f0c96e;--k-stDone:#88c47a;--k-stPaused:#c4b49a;
+--k-lamp1:#f0c96e;--k-lamp2:#e8b84a;--k-pole:#7e5230;--k-sh:rgba(51,41,31,.25)}
+#kroot[data-ktheme="night"]{
+--k-wall:#262c4a;--k-wains:#1f2440;--k-trim:#171b31;--k-floor:#2f3654;--k-plank:#272d47;--k-skirt:#171b31;
+--k-ink:#0e0c18;--k-panel:#232741;--k-panelAlt:#1e2238;--k-panelText:#ece6f2;--k-panelDim:rgba(236,230,242,.6);
+--k-wood:#3f3654;--k-woodL:#4c4266;--k-cav:#241f38;--k-cavB:#1a1630;
+--k-accent:#7fe3de;--k-accentT:#0e0c18;--k-chair:#5a4a78;--k-cushion:#6e5c96;--k-feet:#2c2540;
+--k-rug:#46406b;--k-rugB:#332e52;--k-tv:#4c4266;--k-knob:#6e6488;--k-wframe:#171b31;
+--k-pageBg:#14172a;--k-pageText:#ece6f2;--k-tag:rgba(236,230,242,.55);
+--k-stProg:#f5b761;--k-stDone:#4fae9e;--k-stPaused:#5a5470;
+--k-lamp1:#ffd98e;--k-lamp2:#f5b761;--k-pole:#2c2540;--k-sh:rgba(0,0,0,.45)}
+@keyframes kflick{0%,100%{opacity:1}50%{opacity:.88}}
+@keyframes kfa{0%,89.9%{opacity:1}90%,100%{opacity:0}}
+@keyframes kfb{0%,89.9%{opacity:0}90%,100%{opacity:1}}
+@keyframes kga{0%,49.9%{opacity:1}50%,100%{opacity:0}}
+@keyframes kgb{0%,49.9%{opacity:0}50%,100%{opacity:1}}
+@keyframes kbgdrift{from{background-position:0 0,24px 24px,0 0}to{background-position:48px 120px,-56px 132px,0 0}}
+@keyframes kglow{0%,100%{opacity:.35}50%{opacity:.7}}
+@media (prefers-reduced-motion: reduce){#kroot{animation:none !important}.kglow{animation:none !important}}
+@keyframes ktw{0%,58%{opacity:1}60%,78%{opacity:.15}80%,100%{opacity:1}}
+@keyframes kdrift{0%{transform:translateX(-44px)}100%{transform:translateX(96px)}}
+@keyframes kdvd{0%{transform:translate(4px,6px)}25%{transform:translate(58px,60px)}50%{transform:translate(10px,66px)}75%{transform:translate(56px,8px)}100%{transform:translate(4px,6px)}}
+@keyframes kpong{0%{left:8px;top:18px}25%{left:78px;top:8px}50%{left:10px;top:58px}75%{left:80px;top:44px}100%{left:8px;top:18px}}
+@keyframes ktvcloud{from{transform:translateX(-34px)}to{transform:translateX(118px)}}
+@keyframes kpop{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--kdx,0),-42px) scale(.4);opacity:0}}
+@keyframes ksquash{0%{transform:scaleY(1)}30%{transform:scaleY(.78) translateY(4px)}60%{transform:scaleY(1.06)}100%{transform:scaleY(1)}}
+@keyframes kscrim{from{opacity:0}to{opacity:1}}
+@keyframes kdrawer{from{transform:translateX(26px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes krise{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes kflip{0%{transform:perspective(400px) rotateY(88deg) scale(.86);opacity:.2}62%{transform:perspective(400px) rotateY(-10deg) scale(1.04);opacity:1}100%{transform:perspective(400px) rotateY(0) scale(1)}}
+@media (prefers-reduced-motion: reduce){.kf{animation:none !important}}
+#kroot{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' shape-rendering='crispEdges'%3E%3Cpath d='M2 1 L2 14 L6 10 L9 15 L11 14 L8 9 L13 9 Z' fill='%23241611' stroke='%23f6e7c9' stroke-width='1.5'/%3E%3C/svg%3E") 2 1, auto}
+#kroot a,#kroot button,#kroot [role=button]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' shape-rendering='crispEdges'%3E%3Cpath d='M2 1 L2 15 L6 11 L9 17 L12 15 L9 10 L14 10 Z' fill='%23f2a65a' stroke='%23241611' stroke-width='1.5'/%3E%3C/svg%3E") 2 1, pointer !important}
+#kroot input,#kroot textarea{cursor:text !important}
+#kroot canvas{cursor:none !important}
+.kroom-row{display:flex;flex-wrap:wrap;gap:26px;justify-content:center}
+.knookwrap{width:416px;max-width:100%}
+@media (max-width:447px){
+.knookwrap{width:calc(100vw - 32px);height:calc(430px * var(--kscale,1));overflow:hidden}
+.knook{transform:scale(var(--kscale,1));transform-origin:top left}
+}
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' shape-rendering='crispEdges'%3E%3Crect x='2' y='2' width='28' height='28' fill='%23f2a65a' stroke='%23241611' stroke-width='3'/%3E%3Cg fill='%23241611'%3E%3Crect x='8' y='7' width='4' height='18'/%3E%3Crect x='18' y='7' width='3' height='3'/%3E%3Crect x='16' y='10' width='3' height='3'/%3E%3Crect x='14' y='13' width='3' height='3'/%3E%3Crect x='16' y='16' width='3' height='3'/%3E%3Crect x='18' y='19' width='3' height='3'/%3E%3Crect x='20' y='22' width='3' height='3'/%3E%3C/g%3E%3C/svg%3E">
+</helmet>
+<div id="kroot" data-ktheme="{{ theme }}" style="position:relative;min-height:100vh;background-color:var(--k-pageBg);background-image:radial-gradient(var(--k-ink) 2px,transparent 2px),radial-gradient(var(--k-accent) 2px,transparent 2px),linear-gradient(180deg,rgba(0,0,0,.14),transparent 260px);background-size:48px 48px,74px 74px,100% 100%;background-position:0 0,24px 24px,0 0;background-blend-mode:soft-light,soft-light,normal;animation:kbgdrift 55s linear infinite;color:var(--k-pageText)">
+
+<div data-screen-label="Top bar" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:1040px;margin:0 auto;padding:16px 20px">
+<div style="display:flex;align-items:center;gap:9px"><div style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--k-accent);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink)">{{ logoSm }}</div><div style="font-family:'Press Start 2P',monospace;font-size:13px;letter-spacing:2px">KATALOS</div></div>
+<div style="display:flex;gap:0;border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink);background:var(--k-panel)" role="group" aria-label="Time of day theme">
+<button onClick="{{ setMorning }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:17px;padding:9px 12px;background:none;border:none;color:var(--k-panelText);cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:-3px">{{ dotMorning }}MORNING</button>
+<button onClick="{{ setAfternoon }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:17px;padding:9px 12px;background:none;border-left:3px solid var(--k-ink);border-top:none;border-right:none;border-bottom:none;color:var(--k-panelText);cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:-3px">{{ dotAfternoon }}AFTERNOON</button>
+<button onClick="{{ setNight }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:17px;padding:9px 12px;background:none;border-left:3px solid var(--k-ink);border-top:none;border-right:none;border-bottom:none;color:var(--k-panelText);cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:-3px">{{ dotNight }}NIGHT</button>
+</div>
+<div style="flex:1"></div>
+<a href="#credits" style="font-size:17px;text-decoration:underline">Credits</a>
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink);cursor:pointer;transition:transform .1s,box-shadow .1s,background .1s,color .1s" style-hover="transform:translateY(-2px);box-shadow:0 6px 0 var(--k-ink);background:var(--k-accentT);color:var(--k-accent)" style-active="transform:translateY(3px);box-shadow:0 1px 0 var(--k-ink);background:var(--k-ink);color:var(--k-accent)">MAKE YOUR ROOM</div>
+</div>
+
+<div data-screen-label="Hero" style="max-width:760px;margin:0 auto;padding:36px 20px 26px;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:3px;line-height:1.4">KATALOS</div>
+<div style="font-size:22px;line-height:1.35;max-width:540px">A little pixel room for everything you read &amp; watch. Shelve your books, manga, anime and films &#8212; then share it with one link.</div>
+<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center">
+<div style="position:relative;font-family:'Press Start 2P',monospace;font-size:10px;padding:14px 18px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 5px 0 var(--k-ink);cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s,color .12s" style-hover="transform:translateY(-3px);box-shadow:0 8px 0 var(--k-ink);background:var(--k-accentT);color:var(--k-accent)" style-active="transform:translateY(4px);box-shadow:0 1px 0 var(--k-ink);background:var(--k-ink);color:var(--k-accent)"><span aria-hidden="true" class="kglow" style="position:absolute;inset:-6px;border:3px solid var(--k-accent);opacity:.35;animation:kglow 2.4s ease-in-out infinite;pointer-events:none"></span>MAKE YOUR ROOM</div>
+<div style="font-size:18px;color:var(--k-panelDim)">free &#183; no ads &#183; your data stays yours</div>
+</div>
+</div>
+
+<div data-screen-label="Demo room" style="display:flex;flex-direction:column;gap:18px;align-items:center;padding:8px 16px 30px">
+<div style="font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:8px 12px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:3px 3px 0 var(--k-sh)">MOMO&#8217;S ROOM &#183; LIVE DEMO &#8212; CLICK ANY SPINE OR TAPE</div>
+<div class="kroom-row">
+
+<div class="knookwrap"><section class="knook" aria-label="Reading nook" style="position:relative;width:416px;height:430px;background:var(--k-wall);border:4px solid var(--k-ink);box-shadow:8px 8px 0 var(--k-sh);overflow:hidden">
+<div style="position:absolute;left:0;top:196px;width:416px;height:56px;background:var(--k-wains);border-top:4px solid var(--k-trim)"></div>
+<div style="position:absolute;left:0;top:252px;width:416px;height:178px;background:var(--k-floor);background-image:repeating-linear-gradient(90deg,var(--k-plank) 0 4px,transparent 4px 52px);border-top:6px solid var(--k-skirt)"></div>
+{{ readExtras }}
+<div style="position:absolute;left:22px;top:32px;width:158px;height:264px;background:var(--k-wood);border:4px solid var(--k-ink);box-shadow:5px 5px 0 var(--k-sh)">
+<div style="position:absolute;left:0;top:0;width:150px;height:10px;background:var(--k-woodL)"></div>
+<div style="position:absolute;left:8px;top:16px;width:134px;height:84px;background:var(--k-cav);border:3px solid var(--k-cavB);display:flex;align-items:flex-end;gap:3px;padding:0 3px">
+<sc-for list="{{ shelf1 }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:relative;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);box-shadow:inset 2px 0 0 rgba(255,255,255,.18);padding:0;cursor:pointer;transition:transform .15s" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(10px)"><span aria-hidden="true" style="position:absolute;left:0;right:0;top:12%;height:4px;background:rgba(240,214,150,.95);pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:14%;height:4px;background:rgba(240,214,150,.95);pointer-events:none"></span></button></sc-for>
+</div>
+<div style="position:absolute;left:8px;top:106px;width:134px;height:84px;background:var(--k-cav);border:3px solid var(--k-cavB);display:flex;align-items:flex-end;gap:3px;padding:0 3px">
+<sc-for list="{{ shelf2 }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:relative;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);box-shadow:inset 2px 0 0 rgba(255,255,255,.18);padding:0;cursor:pointer;transition:transform .15s" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(10px)"><span aria-hidden="true" style="position:absolute;left:0;right:0;top:12%;height:4px;background:rgba(240,214,150,.95);pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:14%;height:4px;background:rgba(240,214,150,.95);pointer-events:none"></span></button></sc-for>
+</div>
+<div style="position:absolute;left:8px;top:200px;width:134px;height:38px;background:var(--k-cav);border:3px solid var(--k-cavB);display:flex;align-items:flex-end;justify-content:space-around;padding:2px 6px">{{ trophy }}{{ globe }}</div>
+</div>
+<div style="position:absolute;left:236px;top:40px;width:104px;height:92px;border:6px solid var(--k-wframe);background:#a8d8e8;box-shadow:4px 4px 0 var(--k-sh)">{{ windowScene }}
+<div style="position:absolute;left:44px;top:0;width:4px;height:80px;background:var(--k-wframe)"></div>
+<div style="position:absolute;left:0;top:38px;width:92px;height:4px;background:var(--k-wframe)"></div>
+</div>
+<div aria-hidden="true" style="position:absolute;left:182px;top:300px;width:90px;height:64px;background:{{ lampGlow }};pointer-events:none"></div>
+<button onClick="{{ toggleLamp }}" aria-label="Toggle reading lamp" onMouseEnter="{{ toyTipIn }}" onMouseLeave="{{ toyTipOut }}" onFocus="{{ toyTipIn }}" onBlur="{{ toyTipOut }}" style="position:absolute;left:194px;top:140px;width:64px;height:158px;background:none;border:none;padding:0;cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-active="transform:scale(.95)">
+<div style="position:absolute;left:28px;top:0;width:8px;height:8px;background:var(--k-pole);border:2px solid var(--k-ink)"></div>
+<div style="position:absolute;left:14px;top:8px;width:36px;height:10px;background:#f6ecd2;border:3px solid var(--k-ink);border-bottom:none"></div>
+<div style="position:absolute;left:8px;top:18px;width:48px;height:16px;background:#f6ecd2;border:3px solid var(--k-ink);border-bottom:none;box-shadow:inset 4px 0 0 var(--k-lamp2),inset -4px 0 0 var(--k-lamp2)"></div>
+<div style="position:absolute;left:4px;top:34px;width:56px;height:8px;background:{{ bulbColor }};border:3px solid var(--k-ink)"></div>
+<div style="position:absolute;left:28px;top:45px;width:8px;height:92px;background:var(--k-pole);box-shadow:inset 2px 0 0 rgba(255,255,255,.15)"></div>
+<div style="position:absolute;left:38px;top:78px;width:6px;height:8px;background:var(--k-lamp2);border:2px solid var(--k-ink)"></div>
+<div style="position:absolute;left:16px;top:137px;width:32px;height:8px;background:var(--k-pole);border:2px solid var(--k-ink)"></div>
+<div style="position:absolute;left:10px;top:145px;width:44px;height:8px;background:var(--k-ink)"></div>
+</button>
+<div style="position:absolute;left:240px;top:308px">{{ rug }}</div>
+<div style="position:absolute;left:262px;top:188px;width:132px;height:118px">
+<div style="position:absolute;left:14px;top:0;width:104px;height:96px;background:var(--k-chair);border:4px solid var(--k-ink);box-shadow:inset 0 6px 0 rgba(255,255,255,.14)"></div>
+<div style="position:absolute;left:20px;top:66px;width:92px;height:24px;background:var(--k-cushion);border:3px solid var(--k-ink)"></div>
+<div style="position:absolute;left:0;top:52px;width:20px;height:52px;background:var(--k-chair);border:3px solid var(--k-ink)"></div>
+<div style="position:absolute;left:112px;top:52px;width:20px;height:52px;background:var(--k-chair);border:3px solid var(--k-ink)"></div>
+<div style="position:absolute;left:22px;top:104px;width:12px;height:12px;background:var(--k-feet)"></div>
+<div style="position:absolute;left:98px;top:104px;width:12px;height:12px;background:var(--k-feet)"></div>
+</div>
+<div style="position:absolute;left:292px;top:196px">{{ reader }}</div>
+<sc-for list="{{ nowStack }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:absolute;left:{{ s.l }}px;top:{{ s.tp }}px;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);padding:0;cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(-3px)"><span aria-hidden="true" style="position:absolute;right:2px;top:1px;bottom:1px;width:24%;background:#f2e9d4;border-left:2px solid rgba(0,0,0,.3);pointer-events:none"></span></button></sc-for>
+<div style="position:absolute;left:276px;top:350px;font-size:14px;color:var(--k-tag)">reading now + up next</div>
+<sc-for list="{{ pileBooks }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:absolute;left:{{ s.l }}px;top:{{ s.tp }}px;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);padding:0;cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(-3px)"><span aria-hidden="true" style="position:absolute;right:2px;top:1px;bottom:1px;width:24%;background:#f2e9d4;border-left:2px solid rgba(0,0,0,.3);pointer-events:none"></span></button></sc-for>
+<div style="position:absolute;left:46px;top:388px;font-size:14px;color:var(--k-tag)">abandoned</div>
+<button onClick="{{ petPlant }}" aria-label="Pet the plant" onMouseEnter="{{ toyTipIn }}" onMouseLeave="{{ toyTipOut }}" onFocus="{{ toyTipIn }}" onBlur="{{ toyTipOut }}" style="position:absolute;left:356px;top:264px;background:none;border:none;padding:0;cursor:pointer;transform-origin:bottom center" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-active="animation:ksquash .4s">{{ plant }}</button>
+<button onClick="{{ petCat }}" aria-label="Pet the cat" onMouseEnter="{{ toyTipIn }}" onMouseLeave="{{ toyTipOut }}" onFocus="{{ toyTipIn }}" onBlur="{{ toyTipOut }}" style="position:absolute;left:138px;top:362px;background:none;border:none;padding:0;cursor:pointer;transform-origin:bottom center" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-active="animation:ksquash .4s">{{ cat }}</button>
+<sc-for list="{{ readFx }}" as="p" hint-placeholder-count="0"><div aria-hidden="true" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:7px;height:7px;background:{{ p.c }};pointer-events:none;--kdx:{{ p.dx }}px;animation:kpop .8s steps(6) forwards"></div></sc-for>
+<div style="position:absolute;left:14px;top:12px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:3px 3px 0 var(--k-sh)">READING NOOK</div>
+</section></div>
+
+<div class="knookwrap"><section class="knook" aria-label="TV nook" style="position:relative;width:416px;height:430px;background:var(--k-wall);border:4px solid var(--k-ink);box-shadow:8px 8px 0 var(--k-sh);overflow:hidden">
+<div style="position:absolute;left:0;top:196px;width:416px;height:56px;background:var(--k-wains);border-top:4px solid var(--k-trim)"></div>
+<div style="position:absolute;left:0;top:252px;width:416px;height:178px;background:var(--k-floor);background-image:repeating-linear-gradient(90deg,var(--k-plank) 0 4px,transparent 4px 52px);border-top:6px solid var(--k-skirt)"></div>
+{{ tvGlow }}
+<div style="position:absolute;left:330px;top:38px;width:68px;height:92px;background:var(--k-panel);border:4px solid var(--k-ink);box-shadow:4px 4px 0 var(--k-sh)">
+<div style="position:absolute;left:6px;top:6px;width:48px;height:26px;background:#8a5a8f"></div>
+<div style="position:absolute;left:38px;top:10px;width:10px;height:10px;background:#f4ecd8"></div>
+<div style="position:absolute;left:6px;top:32px;width:48px;height:10px;background:var(--k-accent)"></div>
+<div style="position:absolute;left:6px;top:42px;width:48px;height:8px;background:#c4523e"></div>
+<div style="position:absolute;left:6px;top:58px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--k-panelText)">FILM</div>
+<div style="position:absolute;left:6px;top:72px;font-family:'Press Start 2P',monospace;font-size:7px;color:var(--k-panelText)">NIGHT</div>
+</div>
+<div style="position:absolute;left:68px;top:318px">{{ rugTv }}</div>
+<div style="position:absolute;left:26px;top:228px;width:268px;height:78px;background:var(--k-wood);border:4px solid var(--k-ink);box-shadow:5px 5px 0 var(--k-sh)">
+<div style="position:absolute;left:0;top:0;width:260px;height:8px;background:var(--k-woodL)"></div>
+<div style="position:absolute;left:10px;top:14px;width:240px;height:50px;background:var(--k-cav);border:3px solid var(--k-cavB);display:flex;align-items:flex-end;gap:3px;padding:0 4px">
+<sc-for list="{{ cabinet }}" as="s" hint-placeholder-count="9"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:relative;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.4);padding:0;cursor:pointer;transition:transform .15s" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(8px)"><span aria-hidden="true" style="position:absolute;left:2px;right:2px;top:3px;height:7px;background:#f2e9d4;pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:2px;right:2px;top:13px;height:3px;background:rgba(0,0,0,.4);pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:2px;right:2px;bottom:3px;height:4px;background:rgba(0,0,0,.25);pointer-events:none"></span></button></sc-for>
+</div>
+</div>
+<button onClick="{{ petAntenna }}" aria-label="Wiggle the antenna" onMouseEnter="{{ toyTipIn }}" onMouseLeave="{{ toyTipOut }}" onFocus="{{ toyTipIn }}" onBlur="{{ toyTipOut }}" style="position:absolute;left:124px;top:69px;background:none;border:none;padding:0;cursor:pointer;transform-origin:bottom center" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-active="animation:ksquash .4s">{{ antenna }}</button>
+<div style="position:absolute;left:60px;top:90px;width:168px;height:140px;background:var(--k-tv);border:4px solid var(--k-ink);box-shadow:5px 5px 0 var(--k-sh)">
+<div style="position:absolute;left:10px;top:10px;width:112px;height:96px;background:var(--k-ink)"></div>
+<div style="position:absolute;left:14px;top:14px;width:104px;height:88px;overflow:hidden"><sc-if value="{{ pongOn }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="katalos-pong" from="./pong.js" hint-size="104px,88px"></x-import></sc-if><sc-if value="{{ pongOff }}" hint-placeholder-val="{{ true }}">{{ tvScreen }}</sc-if></div>
+<button onClick="{{ tvChannel }}" aria-label="Change channel" onMouseEnter="{{ toyTipIn }}" onMouseLeave="{{ toyTipOut }}" onFocus="{{ toyTipIn }}" onBlur="{{ toyTipOut }}" style="position:absolute;left:132px;top:14px;width:18px;height:18px;background:var(--k-ink);border:2px solid var(--k-ink);box-shadow:inset 3px 3px 0 var(--k-knob);padding:0;cursor:pointer;transition:transform .1s" style-hover="transform:scale(1.14)" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-active="box-shadow:inset -3px -3px 0 var(--k-knob)"></button>
+<button onClick="{{ tvPower }}" aria-label="Power on/off" onMouseEnter="{{ toyTipIn }}" onMouseLeave="{{ toyTipOut }}" onFocus="{{ toyTipIn }}" onBlur="{{ toyTipOut }}" style="position:absolute;left:132px;top:36px;width:18px;height:18px;background:var(--k-ink);border:2px solid var(--k-ink);box-shadow:inset 3px 3px 0 var(--k-knob);padding:0;cursor:pointer;transition:transform .1s" style-hover="transform:scale(1.14)" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-active="box-shadow:inset -3px -3px 0 var(--k-knob)"><span aria-hidden="true" style="position:absolute;left:6px;top:6px;width:4px;height:4px;background:#c4523e"></span></button>
+<div style="position:absolute;left:130px;top:60px;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--k-panelText);text-align:center;width:24px">{{ tvChName }}</div>
+</div>
+<div style="position:absolute;left:232px;top:196px;width:60px;height:28px;background:var(--k-feet);border:3px solid var(--k-ink);box-shadow:inset 0 3px 0 rgba(255,255,255,.16)">
+<div style="position:absolute;left:5px;top:6px;width:34px;height:7px;background:var(--k-ink)"></div>
+<div style="position:absolute;left:7px;top:8px;width:22px;height:3px;background:var(--k-knob)"></div>
+<div style="position:absolute;left:44px;top:6px;width:6px;height:6px;background:#7fe36b"></div>
+<div style="position:absolute;left:44px;top:16px;width:8px;height:4px;background:var(--k-knob)"></div>
+</div>
+<sc-for list="{{ nowPlaying }}" as="s" hint-placeholder-count="1"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:absolute;left:{{ s.l }}px;top:{{ s.tp }}px;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);padding:0;cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(-3px)"><span aria-hidden="true" style="position:absolute;left:12%;right:12%;top:2px;height:4px;background:#f2e9d4;pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:18%;bottom:2px;width:5px;height:5px;background:rgba(20,14,10,.6);pointer-events:none"></span><span aria-hidden="true" style="position:absolute;right:18%;bottom:2px;width:5px;height:5px;background:rgba(20,14,10,.6);pointer-events:none"></span></button></sc-for>
+<div style="position:absolute;left:242px;top:168px;font-size:14px;color:var(--k-tag)">now playing</div>
+<sc-for list="{{ watchNext }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:absolute;left:{{ s.l }}px;top:{{ s.tp }}px;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);padding:0;cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(-3px)"><span aria-hidden="true" style="position:absolute;left:12%;right:12%;top:2px;height:4px;background:#f2e9d4;pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:18%;bottom:2px;width:5px;height:5px;background:rgba(20,14,10,.6);pointer-events:none"></span><span aria-hidden="true" style="position:absolute;right:18%;bottom:2px;width:5px;height:5px;background:rgba(20,14,10,.6);pointer-events:none"></span></button></sc-for>
+<div style="position:absolute;left:322px;top:382px;font-size:14px;color:var(--k-tag)">watch next</div>
+<sc-for list="{{ pausedTapes }}" as="s" hint-placeholder-count="2"><button onClick="{{ s.open }}" aria-label="{{ s.al }}" onMouseEnter="{{ s.tipIn }}" onMouseLeave="{{ s.tipOut }}" onFocus="{{ s.tipIn }}" onBlur="{{ s.tipOut }}" style="position:absolute;left:{{ s.l }}px;top:{{ s.tp }}px;width:{{ s.w }}px;height:{{ s.h }}px;background:{{ s.c }};border:2px solid rgba(0,0,0,.35);padding:0;cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:2px" style-hover="transform:translateY(-3px)"><span aria-hidden="true" style="position:absolute;left:12%;right:12%;top:2px;height:4px;background:#f2e9d4;pointer-events:none"></span><span aria-hidden="true" style="position:absolute;left:18%;bottom:2px;width:5px;height:5px;background:rgba(20,14,10,.6);pointer-events:none"></span><span aria-hidden="true" style="position:absolute;right:18%;bottom:2px;width:5px;height:5px;background:rgba(20,14,10,.6);pointer-events:none"></span></button></sc-for>
+<div style="position:absolute;left:22px;top:414px;font-size:14px;color:var(--k-tag)">abandoned</div>
+<div style="position:absolute;left:136px;top:340px">{{ watcher }}</div>
+<sc-for list="{{ tvFx }}" as="p" hint-placeholder-count="0"><div aria-hidden="true" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:7px;height:7px;background:{{ p.c }};pointer-events:none;--kdx:{{ p.dx }}px;animation:kpop .8s steps(6) forwards"></div></sc-for>
+<div style="position:absolute;left:14px;top:12px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:7px 9px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:3px 3px 0 var(--k-sh)">TV NOOK</div>
+</section></div>
+
+</div>
+</div>
+
+<div data-screen-label="Sign in" style="max-width:520px;margin:14px auto 0;padding:0 20px">
+<div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:20px;display:flex;flex-direction:column;gap:12px">
+<div style="font-family:'Press Start 2P',monospace;font-size:10px;letter-spacing:1px">GOT A ROOM ALREADY?</div>
+<div style="font-size:18px;color:var(--k-panelDim)">We&#8217;ll email you a magic link &#8212; no password to remember.</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<input ref="{{ emailRef }}" type="email" aria-label="Email address" placeholder="you@somewhere.com" style="flex:1;min-width:180px;font-family:'VT323',monospace;font-size:20px;padding:10px 12px;border:3px solid var(--k-ink);background:var(--k-pageBg);color:var(--k-pageText);outline:none" style-focus="outline:3px solid var(--k-accent);outline-offset:2px">
+<button onClick="{{ sendLink }}" style="font-family:'Press Start 2P',monospace;font-size:9px;padding:12px 14px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink);cursor:pointer;transition:transform .1s,box-shadow .1s,background .1s,color .1s" style-hover="transform:translateY(-2px);box-shadow:0 6px 0 var(--k-ink);background:var(--k-accentT);color:var(--k-accent)" style-focus="outline:3px solid var(--k-accent);outline-offset:3px" style-active="transform:translateY(3px);box-shadow:0 1px 0 var(--k-ink);background:var(--k-ink);color:var(--k-accent)">{{ sendLabel }}</button>
+</div>
+<div style="font-size:18px;min-height:22px">{{ siMessage }}</div>
+</div>
+</div>
+
+<div id="credits" data-screen-label="Footer" style="max-width:760px;margin:36px auto 0;padding:18px 20px 30px;border-top:3px solid var(--k-ink);display:flex;flex-direction:column;gap:8px;text-align:center">
+<div style="font-size:17px">Catalog search powered by <a href="https://openlibrary.org" target="_blank" rel="noreferrer">Open Library</a>, <a href="https://jikan.moe" target="_blank" rel="noreferrer">Jikan</a> and <a href="https://www.themoviedb.org" target="_blank" rel="noreferrer">TMDB</a>.</div>
+<div style="font-size:15px;color:var(--k-panelDim)">This product uses the TMDB API but is not endorsed or certified by TMDB. Jikan is not affiliated with MyAnimeList.net.</div>
+<div style="font-size:15px;color:var(--k-panelDim)">KATALOS &#183; a cozy room for your media &#183; <a href="#credits">Full credits</a></div>
+</div>
+
+<sc-if value="{{ tipOn }}" hint-placeholder-val="{{ false }}">
+<div role="tooltip" style="position:fixed;left:{{ tipX }}px;top:{{ tipY }}px;transform:translate(-50%,-100%);z-index:60;pointer-events:none;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:3px 3px 0 var(--k-sh);padding:4px 10px;font-family:'VT323',monospace;font-size:17px;white-space:nowrap">{{ tipTitle }}<sc-if value="{{ tipHasType }}" hint-placeholder-val="{{ false }}"><span style="color:var(--k-panelDim)"> &#183; {{ tipType }}</span></sc-if></div>
+</sc-if>
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(10,8,14,.45);z-index:40;animation:kscrim .2s ease-out"></div>
+<div role="dialog" aria-modal="true" aria-label="{{ dTitle }}" style="position:fixed;right:14px;top:14px;bottom:14px;width:min(360px,calc(100vw - 28px));background:var(--k-panel);color:var(--k-panelText);border:4px solid var(--k-ink);box-shadow:8px 8px 0 rgba(0,0,0,.45);z-index:50;overflow:auto;animation:kdrawer .28s cubic-bezier(.2,.9,.3,1)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:3px solid var(--k-ink);background:var(--k-panelAlt)">
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<span style="font-size:15px;padding:2px 8px;border:2px solid var(--k-ink);background:var(--k-pageBg)">{{ dType }}</span>
+<span style="font-size:15px;padding:2px 8px;border:2px solid var(--k-ink);background:{{ dStBg }};color:{{ dStCol }}">{{ dStatus }}</span>
+</div>
+<button onClick="{{ closeDrawer }}" aria-label="Close details" style="width:44px;height:44px;font-family:'Press Start 2P',monospace;font-size:11px;background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:0 3px 0 var(--k-ink);cursor:pointer;flex:none" style-focus="outline:3px solid var(--k-accent);outline-offset:2px">X</button>
+</div>
+<div style="padding:16px;display:flex;flex-direction:column;gap:14px;animation:krise .34s ease-out both;animation-delay:.08s">
+<div style="display:flex;gap:14px;align-items:flex-start">
+<div style="width:92px;height:124px;flex:none;background:{{ dCol }};border:3px solid var(--k-ink);box-shadow:4px 4px 0 var(--k-sh);display:flex;align-items:center;justify-content:center;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 4px,transparent 4px 12px);transform-origin:left center;animation:kflip .42s ease-out both;animation-delay:.12s">
+<span style="font-family:'Press Start 2P',monospace;font-size:14px;color:rgba(255,255,255,.85);text-shadow:2px 2px 0 rgba(0,0,0,.5)">{{ dInit }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+<div style="font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.7;overflow-wrap:break-word">{{ dTitle }}</div>
+<div style="font-size:19px;letter-spacing:2px">{{ dStars }}</div>
+</div>
+</div>
+<div style="font-size:19px;line-height:1.35">{{ dSyn }}</div>
+<sc-if value="{{ dHasNote }}" hint-placeholder-val="{{ false }}">
+<div style="background:var(--k-pageBg);border:3px solid var(--k-ink);box-shadow:3px 3px 0 var(--k-sh);padding:10px 12px;font-size:18px;line-height:1.3">
+<div style="font-family:'Press Start 2P',monospace;font-size:7px;margin-bottom:6px;color:var(--k-panelDim)">MOMO&#8217;S NOTE</div>
+{{ dNote }}</div>
+</sc-if>
+<div style="font-size:15px;color:var(--k-panelDim)">Demo entry &#183; in your room you can edit status, rating &amp; notes.</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;avatar&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;girl&quot;, &quot;options&quot;: [&quot;girl&quot;, &quot;boy&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Scene state&quot;}, &quot;tvOn&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Scene state&quot;}, &quot;showCat&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Scene state&quot;}}">
+class Component extends DCLogic {
+  state = { theme: (h => h >= 5 && h < 12 ? 'morning' : h >= 12 && h < 19 ? 'afternoon' : 'night')(new Date().getHours()), sel: null, si: 'idle', tip: null, tvCh: 0, tvPwr: true, lampOn: true, fx: [] };
+  emailRef = React.createRef();
+  fxId = 0;
+  burst(scope, x, y, colors) {
+    const parts = [];
+    for (let i = 0; i < 4; i++) {
+      const id = ++this.fxId;
+      parts.push({ id, scope, x: x + (i - 1.5) * 7, y, dx: (i - 1.5) * 12, c: colors[i % colors.length] });
+    }
+    this.setState(s => ({ fx: s.fx.concat(parts) }));
+    const ids = parts.map(p => p.id);
+    setTimeout(() => { if (this._m) this.setState(s => ({ fx: s.fx.filter(p => ids.indexOf(p.id) < 0) })); }, 850);
+  }
+  componentDidMount() {
+    this._m = true;
+    try { const t = localStorage.getItem('katalos_theme'); if (t === 'morning' || t === 'afternoon' || t === 'night') this.setState({ theme: t }); } catch (e) {}
+    this.onKey = (e) => { if (e.key === 'Escape') this.setState({ sel: null }); };
+    window.addEventListener('keydown', this.onKey);
+    this.fitNooks = () => {
+      const wraps = document.querySelectorAll('.knookwrap');
+      wraps.forEach(w => {
+        const nook = w.querySelector('.knook');
+        if (!nook) return;
+        const avail = w.clientWidth;
+        const scale = Math.min(1, avail / 416);
+        w.style.setProperty('--kscale', scale.toFixed(4));
+      });
+    };
+    this.fitNooks();
+    setTimeout(this.fitNooks, 60);
+    window.addEventListener('resize', this.fitNooks);
+  }
+  componentWillUnmount() { this._m = false; window.removeEventListener('keydown', this.onKey); if (this.fitNooks) window.removeEventListener('resize', this.fitNooks); }
+  setTheme(t) { this.setState({ theme: t }); try { localStorage.setItem('katalos_theme', t); } catch (e) {} }
+  px(map, pal, s) {
+    const sh = [];
+    map.forEach((row, y) => { for (let x = 0; x < row.length; x++) { const c = pal[row[x]]; if (row[x] !== '.' && c) sh.push(((x + 1) * s) + 'px ' + (y * s) + 'px 0 ' + c); } });
+    return React.createElement('div', { 'aria-hidden': true, style: { position: 'relative', width: (map[0].length * s) + 'px', height: (map.length * s) + 'px' } },
+      React.createElement('div', { style: { position: 'absolute', left: (-s) + 'px', top: 0, width: s + 'px', height: s + 'px', boxShadow: sh.join(',') } }));
+  }
+  el(tag, st, kids) { return React.createElement(tag, { style: st }, kids); }
+  abs(l, t, w, h, bg, o) { return React.createElement('div', { key: l + '_' + t + '_' + w, style: { position: 'absolute', left: l + 'px', top: t + 'px', width: w + 'px', height: h + 'px', background: bg, opacity: o == null ? 1 : o } }); }
+  pxAnim(a, b, pal, s, dur, rare) {
+    const fr = (m, name, o) => React.createElement('div', { key: name, className: 'kf', style: { position: 'absolute', left: 0, top: 0, opacity: o, animation: name + ' ' + dur + 's steps(1) infinite' } }, this.px(m, pal, s));
+    return React.createElement('div', { 'aria-hidden': true, style: { position: 'relative', width: (a[0].length * s) + 'px', height: (a.length * s) + 'px' } }, [fr(a, rare ? 'kfa' : 'kga', 1), fr(b, rare ? 'kfb' : 'kgb', 0)]);
+  }
+  rug(cols, rows, s, pal) {
+    const cx = (cols - 1) / 2, cy = (rows - 1) / 2;
+    const centers = [[cx, cy], [cols * 0.2, cy], [cols * 0.8, cy]];
+    const g = [];
+    for (let y = 0; y < rows; y++) {
+      let row = '';
+      for (let x = 0; x < cols; x++) {
+        const b = Math.min(x, cols - 1 - x, y, rows - 1 - y);
+        let ch = (x + y) % 2 ? 'd' : 'r';
+        if (b === 0) ch = 'c';
+        else if (b === 1) ch = (x + y) % 2 ? 'k' : 'c';
+        else if (b === 2) ch = 'd';
+        else {
+          const dnMain = Math.abs(x - cx) / (cx - 2) + Math.abs(y - cy) / (cy - 2);
+          if (dnMain < 0.16) ch = 'k';
+          else if (dnMain < 0.30) ch = 'c';
+          else if (dnMain < 0.44) ch = 'd';
+          else if (dnMain > 0.60 && dnMain < 0.74) ch = 'c';
+          else {
+            for (let i = 1; i < centers.length; i++) {
+              const ld = Math.abs(x - centers[i][0]) / 2.2 + Math.abs(y - centers[i][1]) / 2.2;
+              if (ld < 0.9) { ch = 'c'; break; }
+              if (ld >= 0.9 && ld < 1.5) { ch = 'k'; break; }
+            }
+          }
+        }
+        row += ch;
+      }
+      g.push(row);
+    }
+    return this.px(g, pal, s);
+  }
+  windowScene(theme) {
+    const star = (l, t, s, dur, delay) => React.createElement('div', { key: 'st' + l + t, className: 'kf', style: { position: 'absolute', left: l + 'px', top: t + 'px', width: s + 'px', height: s + 'px', background: '#f4ecd8', animation: 'ktw ' + dur + 's steps(1) infinite', animationDelay: delay + 's' } });
+    const drift = (t, dur, delay, kids) => React.createElement('div', { key: 'dr' + t, className: 'kf', style: { position: 'absolute', left: 0, top: t + 'px', animation: 'kdrift ' + dur + 's steps(44) infinite', animationDelay: delay + 's' } }, kids);
+    const puff = (l, t, w, h, c) => React.createElement('div', { key: 'p' + l + t, style: { position: 'absolute', left: l + 'px', top: t + 'px', width: w + 'px', height: h + 'px', background: c } });
+    if (theme === 'night') return React.createElement('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', background: '#10142a' } },
+      [this.abs(58, 10, 16, 16, '#f4ecd8'), star(14, 14, 3, 3.4, 0), star(30, 52, 3, 2.7, 1.1), star(70, 60, 3, 3.9, 2), star(44, 30, 3, 3.1, .6),
+       drift(38, 26, 0, [puff(0, 4, 30, 8, '#232a4e'), puff(6, 0, 18, 6, '#232a4e')])]);
+    if (theme === 'afternoon') return React.createElement('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', background: '#f2b46a' } },
+      [this.abs(0, 32, 92, 28, '#e8935f'), this.abs(0, 60, 92, 20, '#d4704c'), React.createElement('div', { key: 's', style: { position: 'absolute', left: '58px', top: '8px', width: '18px', height: '18px', background: '#ffe8b0', border: '3px solid #e8935f' } }),
+       drift(14, 22, 0, [puff(0, 4, 32, 8, '#f6cd93'), puff(8, 0, 18, 6, '#f6cd93')]),
+       drift(44, 30, 8, [puff(0, 0, 26, 7, '#e07f52')])]);
+    return React.createElement('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', background: '#a8d8e8' } },
+      [React.createElement('div', { key: 's', style: { position: 'absolute', left: '56px', top: '8px', width: '20px', height: '20px', background: '#f8d878', border: '3px solid #e8b84a' } }),
+       drift(24, 18, 0, [puff(0, 4, 26, 8, '#fbf4e4'), puff(6, 0, 16, 6, '#fbf4e4')]),
+       drift(50, 26, 6, [puff(0, 0, 34, 8, '#fbf4e4'), puff(10, -5, 14, 5, '#fbf4e4')])]);
+  }
+  tvChannelName(ch) { return ['DVD', 'PONG', 'SUNSET', 'STARS', 'STATIC'][((ch % 5) + 5) % 5]; }
+  tvScreenEl(theme, on, ch) {
+    const scan = React.createElement('div', { key: 'sl', style: { position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 2px, transparent 2px 4px)', pointerEvents: 'none' } });
+    if (!on) return React.createElement('div', { style: { width: '100%', height: '100%', background: '#16121c', position: 'relative', overflow: 'hidden' } },
+      [React.createElement('div', { key: 'sb', className: 'kglow', style: { position: 'absolute', left: '8px', bottom: '8px', width: '8px', height: '8px', background: '#c4523e', animation: 'kglow 1.8s ease-in-out infinite' } }), scan]);
+    const c = ((ch % 5) + 5) % 5;
+    let kids, bg = '#0d1420';
+    if (c === 0) {
+      kids = [React.createElement('div', { key: 'dvd', className: 'kf', style: { position: 'absolute', left: 0, top: 0, width: '36px', height: '16px', background: '#3ec97a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Press Start 2P',monospace", fontSize: '8px', color: '#0b2417', animation: 'kdvd 9s linear infinite' } }, 'DVD')];
+    } else if (c === 1) {
+      bg = '#0a1a12';
+      kids = [this.abs(4, 24, 6, 22, '#7fe36b'), this.abs(94, 40, 6, 22, '#7fe36b'),
+        React.createElement('div', { key: 'net', style: { position: 'absolute', left: '50%', top: 0, width: '2px', height: '100%', background: 'repeating-linear-gradient(0deg,rgba(127,227,107,.5) 0 6px,transparent 6px 12px)' } }),
+        React.createElement('div', { key: 'ball', className: 'kf', style: { position: 'absolute', width: '8px', height: '8px', background: '#eafff0', left: '8px', top: '18px', animation: 'kpong 3.2s linear infinite' } })];
+    } else if (c === 2) {
+      bg = '#f7b15a';
+      kids = [this.abs(0, 0, 104, 26, '#ffd98e'), this.abs(0, 44, 104, 20, '#ef8f5a'), this.abs(0, 64, 104, 26, '#c85f52'),
+        React.createElement('div', { key: 'sun', style: { position: 'absolute', left: '40px', top: '36px', width: '22px', height: '22px', background: '#fff2c0', borderRadius: '0' } }),
+        React.createElement('div', { key: 'cl', className: 'kf', style: { position: 'absolute', left: 0, top: '14px', animation: 'ktvcloud 12s linear infinite' } }, [this.abs(0, 4, 26, 7, '#fbeccf'), this.abs(7, 0, 15, 6, '#fbeccf')])];
+    } else if (c === 3) {
+      bg = '#0b1030';
+      const star = (l, t, s, d, dl) => React.createElement('div', { key: 's' + l + t, className: 'kf', style: { position: 'absolute', left: l + 'px', top: t + 'px', width: s + 'px', height: s + 'px', background: '#eef2ff', animation: 'ktw ' + d + 's steps(1) infinite', animationDelay: dl + 's' } });
+      kids = [star(14, 16, 4, 3.1, 0), star(70, 24, 4, 2.6, .8), star(40, 46, 4, 3.6, .3), star(88, 60, 4, 2.9, 1.4), star(22, 66, 4, 3.3, 1.9), star(56, 12, 3, 2.4, 1.1)];
+    } else {
+      bg = '#20242a';
+      const blk = (l, t, w, dl) => React.createElement('div', { key: 'n' + l + t, className: 'kf', style: { position: 'absolute', left: l + 'px', top: t + 'px', width: w + 'px', height: '6px', background: (l + t) % 2 ? '#4a4f57' : '#a7adb6', animation: 'kflick .28s steps(2) infinite', animationDelay: dl + 's' } });
+      kids = [];
+      for (let i = 0; i < 14; i++) kids.push(blk((i * 29) % 96, (i * 17) % 82, 10 + (i % 3) * 8, (i % 4) * 0.06));
+    }
+    const bug = React.createElement('div', { key: 'bug', style: { position: 'absolute', left: '4px', bottom: '4px', fontFamily: "'Press Start 2P',monospace", fontSize: '6px', color: 'rgba(255,255,255,.85)', textShadow: '1px 1px 0 rgba(0,0,0,.7)', pointerEvents: 'none' } }, 'CH' + (c + 1));
+    return React.createElement('div', { className: 'kf', style: { width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: bg, animation: 'kflick 2.4s steps(2) infinite' } }, kids.concat([scan, bug]));
+  }
+  tvGlowEl(theme, on) {
+    if (!on) return null;
+    const conf = { morning: ['#fff3c9', .6], afternoon: ['#ffd98e', 1], night: ['#7fe3de', 1.4] }[theme];
+    const mk = (l, t, w, h, o) => this.abs(l, t, w, h, conf[0], o * conf[1]);
+    return React.createElement('div', { style: { position: 'absolute', left: '40px', top: '232px' } }, [mk(0, 0, 210, 124, .07), mk(30, 22, 150, 86, .07), mk(62, 42, 92, 52, .09)]);
+  }
+  readExtrasEl(theme) {
+    if (theme === 'night') return React.createElement('div', null, [
+      this.abs(174, 166, 104, 130, 'rgba(255,217,142,.08)'), this.abs(162, 296, 130, 44, 'rgba(255,217,142,.14)'), this.abs(188, 304, 80, 28, 'rgba(255,217,142,.13)')]);
+    if (theme === 'afternoon') return React.createElement('div', null, [this.abs(178, 296, 110, 40, 'rgba(255,217,142,.16)'), this.abs(198, 302, 70, 26, 'rgba(255,217,142,.14)')]);
+    return React.createElement('div', null, [this.abs(240, 292, 110, 44, 'rgba(248,216,120,.28)')]);
+  }
+  renderVals() {
+    const tvOnProp = this.props.tvOn ?? true, showCat = this.props.showCat ?? true, avatar = this.props.avatar ?? 'girl';
+    const tvOn = tvOnProp && this.state.tvPwr;
+    const theme = this.state.theme, sel = this.state.sel, si = this.state.si;
+    const CT = ['.kk..kk.........', '.kOOkkOOk.......', '.kOOOOOOk.....kk', '.kOEOOEOk....kOk', '.kOOWWOOk....kOk', '.kkOOOOOkkkkkOOk', '..kOOOOOOOOOOOk.', '..kOOOOOOOOOOOk.', '..kODOOODOODOOk.', '..kOOkOOOkkOOk..', '..kkk.kkk..kkk..'];
+    const PL = ['....LLL.....', '..LLLLLGG...', '.LLLGLLGGG..', '.LLGGLLLGG..', '..LGLLLLG...', '....LLL.....', '..TTTTTTT...', '..TTTTTTT...', '..TTTTTTT...', '...TTTTT....'];
+    const GA = ['.....kkkkkkkk.....', '....kHHHHHHHHk....', '...kHHHHHHHHHHk...', '..kPkHHHHHHHHkPk..', '..kPkHFFFFFFHkPk..', '..kPkFEFFFFEFkPk..', '..kPkFFFFFFFFkPk..', '...kkFFFFFFFFkk...', '...kHHFFFFFFHHk...', '..kHHHkFFFFkHHHk..', '.kHHHkSSSSSSkHHHk.', '.kHHkSSSSSSSSkHHk.', '.kHHkSSSSSSSSkHHk.', '.kHkSSSSSSSSSSkHk.', '.kkFSSSSSSSSSSFkk.', '..kFkWWWkkWWWkFk..', '.kCWwWWWkkWWWwWCk.', '.kCCwWWWkkWWWwCCk.', '..kkkkkkkkkkkkkk..', '..kJJJJk..kJJJJk..', '..kJJJJk..kJJJJk..', '..kJJJJJk.kJJJJJk.', '.kJJJJJJk.kJJJJJJk', '.kkkkkkkk.kkkkkkkk'];
+    const GB = GA.slice(); GB[5] = '..kPkFeFFFFeFkPk..';
+    const RBA = ['.....kkkkkkkk.....', '....khhHHHHHHk....', '...kHHHHHHHHHHk...', '..kkHHHHHHHHHHkk..', '...kHFFFFFFFFHk...', '...kFEFFFFEFFFk...', '...kFFFFFFFFFFk...', '....kFFFFFFFFk....', '...kVVFFFFFFVVk...', '..kVVVkFFFFkVVVk..', '.kVVVkSSSSSSkVVVk.', '.kVVkSSSSSSSSkVVk.', '.kVVkSSSSSSSSkVVk.', '.kVkSSSSSSSSSSkVk.', '.kkFSSSSSSSSSSFkk.', '..kFkWWWkkWWWkFk..', '.kCWwWWWkkWWWwWCk.', '.kCCwWWWkkWWWwCCk.', '..kkkkkkkkkkkkkk..', '..kJJJJk..kJJJJk..', '..kJJJJk..kJJJJk..', '..kJJJJJk.kJJJJJk.', '.kJJJJJJk.kJJJJJJk', '.kkkkkkkk.kkkkkkkk'];
+    const RBB = RBA.slice(); RBB[5] = '...kFeFFFFeFFFk...';
+    const WBA = ['.....kkkkkkk......', '....khhHHHHHk.....', '...kHHHHHHHHHk....', '..kFFFHHHHHHHk....', '..kFEFFHHHHHHk....', '..kFFFFHHHHHHk....', '...kFFkHHHHHk.....', '...kkVVVVVVkk.....', '..kVVVVVVVVVVk....', '..kVVVVVVVVVVk....', '..kFVVVVVVVVVVk...', '.kkJJJJJJJJJJkk...', 'kJJJJJJJJJJJJJJk..', 'ksskJJJJJJJJJJJk..', '.kkkkkkkkkkkkkk...'];
+    const WBB = WBA.slice(); WBB[4] = '..kFeFFHHHHHHk....';
+    const WGA = ['.....kkkkkkk......', '....khhHHHHHk.....', '...kHHHHHHHHHk....', '..kFFFHHHHHHHk....', '..kFEFFHPPHHHk....', '..kFFFFHPPHHHk....', '...kFFkHHHHHHk....', '...kkSSSSkHHHk....', '..kSSSSSSSkHHk....', '..kSSSSSSSSkHk....', '..kFSSSSSSSSkHk...', '.kkJJJJJJJJJkkk...', 'kJJJJJJJJJJJJJJk..', 'ksskJJJJJJJJJJJk..', '.kkkkkkkkkkkkkk...'];
+    const WGB = WGA.slice(); WGB[4] = '..kFeFFHPPHHHk....';
+    const TRO = ['.kkkkkk.', 'kGGGGGGk', 'kGGGGGGk', '.kGGGGk.', '..kGGk..', '..kGGk..', '.kGGGGk.', 'kkkkkkkk'];
+    const GLO = ['...kkkk...', '..kBBGBk..', '.kBGGBBBk.', '.kBBGGBBk.', '.kGBBGBBk.', '..kBBGBk..', '...kkkk...', '....kk....', '..kkkkkk..'];
+    const CTB = CT.slice(); CTB[2] = '.kOOOOOOk.......'; CTB[3] = '.kOEOOEOk.......'; CTB[4] = '.kOOWWOOk.......'; CTB[5] = '.kkOOOOOkkkkk...'; CTB[6] = '..kOOOOOOOOOOOkk';
+    const ANT = ['R...........R', '.k.........k.', '..k.......k..', '...k.....k...', '....k...k....', '.....k.k.....', '....kkkkk....'];
+    const GPAL = { k: '#1a1210', H: '#6b3f26', h: '#8a5a38', P: '#e8e4dc', F: '#f2c9a2', E: '#241611', e: '#b5825f', S: '#7a4a38', W: '#f2e9d4', w: '#d8cfc0', C: '#c4523e', J: '#6f8fc0' };
+    const RBPAL = { k: '#1a1210', H: '#2e2620', h: '#4a4038', F: '#f2c9a2', E: '#241611', e: '#b5825f', V: '#8a5230', S: '#6a8a9a', W: '#f2e9d4', w: '#d8cfc0', C: '#c4523e', J: '#6f8fc0' };
+    const WBPAL = { k: '#1a1210', H: '#2e2620', h: '#4a4038', F: '#f2c9a2', E: '#241611', e: '#b5825f', V: '#8a5230', J: '#6f8fc0', s: '#3a2c24' };
+    const WGPAL = { k: '#1a1210', H: '#6b3f26', h: '#8a5a38', P: '#e8e4dc', S: '#7a4a38', F: '#f2c9a2', E: '#241611', e: '#b5825f', J: '#6f8fc0', s: '#3a2c24' };
+    const TPAL = { k: '#1a1210', G: '#e0a458' };
+    const LPAL = { k: '#1a1210', B: '#4e7a9a', G: '#7a9a4e' };
+    const catPal = { morning: { O: '#f0c96e', D: '#c99a3e' }, afternoon: { O: '#e0954e', D: '#a5642f' }, night: { O: '#8a7bd8', D: '#5f54a0' } }[theme];
+    const plantPal = { morning: { L: '#7ab55f', G: '#559a44', T: '#c9865a' }, afternoon: { L: '#7a9a4e', G: '#55703a', T: '#b5623e' }, night: { L: '#5fae8e', G: '#3d7a63', T: '#6e5a8a' } }[theme];
+    const E = (t, ty, st, r, n, s, c, w, h) => {
+      const e = { t, ty, st, r, n, s, c, w, h };
+      e.al = t + ' \u2014 ' + ty + ', ' + st;
+      e.open = () => this.setState({ sel: e, tip: null });
+      e.tipIn = (ev) => { const b = ev.currentTarget.getBoundingClientRect(); this.setState({ tip: { t: e.t, ty: e.ty, x: Math.round(b.left + b.width / 2), y: Math.round(b.top) } }); };
+      e.tipOut = () => this.setState({ tip: null });
+      return e;
+    };
+    const shelf1 = [
+      E('Piranesi', 'book', 'finished', 5, 'Read it in two sittings. The House is kind.', 'A man who may not be a man catalogs an endless house of statues and tides.', '#6fb3a4', 16, 60),
+      E('Project Hail Mary', 'book', 'finished', 4, '', 'A lone astronaut wakes with no memory and one job: save Earth.', '#e0a458', 18, 66),
+      E('The Left Hand of Darkness', 'book', 'finished', 5, 'The chapter crossing the ice. That is the whole point of books.', 'An envoy to a winter planet learns politics, loyalty and gender anew.', '#c4523e', 17, 72),
+      E('Kafka on the Shore', 'book', 'finished', 4, '', 'Two runaways drift toward each other through talking cats and falling fish.', '#4e7a9a', 20, 62),
+      E('The Name of the Wind', 'book', 'finished', 3, 'Beautiful prose, but Kvothe needs to be stopped.', 'A legendary wizard tells the true story of how his legend began.', '#7a9a4e', 22, 70),
+      E('A Wizard of Earthsea', 'book', 'finished', 4, '', 'A young mage looses a shadow on the world and must name it.', '#8a5a8f', 16, 58)
+    ];
+    const shelf2 = [
+      E('Fullmetal Alchemist', 'manga', 'finished', 5, '', 'Two brothers pay the price of forbidden alchemy and hunt a way back.', '#c9a05f', 17, 56),
+      E('Yotsuba&!', 'manga', 'finished', 5, 'Medicine. Read one chapter whenever the world is too much.', 'A small green-haired girl discovers everything, one summer day at a time.', '#7a9a4e', 15, 50),
+      E('Vinland Saga', 'manga', 'finished', 4, '', 'A viking boy chases revenge and finds the cost of a real warrior.', '#5f7ac9', 18, 58),
+      E('Mushishi', 'manga', 'finished', 5, '', 'A wanderer mediates between people and the strange life called mushi.', '#6fb3a4', 16, 52),
+      E('Goodnight Punpun', 'manga', 'finished', 4, 'Do not read this one when sad. Or do.', 'A boy drawn as a little bird grows up. It gets heavy.', '#b5533c', 17, 56),
+      E('Spy x Family', 'manga', 'finished', 3, '', 'A spy, an assassin and a telepath fake a family for world peace.', '#d876a3', 15, 50)
+    ];
+    const mkPos = (arr, pos) => arr.map((e, i) => Object.assign(e, { l: pos[i][0], tp: pos[i][1] }));
+    const nowStack = mkPos([
+      E('The Priory of the Orange Tree', 'book', 'in progress', 0, '', 'Queens, dragonriders and a divided world braced for the Nameless One\u2019s return \u2014 an 800-page standalone epic told from four corners of the map.', '#c4523e', 46, 10),
+      E('Berserk', 'manga', 'in progress', 0, 'Rereading before the new arc.', 'A lone swordsman bearing a cursed brand carves through fate itself.', '#4e5a66', 42, 10),
+      E('A Memory Called Empire', 'book', 'planned', 0, '', 'An ambassador arrives at the heart of an empire carrying a dead man\u2019s memory.', '#8a5a8f', 36, 10)
+    ], [[282, 316], [286, 326], [290, 336]]);
+    const pileBooks = mkPos([
+      E('Infinite Jest', 'book', 'abandoned', 0, 'Page 230. The bookmark stays as a warning.', 'Tennis, addiction, and a film so entertaining it kills.', '#a89a85', 48, 10),
+      E('Attack on Titan', 'manga', 'abandoned', 2, '', 'Humanity walls itself against man-eating giants; the walls have secrets.', '#7a6a4e', 44, 10)
+    ], [[46, 364], [50, 352]]);
+    const cabinet = [
+      E('Spirited Away', 'movie', 'finished', 5, '', 'A girl works in a bathhouse for spirits to win her parents back.', '#c4523e', 17, 42),
+      E('Cowboy Bebop', 'anime', 'finished', 5, 'The whole vibe of this room, honestly.', 'Bounty hunters drift through space to a jazz soundtrack and old regrets.', '#4e7a9a', 16, 40),
+      E('Fullmetal Alchemist: Brotherhood', 'anime', 'finished', 5, '', 'The brothers\u2019 journey, complete this time.', '#e0a458', 18, 42),
+      E('Everything Everywhere All at Once', 'movie', 'finished', 4, '', 'A laundromat owner becomes the multiverse\u2019s last hope between tax audits.', '#8a5a8f', 17, 40),
+      E('Mob Psycho 100', 'anime', 'finished', 4, '', 'The strongest psychic in the world just wants to be a better person.', '#d876a3', 16, 38),
+      E('Paddington 2', 'movie', 'finished', 5, 'A perfect film. No notes.', 'A small bear goes to prison and makes it kinder.', '#6fb3a4', 17, 42),
+      E('The Iron Giant', 'movie', 'finished', 4, '', 'A boy teaches a giant robot the word \u201csoul\u201d.', '#5f7ac9', 16, 40),
+      E('Frieren: Beyond Journey\u2019s End', 'anime', 'finished', 5, '', 'An elf mage outlives her hero party and learns what the journey meant.', '#7a9a4e', 18, 42),
+      E('Whisper of the Heart', 'movie', 'finished', 4, '', 'A girl who loves books follows a cat to the boy who checks them out first.', '#c9a05f', 16, 38)
+    ];
+    cabinet.forEach(e => { e.w = 13; e.h = 44; });
+    const nowPlaying = mkPos([
+      E('Delicious in Dungeon', 'anime', 'in progress', 0, 'We cook the monsters now.', 'Adventurers eat their way down a dungeon to save a devoured sister.', '#88c47a', 44, 10)
+    ], [[240, 183]]);
+    const watchNext = mkPos([
+      E('Perfect Days', 'movie', 'planned', 0, '', 'A Tokyo toilet cleaner\u2019s days, cassettes and trees. Quiet and huge.', '#4e7a9a', 58, 14),
+      E('Chainsaw Man', 'anime', 'planned', 0, '', 'A broke devil hunter merges with his chainsaw dog. It escalates.', '#c4523e', 56, 14),
+      E('Stop Making Sense', 'movie', 'planned', 0, '', 'The Talking Heads concert film, restored. The big suit awaits.', '#e0a458', 58, 14)
+    ], [[322, 362], [324, 346], [321, 330]]);
+    const pausedTapes = mkPos([
+      E('Neon Genesis Evangelion', 'anime', 'abandoned', 0, 'Episode 16. I know, I know.', 'Teenagers pilot bio-machines against angels; it becomes something else.', '#8a5a8f', 48, 14),
+      E('2001: A Space Odyssey', 'movie', 'abandoned', 3, '', 'From bone to satellite to whatever the ending is.', '#a89a85', 44, 14)
+    ], [[20, 394], [24, 378]]);
+    const stMap = { 'planned': ['var(--k-panel)', 'var(--k-panelText)'], 'in progress': ['var(--k-stProg)', '#241611'], 'finished': ['var(--k-stDone)', '#241611'], 'abandoned': ['var(--k-stPaused)', '#241611'] };
+    const dot = (t) => theme === t ? React.createElement('span', { style: { width: '8px', height: '8px', background: 'var(--k-accent)', display: 'inline-block', border: '2px solid var(--k-ink)' } }) : React.createElement('span', { style: { width: '8px', height: '8px', display: 'inline-block', border: '2px solid var(--k-ink)', opacity: .35 } });
+    const initials = sel ? sel.t.split(/\s+/).filter(w => /[a-z0-9]/i.test(w[0])).slice(0, 2).map(w => w[0].toUpperCase()).join('') : '';
+    const siMsgs = { idle: '', loading: 'Sending your link\u2026', sent: '\u2713 Link sent! Check your inbox (and spam, just once).', error: '\u2717 That doesn\u2019t look like an email \u2014 try again?' };
+    return {
+      theme,
+      setMorning: () => this.setTheme('morning'), setAfternoon: () => this.setTheme('afternoon'), setNight: () => this.setTheme('night'),
+      dotMorning: dot('morning'), dotAfternoon: dot('afternoon'), dotNight: dot('night'),
+      reader: avatar === 'boy' ? this.pxAnim(RBA, RBB, RBPAL, 4, 3.4, true) : this.pxAnim(GA, GB, GPAL, 4, 3.4, true),
+      watcher: avatar === 'boy' ? this.pxAnim(WBA, WBB, WBPAL, 4, 3.1, true) : this.pxAnim(WGA, WGB, WGPAL, 4, 3.1, true),
+      trophy: this.px(TRO, TPAL, 3), globe: this.px(GLO, LPAL, 3),
+      logoSm: this.px(['WW.....WW', 'WW....WW.', 'WW...WW..', 'WW..WW...', 'WW.WW....', 'WWWW.....', 'WW.WW....', 'WW..WW...', 'WW...WW..', 'WW....WW.', 'WW.....WW'], { W: 'var(--k-accentT)' }, 2),
+      logoLg: this.px(['WW.....WW', 'WW....WW.', 'WW...WW..', 'WW..WW...', 'WW.WW....', 'WWWW.....', 'WW.WW....', 'WW..WW...', 'WW...WW..', 'WW....WW.', 'WW.....WW'], { W: 'var(--k-accentT)' }, 4),
+      rug: this.rug(26, 15, 6, { c: '#d9c3a0', r: '#9e3b32', d: '#6f2822', k: '#241012' }),
+      rugTv: this.rug(31, 14, 6, { c: '#d9c3a0', r: '#9e3b32', d: '#6f2822', k: '#241012' }),
+      cat: showCat ? this.pxAnim(CT, CTB, Object.assign({ k: '#1a1210', E: '#1a1210', W: '#f6ecd2' }, catPal), 3, 2.4, false) : null, plant: this.px(PL, plantPal, 3), antenna: this.px(ANT, { R: '#c4523e', k: '#241611' }, 3),
+      windowScene: this.windowScene(theme), tvScreen: this.tvScreenEl(theme, tvOn, this.state.tvCh), tvGlow: this.tvGlowEl(theme, tvOn), readExtras: this.readExtrasEl(theme),
+      tvPower: () => this.setState(s => ({ tvPwr: !s.tvPwr })),
+      tvChannel: () => this.setState(s => ({ tvPwr: true, tvCh: (s.tvCh + 1) % 5 })),
+      tvChName: tvOn ? ('CH' + (this.state.tvCh + 1)) : 'OFF',
+      pongOn: tvOn && ((this.state.tvCh % 5) === 1),
+      pongOff: !(tvOn && ((this.state.tvCh % 5) === 1)),
+      petCat: () => this.burst('read', 150, 360, ['#ff8fae', '#ff5c8a', '#ffd0dd']),
+      petPlant: () => this.burst('read', 372, 262, ['#8fe36b', '#5fae4a', '#c9f0b0']),
+      petAntenna: () => this.burst('tv', 150, 66, ['#eef2ff', '#bcd0ff', '#ffffff']),
+      toggleLamp: () => this.setState(s => ({ lampOn: !s.lampOn })),
+      lampGlow: this.state.lampOn ? 'radial-gradient(circle at 50% 0,rgba(255,220,140,.5),transparent 70%)' : 'none',
+      bulbColor: this.state.lampOn ? 'var(--k-lamp1)' : 'var(--k-panelAlt)',
+      readFx: this.state.fx.filter(p => p.scope === 'read'),
+      tvFx: this.state.fx.filter(p => p.scope === 'tv'),
+      shelf1, shelf2, cabinet, nowStack, pileBooks, nowPlaying, watchNext, pausedTapes,
+      drawerOpen: !!sel, closeDrawer: () => this.setState({ sel: null }),
+      tipOn: !!this.state.tip, tipX: this.state.tip ? this.state.tip.x : 0, tipY: this.state.tip ? this.state.tip.y - 10 : 0,
+      tipTitle: this.state.tip ? this.state.tip.t : '', tipType: this.state.tip ? this.state.tip.ty : '', tipHasType: !!(this.state.tip && this.state.tip.ty),
+      toyTipIn: (ev) => { const b = ev.currentTarget.getBoundingClientRect(); this.setState({ tip: { t: ev.currentTarget.getAttribute('aria-label'), ty: '', x: Math.round(b.left + b.width / 2), y: Math.round(b.top) } }); },
+      toyTipOut: () => this.setState({ tip: null }),
+      dTitle: sel ? sel.t : '', dType: sel ? sel.ty.toUpperCase() : '', dStatus: sel ? sel.st.toUpperCase() : '',
+      dStBg: sel ? stMap[sel.st][0] : 'transparent', dStCol: sel ? stMap[sel.st][1] : 'inherit',
+      dCol: sel ? sel.c : '#888', dInit: initials,
+      dStars: sel && sel.r ? '\u2605'.repeat(sel.r) + '\u2606'.repeat(5 - sel.r) : 'no rating yet',
+      dSyn: sel ? (sel.s || 'No synopsis saved for this one.') : '', dNote: sel ? sel.n : '', dHasNote: !!(sel && sel.n),
+      emailRef: this.emailRef,
+      sendLabel: si === 'loading' ? 'SENDING\u2026' : 'SEND LINK',
+      siMessage: siMsgs[si],
+      sendLink: () => {
+        if (si === 'loading') return;
+        const v = (this.emailRef.current && this.emailRef.current.value || '').trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { this.setState({ si: 'error' }); return; }
+        this.setState({ si: 'loading' });
+        setTimeout(() => this.setState({ si: 'sent' }), 900);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
