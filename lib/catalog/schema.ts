@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { MediaType } from '@/lib/media/types';
 
-export const CatalogSourceSchema = z.enum(['open_library', 'jikan', 'tmdb']);
+export const CatalogSourceSchema = z.enum(['open_library', 'jikan', 'anilist', 'tmdb']);
 export type CatalogSource = z.infer<typeof CatalogSourceSchema>;
 
 export const CatalogSearchRequestSchema = z.object({

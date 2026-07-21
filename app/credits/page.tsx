@@ -7,7 +7,7 @@ export default function CreditsPage() {
     </section>
     <section className="taste-card">
       <h2>Jikan</h2>
-      <p>Anime and manga search data are provided through <a href="https://jikan.moe/">Jikan</a>. Jikan is not affiliated with MyAnimeList.net.</p>
+      <p>Anime and manga search data are provided through <a href="https://jikan.moe/">Jikan</a>, with <a href="https://anilist.co/">AniList</a> as an outage fallback. Jikan is not affiliated with MyAnimeList.net.</p>
     </section>
     <section className="taste-card">
       <h2>TMDB</h2>

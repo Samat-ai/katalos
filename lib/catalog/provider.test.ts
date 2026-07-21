@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { searchCatalog } from './provider';
+import { getCatalogDetails, searchCatalog } from './provider';
 
 const json = (body: unknown) => Promise.resolve(new Response(JSON.stringify(body), { status: 200 }));
 
@@ -19,5 +19,31 @@ describe('searchCatalog', () => {
 
   it('requires a server-side TMDB token for movie searches', async () => {
     await expect(searchCatalog({ type: 'movie', query: 'Dune' }, { fetcher: fetch, openLibraryContact: 'team@example.com' })).rejects.toThrow(/TMDB/);
+  });
+
+  it('falls back to AniList when Jikan cannot reach MyAnimeList', async () => {
+    const fetcher = async (input: string | URL) => {
+      const url = String(input);
+      if (url.includes('api.jikan.moe')) return new Response(JSON.stringify({ status: 504 }), { status: 504 });
+      if (url.includes('graphql.anilist.co')) {
+        return json({ data: { Page: { media: [{ id: 21, title: { english: 'One Piece', romaji: 'One Piece' }, coverImage: { large: 'https://cdn.example/one-piece.jpg' } }] } } });
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    };
+
+    await expect(searchCatalog({ type: 'manga', query: 'One Piece' }, { fetcher, openLibraryContact: 'team@example.com' })).resolves.toMatchObject([
+      { source: 'anilist', externalId: '21', title: 'One Piece', thumbnailUrl: 'https://cdn.example/one-piece.jpg' },
+    ]);
+  });
+
+  it('gets AniList details for fallback search results', async () => {
+    const fetcher = async (input: string | URL) => {
+      expect(String(input)).toContain('graphql.anilist.co');
+      return json({ data: { Media: { title: { english: 'One Piece', romaji: 'One Piece' }, coverImage: { large: 'https://cdn.example/one-piece-large.jpg' }, description: 'A pirate adventure.' } } });
+    };
+
+    await expect(getCatalogDetails({ source: 'anilist', externalId: '21', title: 'One Piece' }, 'manga', { fetcher, openLibraryContact: 'team@example.com' })).resolves.toEqual({
+      title: 'One Piece', coverUrl: 'https://cdn.example/one-piece-large.jpg', synopsis: 'A pirate adventure.',
+    });
   });
 });
