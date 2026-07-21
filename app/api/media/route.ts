@@ -12,6 +12,7 @@ export async function POST(request: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Sign in to edit your room.' }, { status: 401 });
   const { data, error } = await supabase.from('media_entries').insert({ ...mediaInputToRow(parsed.data), profile_id: user.id }).select(fields).single();
+  if (error?.code === 'P0001' && error.message === 'duplicate_media_entry') return NextResponse.json({ error: 'This title is already in your room.' }, { status: 409 });
   if (error) return NextResponse.json({ error: 'We could not save that entry. Please retry.' }, { status: 500 });
   return NextResponse.json({ entry: toMediaEntry(data) }, { status: 201 });
 }
