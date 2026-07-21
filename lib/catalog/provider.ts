@@ -40,6 +40,21 @@ function aniListTitle(media: AniListMedia) {
   return media.title?.english ?? media.title?.romaji ?? media.title?.native;
 }
 
+const htmlEntities: Record<string, string> = { amp: '&', apos: "'", gt: '>', lt: '<', nbsp: ' ', quot: '"' };
+
+function plainText(value: string) {
+  return value
+    .replace(/\r\n?/g, '\n')
+    .replace(/<(?:br\s*\/?|\/(?:p|div|li|h[1-6]))\s*>/gi, '\n')
+    .replace(/<(?:(?:"[^"]*")|(?:'[^']*')|[^'">])*>/g, '')
+    .replace(/&(#x[\da-f]+|#\d+|amp|apos|gt|lt|nbsp|quot);/gi, (match, entity: string) => {
+      if (!entity.startsWith('#')) return htmlEntities[entity.toLowerCase()] ?? match;
+      const codePoint = entity.startsWith('#x') ? Number.parseInt(entity.slice(2), 16) : Number.parseInt(entity.slice(1), 10);
+      return Number.isFinite(codePoint) && codePoint <= 0x10ffff ? String.fromCodePoint(codePoint) : match;
+    })
+    .replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 async function searchAniList(request: CatalogSearchRequest, fetcher: typeof fetch): Promise<CatalogCandidate[]> {
   const body = await aniListRequest<{ data?: { Page?: { media?: AniListMedia[] } } }>(fetcher, `query SearchCatalog($search: String!, $type: MediaType!) {
     Page(page: 1, perPage: 8) { media(search: $search, type: $type) { id title { english romaji native } coverImage { large medium } } }
@@ -79,12 +94,12 @@ export async function getCatalogDetails(candidate: CatalogCandidate, type: Media
   if (candidate.source === 'open_library') {
     const body = await readJson(await fetcher(`https://openlibrary.org/works/${candidate.externalId}.json`, { headers: { 'user-agent': `Katalos (${config.openLibraryContact})` } })) as { title?: string; description?: string | { value?: string } };
     const synopsis = typeof body.description === 'string' ? body.description : body.description?.value ?? '';
-    return { title: body.title ?? candidate.title, coverUrl: candidate.thumbnailUrl, synopsis };
+    return { title: body.title ?? candidate.title, coverUrl: candidate.thumbnailUrl, synopsis: plainText(synopsis) };
   }
   if (candidate.source === 'tmdb') {
     if (!config.tmdbToken) throw new Error('TMDB is not configured. Set TMDB_READ_ACCESS_TOKEN.');
     const body = await readJson(await fetcher(`https://api.themoviedb.org/3/movie/${candidate.externalId}`, { headers: { authorization: `Bearer ${config.tmdbToken}` } })) as { title?: string; overview?: string; poster_path?: string };
-    return { title: body.title ?? candidate.title, coverUrl: body.poster_path ? `https://image.tmdb.org/t/p/w500${body.poster_path}` : candidate.thumbnailUrl, synopsis: body.overview ?? '' };
+    return { title: body.title ?? candidate.title, coverUrl: body.poster_path ? `https://image.tmdb.org/t/p/w500${body.poster_path}` : candidate.thumbnailUrl, synopsis: plainText(body.overview ?? '') };
   }
   if (candidate.source === 'anilist') {
     const id = Number(candidate.externalId);
@@ -93,9 +108,9 @@ export async function getCatalogDetails(candidate: CatalogCandidate, type: Media
       Media(id: $id, type: $type) { title { english romaji native } coverImage { large medium } description(asHtml: false) }
     }`, { id, type: type.toUpperCase() });
     const media = body.data?.Media;
-    return { title: media ? aniListTitle(media) ?? candidate.title : candidate.title, coverUrl: media?.coverImage?.large ?? media?.coverImage?.medium ?? candidate.thumbnailUrl, synopsis: media?.description ?? '' };
+    return { title: media ? aniListTitle(media) ?? candidate.title : candidate.title, coverUrl: media?.coverImage?.large ?? media?.coverImage?.medium ?? candidate.thumbnailUrl, synopsis: plainText(media?.description ?? '') };
   }
   const kind = type === 'manga' ? 'manga' : 'anime';
   const body = await readJson(await fetcher(`https://api.jikan.moe/v4/${kind}/${candidate.externalId}/full`)) as { data?: { title?: string; title_english?: string; synopsis?: string; images?: { jpg?: { large_image_url?: string } } } };
-  return { title: body.data?.title_english ?? body.data?.title ?? candidate.title, coverUrl: body.data?.images?.jpg?.large_image_url ?? candidate.thumbnailUrl, synopsis: body.data?.synopsis ?? '' };
+  return { title: body.data?.title_english ?? body.data?.title ?? candidate.title, coverUrl: body.data?.images?.jpg?.large_image_url ?? candidate.thumbnailUrl, synopsis: plainText(body.data?.synopsis ?? '') };
 }
