@@ -47,6 +47,35 @@ it('exports a document-level literal control wiring helper', async () => {
   expect(onMakeRoom).toHaveBeenCalledOnce();
 });
 
+it('submits the literal magic-link email through a live callback', async () => {
+  const module = await import('./HandoffFrame');
+  expect(module).toHaveProperty('wireMagicLinkControl');
+  const wireMagicLinkControl = (module as typeof module & { wireMagicLinkControl: (document: Document, submit: (email: string) => Promise<{ kind: 'sent' | 'error'; message: string }>) => () => void }).wireMagicLinkControl;
+  const document = window.document.implementation.createHTMLDocument();
+  document.body.innerHTML = '<div><input aria-label="Email address" value="momo@example.com"><button>SEND LINK</button></div><div></div>';
+  const submit = vi.fn().mockResolvedValue({ kind: 'sent' as const, message: 'A real link is on its way.' });
+
+  wireMagicLinkControl(document, submit);
+  document.querySelector('button')!.click();
+
+  await waitFor(() => expect(submit).toHaveBeenCalledWith('momo@example.com'));
+  expect(document.body.lastElementChild?.textContent).toBe('A real link is on its way.');
+});
+
+it('wires the magic-link control after the Design Canvas boot event', async () => {
+  const onMagicLink = vi.fn().mockResolvedValue({ kind: 'sent' as const, message: 'A real link is on its way.' });
+  const { container } = render(<HandoffFrame src="/handoff/landing.dc.html" title="Katalos landing" onMagicLink={onMagicLink} />);
+  const frame = container.querySelector('iframe')!;
+  const frameDocument = window.document.implementation.createHTMLDocument();
+  frameDocument.body.innerHTML = '<div><input aria-label="Email address" value="momo@example.com"><button>SEND LINK</button></div><div></div>';
+  Object.defineProperty(frame, 'contentDocument', { configurable: true, value: frameDocument });
+
+  fireEvent(window, new MessageEvent('message', { origin: window.location.origin, source: frame.contentWindow, data: { type: '__dc_booted' } }));
+  frameDocument.querySelector('button')!.click();
+
+  await waitFor(() => expect(onMagicLink).toHaveBeenCalledWith('momo@example.com'));
+});
+
 it('forwards a same-origin scene entry event to its live owner callback', () => {
   const onEntryOpen = vi.fn();
   const props = { src: '/handoff/landing.dc.html', title: 'Owner room', onEntryOpen } as unknown as React.ComponentProps<typeof HandoffFrame>;
