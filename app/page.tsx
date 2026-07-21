@@ -1,22 +1,20 @@
-'use client';
-
-import { HandoffFrame, type MagicLinkResult } from '@/components/handoff/HandoffFrame';
+import { MediaRoom } from '@/components/room/MediaRoom';
+import { SiteNav } from '@/components/ui/SiteNav';
+import { demoEntries } from '@/lib/media/demo-data';
 
 export default function Home() {
-  function scrollToMagicLink() {
-    document.getElementById('sign-in')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  async function sendMagicLink(email: string): Promise<MagicLinkResult> {
-    try {
-      const response = await fetch('/api/auth/magic-link', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email }) });
-      const body = await response.json().catch(() => null) as { error?: string } | null;
-      if (!response.ok) return { kind: 'error', message: body?.error ?? 'We could not send that link. Please retry.' };
-      return { kind: 'sent', message: 'Link sent! It works once and expires in 15 minutes.' };
-    } catch {
-      return { kind: 'error', message: 'We could not send that link. Please retry.' };
-    }
-  }
-
-  return <HandoffFrame src="/handoff/landing.dc.html" title="Katalos landing" onMakeRoom={scrollToMagicLink} onMagicLink={sendMagicLink} />;
+  return (
+    <main className="home-page">
+      <SiteNav actionHref="/signin" actionLabel="MAKE YOUR ROOM" />
+      <header className="hero pixel-panel">
+        <div className="hero-copy-block"><p className="eyebrow">A cozy room for your media</p><h1>KATALOS</h1><p className="hero-copy">Your books, manga, anime, and movies—shelved as a room you can share.</p><a className="pixel-link-button" href="/signin">MAKE YOUR ROOM</a></div>
+        <aside className="hero-badge" aria-label="A tiny Katalos room"><span aria-hidden="true">✦</span><p>MAKE YOUR TASTE TANGIBLE</p></aside>
+      </header>
+      <section className="landing-room" aria-label="Featured media room">
+        <p className="eyebrow">Momo&apos;s room · live demo — click any spine or tape</p>
+        <MediaRoom entries={demoEntries.filter((entry) => entry.visibility === 'public')} readOnly owner={false} />
+        <a className="wall-slice-signin" href="/signin">ALREADY HAVE A ROOM? SIGN IN</a>
+      </section>
+    </main>
+  );
 }
