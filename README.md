@@ -15,7 +15,7 @@ then share it with one public link. Private entries never leave your side of the
 
 <br><br>
 
-[![Live demo](https://img.shields.io/badge/live_demo-katalos--black.vercel.app-f2a65a?style=for-the-badge&labelColor=241611)](https://katalos-black.vercel.app)
+[![Live demo](https://img.shields.io/badge/live_demo-katalos.tech-f2a65a?style=for-the-badge&labelColor=241611)](https://katalos.tech)
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
@@ -28,6 +28,28 @@ then share it with one public link. Private entries never leave your side of the
 </div>
 
 ---
+
+## Hackathon submission snapshot
+
+**Suggested category:** Consumer / social apps — Katalos turns personal media tracking into a visual, shareable room.
+
+**Code repository:** [github.com/Samat-ai/katalos](https://github.com/Samat-ai/katalos)
+
+**Short description:** Katalos is a privacy-first media taste room. People curate books, manga, anime, and movies as objects in two pixel-art nooks. Placement communicates status at a glance, private entries stay out of public queries and taste analysis, and a single room URL lets friends explore without an account. Passwordless magic-link sign-in, catalog search, interactive room objects, and an AI-generated Taste Profile make the room useful as both a tracker and a conversation starter.
+
+**Judge-ready demo:** Open [katalos.tech](https://katalos.tech). The landing page and public-room experience are available without an account; the owner flow is available through the passwordless sign-in link. For a full authenticated review, provide a temporary test email/account in the hackathon submission form rather than committing credentials to this repository.
+
+**Supported platforms:** Any current desktop or mobile browser for the web app; Node.js 20+ for local development; Vercel for the Next.js app; and Google Cloud Run for the optional Taste Profiler service.
+
+**Video checklist:** Keep the public YouTube demo under three minutes. Show the landing room, a public room, the owner flow, one private/public media decision, and the Taste Profile. Narrate how Codex and GPT-5.6 were used to turn the handoff design into a tested, working product. Use original screen/audio capture or properly licensed assets only.
+
+## How Codex contributed
+
+Codex was used as an implementation partner throughout the project, not just as a code generator. GPT-5.6 helped inspect the existing codebase, turn the visual handoff into a reusable UI system, reconcile the design with the live Supabase/media flows, and debug route, responsive-layout, and interaction regressions. Codex also drove the test loop: it added focused Vitest coverage, ran the full suite and production build, and used browser smoke tests to check the landing CTA, sign-in route, mobile layout, and absence of horizontal overflow.
+
+The key product decisions remained deliberate human choices: the room metaphor replaces a generic card grid; spatial placement communicates media status; privacy is enforced in database/public-query boundaries; and the visual language stays pixel-art, dark, and cyan-accented instead of accepting a hallucinated redesign. GPT-5.6/Codex accelerated exploration, implementation, and verification while the final interaction model and scope were reviewed against the handoff.
+
+At runtime, the Taste Profiler uses Gemini 2.5 Flash through the Cloud Run service. GPT-5.6 and Codex contributed to building and validating the application; they are not presented as the runtime model behind the Taste Profile.
 
 ## The room
 
