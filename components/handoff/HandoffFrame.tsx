@@ -9,6 +9,11 @@ type HandoffFrameProps = {
   shelves?: HandoffShelves;
 };
 
+export function findSignInControls(document: Document) {
+  return [...document.querySelectorAll<HTMLElement>('a[href="/signin"], [data-katalos-signin], div')]
+    .filter((element) => element.matches('a[href="/signin"], [data-katalos-signin]') || element.textContent?.trim() === 'MAKE YOUR ROOM');
+}
+
 /** Mounts a supplied Design Canvas document unchanged. */
 export function HandoffFrame({ src, title, shelves }: HandoffFrameProps) {
   const frameRef = useRef<HTMLIFrameElement>(null);
@@ -29,7 +34,7 @@ export function HandoffFrame({ src, title, shelves }: HandoffFrameProps) {
     const onLoad = () => {
       const document = frame.contentDocument;
       if (!document) return;
-      document.querySelectorAll('a[href="/signin"], [data-katalos-signin]').forEach((element) => {
+      findSignInControls(document).forEach((element) => {
         element.addEventListener('click', (event) => {
           event.preventDefault();
           window.location.assign('/signin');

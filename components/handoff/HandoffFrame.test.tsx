@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
-import { HandoffFrame } from './HandoffFrame';
+import { findSignInControls, HandoffFrame } from './HandoffFrame';
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -15,4 +15,11 @@ it('injects live shelf data before mounting a literal room document', async () =
 
   await waitFor(() => expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('window.__KATALOS_ENTRIES')));
   expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('Book One'));
+});
+
+it('recognizes literal make-your-room controls as sign-in actions', () => {
+  const document = window.document.implementation.createHTMLDocument();
+  document.body.innerHTML = '<div>MAKE YOUR ROOM</div><div>just decoration</div><a href="/signin">SIGN IN</a>';
+
+  expect(findSignInControls(document)).toHaveLength(2);
 });
