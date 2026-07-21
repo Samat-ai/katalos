@@ -21,7 +21,7 @@ function NookScaleWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
-    const fitNook = () => wrapper.style.setProperty('--kscale', Math.min(1, wrapper.clientWidth / 416).toFixed(4));
+    const fitNook = () => wrapper.style.setProperty('--kscale', String(Math.min(1, wrapper.clientWidth / 416)));
     fitNook();
     if (typeof ResizeObserver === 'undefined') {
       window.addEventListener('resize', fitNook);

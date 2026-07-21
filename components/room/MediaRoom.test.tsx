@@ -6,6 +6,24 @@ import { MediaRoom } from './MediaRoom';
 
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
+it('updates each fixed nook scale when its wrapper is observed resizing', () => {
+  const observers: ResizeObserverCallback[] = [];
+  class ResizeObserverStub {
+    constructor(callback: ResizeObserverCallback) { observers.push(callback); }
+    observe() {}
+    disconnect() {}
+    unobserve() {}
+  }
+  vi.stubGlobal('ResizeObserver', ResizeObserverStub);
+  vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(208);
+
+  const { container } = render(<MediaRoom entries={demoEntries} readOnly />);
+  observers.forEach((callback) => callback([], {} as ResizeObserver));
+
+  expect([...container.querySelectorAll<HTMLElement>('.knookwrap')]).toHaveLength(2);
+  expect([...container.querySelectorAll<HTMLElement>('.knookwrap')].every((wrapper) => wrapper.style.getPropertyValue('--kscale') === '0.5')).toBe(true);
+});
+
 it('opens a selected media entry in the detail drawer', async () => {
   const user = userEvent.setup();
 
