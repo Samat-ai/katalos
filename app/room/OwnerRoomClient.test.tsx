@@ -1,8 +1,13 @@
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, it, vi } from 'vitest';
-import { OwnerRoomClient } from './OwnerRoomClient';
 import type { MediaEntry } from '@/lib/media/types';
+
+vi.mock('@/components/handoff/HandoffFrame', () => ({
+  HandoffFrame: ({ onEntryOpen, onMakeRoom }: { onEntryOpen?: (entryId: string) => void; onMakeRoom?: () => void }) => <><button type="button" onClick={() => onEntryOpen?.('book')}>OPEN SCENE ENTRY</button><button type="button" onClick={onMakeRoom}>MAKE SCENE ADD</button></>,
+}));
+
+import { OwnerRoomClient } from './OwnerRoomClient';
 
 afterEach(cleanup);
 
@@ -15,6 +20,25 @@ it('opens the first-add flow for a new room', () => {
 it('opens the add form from the initial add query state even when the room has entries', () => {
   render(<OwnerRoomClient initialEntries={[{ id: 'book', title: 'Book', type: 'book', status: 'finished', synopsis: '', visibility: 'public' }]} username="katalos" initialAdd />);
   expect(screen.getByRole('heading', { name: /add media/i })).toBeVisible();
+});
+
+it('opens the live edit form when a scene entry is selected', async () => {
+  const user = userEvent.setup();
+  render(<OwnerRoomClient initialEntries={[{ id: 'book', title: 'Book', type: 'book', status: 'finished', synopsis: '', visibility: 'public' }]} username="katalos" />);
+
+  await user.click(screen.getByRole('button', { name: 'OPEN SCENE ENTRY' }));
+
+  expect(screen.getByRole('heading', { name: 'EDIT MEDIA' })).toBeVisible();
+  expect(screen.getByLabelText('Title')).toHaveValue('Book');
+});
+
+it('opens the live add form from the handoff make control', async () => {
+  const user = userEvent.setup();
+  render(<OwnerRoomClient initialEntries={[{ id: 'book', title: 'Book', type: 'book', status: 'finished', synopsis: '', visibility: 'public' }]} username="katalos" />);
+
+  await user.click(screen.getByRole('button', { name: 'MAKE SCENE ADD' }));
+
+  expect(screen.getByRole('heading', { name: 'ADD MEDIA' })).toBeVisible();
 });
 
 it('filters by a selected status chip and shows private entries with a private badge', async () => {

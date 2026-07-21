@@ -1,4 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { afterEach, expect, it, vi } from 'vitest';
 import { findSignInControls, HandoffFrame } from './HandoffFrame';
 
@@ -14,7 +16,13 @@ it('injects live shelf data before mounting a literal room document', async () =
   render(<HandoffFrame src="/handoff/landing.dc.html" title="Momo's room" shelves={{ shelf1: [{ id: 'book-1', t: 'Book One', ty: 'book', st: 'finished', r: 0, n: '', syn: '', c: '#6fb3a4' }], shelf2: [], nowStack: [], pileBooks: [], cabinet: [], nowPlaying: [], watchNext: [], pausedTapes: [] }} />);
 
   await waitFor(() => expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('window.__KATALOS_ENTRIES')));
+  expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('window.__KATALOS_PARENT_ORIGIN="http://localhost:3000"'));
   expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('Book One'));
+});
+
+it('sends hydrated shelf entry clicks to the live host', async () => {
+  const source = await readFile(resolve(process.cwd(), 'public/handoff/landing.dc.html'), 'utf8');
+  expect(source).toContain("window.parent.postMessage({ source: 'katalos-handoff', type: 'open-entry'");
 });
 
 it('recognizes literal make-your-room controls as sign-in actions', () => {
@@ -37,4 +45,15 @@ it('exports a document-level literal control wiring helper', async () => {
   removeListeners();
 
   expect(onMakeRoom).toHaveBeenCalledOnce();
+});
+
+it('forwards a same-origin scene entry event to its live owner callback', () => {
+  const onEntryOpen = vi.fn();
+  const props = { src: '/handoff/landing.dc.html', title: 'Owner room', onEntryOpen } as unknown as React.ComponentProps<typeof HandoffFrame>;
+  render(<HandoffFrame {...props} />);
+  const frame = screen.getByTitle('Owner room');
+
+  fireEvent(window, new MessageEvent('message', { origin: window.location.origin, source: frame.contentWindow, data: { source: 'katalos-handoff', type: 'open-entry', entryId: 'book-1' } }));
+
+  expect(onEntryOpen).toHaveBeenCalledWith('book-1');
 });
