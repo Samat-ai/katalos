@@ -14,7 +14,7 @@ export default function Home() {
       </header>
       <section className="landing-room" aria-label="Featured media room">
         <p className="eyebrow">Momo&apos;s room · live demo — click any spine or tape</p>
-        <MediaRoom entries={demoEntries.filter((entry) => entry.visibility === 'public')} readOnly />
+        <MediaRoom entries={demoEntries.filter((entry) => entry.visibility === 'public')} readOnly owner={false} />
       </section>
       <section id="make-your-room" className="landing-signin pixel-panel">
         <h2>GOT A ROOM ALREADY?</h2>

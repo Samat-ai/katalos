@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { MediaEntryForm, type MediaEntryInput } from '@/components/media/MediaEntryForm';
 import { MediaRoom } from '@/components/room/MediaRoom';
 import type { MediaEntry } from '@/lib/media/types';
+import { getRoomZone } from '@/lib/room/placement';
 
 type ApiResult = { entry?: MediaEntry; error?: string };
 
@@ -12,6 +13,7 @@ export function OwnerRoomClient({ initialEntries, username, avatar = 'girl' }: {
   const [editing, setEditing] = useState<MediaEntry | null | undefined>(initialEntries.length ? undefined : null);
   const [message, setMessage] = useState('');
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [manageZone, setManageZone] = useState<ReturnType<typeof getRoomZone> | null>(null);
 
   async function save(entry: MediaEntryInput) {
     const endpoint = editing ? `/api/media/${editing.id}` : '/api/media';
@@ -39,8 +41,8 @@ export function OwnerRoomClient({ initialEntries, username, avatar = 'girl' }: {
     <header className="owner-header"><div><p className="eyebrow">Your room</p><h1>{username}&apos;S ROOM</h1><p className="room-url">katalos.app/u/{username}</p></div><div className="owner-actions"><button onClick={() => setEditing(null)}>+ ADD MEDIA</button><button onClick={() => void copyPublicLink()}>COPY PUBLIC LINK</button></div></header>
     {message && <p role="status">{message}</p>}
     {editing !== undefined && <MediaEntryForm initialEntry={editing ?? undefined} onSave={(entry) => void save(entry)} onCancel={() => setEditing(undefined)} />}
-    <MediaRoom entries={entries} readOnly={false} avatar={avatar} />
+    <MediaRoom entries={entries} readOnly={false} owner avatar={avatar} onZoneOverflow={setManageZone} />
     {!entries.length && <section className="empty-state"><h2>Your room is ready for its first story.</h2><p>Nothing here yet—and that&apos;s fine. Add a book, manga, anime, or movie to start the scene.</p></section>}
-    <section className="entry-list" aria-label="Your media"><h2>MANAGE MEDIA</h2>{entries.map((entry) => <div key={entry.id} className="manage-row"><span className="type-chip">{entry.type}</span><strong>{entry.title}</strong><span className={`status-chip ${entry.status}`}>{entry.status.replace('_', ' ')}</span><span className="visibility-chip">{entry.visibility === 'public' ? 'PUB' : 'PRI'}</span>{pendingDelete === entry.id ? <span className="delete-confirm">DELETE? <button onClick={() => void remove(entry)}>DELETE</button><button onClick={() => setPendingDelete(null)}>KEEP</button></span> : <span><button onClick={() => setEditing(entry)}>EDIT</button><button onClick={() => setPendingDelete(entry.id)}>DELETE</button></span>}</div>)}</section>
+    <section className="entry-list" aria-label="Your media"><h2>MANAGE MEDIA{manageZone ? ` · ${manageZone.replace(/-/g, ' ')}` : ''}</h2>{manageZone && <button type="button" onClick={() => setManageZone(null)}>SHOW ALL</button>}{entries.filter((entry) => !manageZone || getRoomZone(entry) === manageZone).map((entry) => <div key={entry.id} className="manage-row"><span className="type-chip">{entry.type}</span><strong>{entry.title}</strong><span className={`status-chip ${entry.status}`}>{entry.status.replace('_', ' ')}</span><span className="visibility-chip">{entry.visibility === 'public' ? 'PUB' : 'PRI'}</span>{pendingDelete === entry.id ? <span className="delete-confirm">DELETE? <button onClick={() => void remove(entry)}>DELETE</button><button onClick={() => setPendingDelete(null)}>KEEP</button></span> : <span><button onClick={() => setEditing(entry)}>EDIT</button><button onClick={() => setPendingDelete(entry.id)}>DELETE</button></span>}</div>)}</section>
   </>;
 }
