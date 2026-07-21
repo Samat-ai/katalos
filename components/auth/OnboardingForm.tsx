@@ -7,7 +7,7 @@ import { OnboardingSchema } from '@/lib/auth/schema';
 
 export function OnboardingForm() {
   const router = useRouter();
-  const [displayName, setDisplayName] = useState('');
+  const [displayName, setDisplayName] = useState('Momo');
   const [username, setUsername] = useState('');
   const [avatar, setAvatar] = useState<'girl' | 'boy'>('girl');
   const [error, setError] = useState('');

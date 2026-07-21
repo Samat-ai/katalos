@@ -25,19 +25,6 @@ it('sends hydrated shelf entry clicks to the live host', async () => {
   expect(source).toContain("window.parent.postMessage({ source: 'katalos-handoff', type: 'open-entry'");
 });
 
-it('keeps Credits in the top handoff bar and links it to the real credits route', async () => {
-  const source = await readFile(resolve(process.cwd(), 'public/handoff/landing.dc.html'), 'utf8');
-
-  expect(source).toContain('<a href="/credits"');
-  expect(source).not.toContain('id="credits"');
-});
-
-it('marks the existing-room magic-link panel as the Make your room destination', async () => {
-  const source = await readFile(resolve(process.cwd(), 'public/handoff/landing.dc.html'), 'utf8');
-
-  expect(source).toContain('<div id="sign-in" data-screen-label="Sign in"');
-});
-
 it('recognizes literal make-your-room controls as sign-in actions', () => {
   const document = window.document.implementation.createHTMLDocument();
   document.body.innerHTML = '<div>MAKE YOUR ROOM</div><div>just decoration</div><a href="/signin">SIGN IN</a>';

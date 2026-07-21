@@ -10,5 +10,5 @@ export default async function OnboardingPage() {
   if (!user) redirect('/');
   const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).maybeSingle();
   if (profile) redirect('/room');
-  return <main className="handoff-auth-page"><nav className="handoff-topbar"><a className="handoff-wordmark" href="/">KATALOS</a><a className="handoff-credits-link" href="/credits">Credits</a></nav><section className="handoff-onboarding-shell"><OnboardingForm /></section></main>;
+  return <main className="handoff-auth-page"><nav className="handoff-topbar"><a className="handoff-wordmark" href="/">KATALOS</a></nav><section className="handoff-onboarding-shell"><OnboardingForm /></section></main>;
 }
