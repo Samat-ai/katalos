@@ -26,6 +26,14 @@ it('uses readable labeled type tiles instead of text-glyph icons', () => {
   expect(screen.queryByText('▥')).not.toBeInTheDocument();
 });
 
+it('keeps the add-media sequence inside one pixel workbench', () => {
+  const { container } = render(<MediaEntryForm onSave={vi.fn()} />);
+
+  expect(container.querySelector('.media-workbench')).not.toBeNull();
+  expect(screen.getByText('1 · TYPE')).toBeVisible();
+  expect(screen.getByText('4 · SAVE')).toBeVisible();
+});
+
 it('uses status chips, star buttons, and a public/private toggle without changing its submitted payload', async () => {
   const user = userEvent.setup();
   const onSave = vi.fn();

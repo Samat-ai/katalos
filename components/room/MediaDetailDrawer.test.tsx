@@ -18,9 +18,21 @@ it('uses the responsive drawer shell, CoverBlock fallback, and no-rating copy', 
   const entry = { ...demoEntries[0], coverUrl: undefined, rating: undefined };
   render(<MediaDetailDrawer entry={entry} onClose={vi.fn()} />);
 
-  expect(screen.getByRole('dialog')).toHaveClass('detail-drawer', 'drawer-responsive');
+  expect(screen.getByRole('dialog')).toHaveClass('detail-drawer', 'drawer-responsive', 'pixel-drawer');
   expect(screen.getByLabelText(entry.title)).toBeVisible();
   expect(screen.getByText('No rating yet')).toBeVisible();
+});
+
+it('keeps edit and delete actions wired when the owner provides handlers', () => {
+  const onEdit = vi.fn();
+  const onDelete = vi.fn();
+  render(<MediaDetailDrawer entry={demoEntries[0]} onClose={vi.fn()} onEdit={onEdit} onDelete={onDelete} />);
+
+  fireEvent.click(screen.getByRole('button', { name: 'EDIT' }));
+  fireEvent.click(screen.getByRole('button', { name: 'DELETE' }));
+
+  expect(onEdit).toHaveBeenCalledWith(demoEntries[0]);
+  expect(onDelete).toHaveBeenCalledWith(demoEntries[0]);
 });
 
 it('traps focus and returns it to the opener when closed', () => {

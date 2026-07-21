@@ -415,6 +415,8 @@ input:focus,textarea:focus,select:focus { border-color:var(--k-accent); }
   margin:0 0 30px;
   padding:22px;
 }
+.media-workbench { border-width:4px; background:var(--k-panel); }
+.media-workbench .form-save { border-color:var(--k-accent); }
 .entry-form > h2 { padding-bottom:12px; border-bottom:3px solid var(--k-ink); }
 .form-step {
   display:grid;
@@ -911,6 +913,7 @@ input:focus,textarea:focus,select:focus { border-color:var(--k-accent); }
   box-shadow:8px 8px 0 var(--k-ink);
   animation:k-drawer .22s steps(4) both;
 }
+.pixel-drawer { border-color:var(--k-ink); background:var(--k-panel); }
 .drawer-header {
   position:sticky;
   z-index:1;
