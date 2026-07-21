@@ -52,12 +52,30 @@ it('draws one static frame without scheduling animation for reduced motion', () 
   expect(requestFrame).not.toHaveBeenCalled();
 });
 
-it('keeps keyboard paddle controls and describes every supported control', () => {
+it('describes every supported keyboard paddle control', () => {
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(mockCanvasContext());
   render(<PongChannel active />);
   const canvas = screen.getByRole('application', { name: /playable pong/i });
 
-  expect(fireEvent.keyDown(canvas, { key: 'ArrowUp' })).toBe(false);
-  expect(fireEvent.keyDown(canvas, { key: 's' })).toBe(false);
   expect(canvas).toHaveAccessibleName(/mouse, arrow keys, or w and s/i);
+});
+
+it.each([
+  ['ArrowUp', 'up'], ['w', 'up'], ['ArrowDown', 'down'], ['s', 'down'],
+] as const)('moves the player paddle %s when pressed', (key, direction) => {
+  const context = mockCanvasContext();
+  const frames: FrameRequestCallback[] = [];
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(context);
+  vi.stubGlobal('requestAnimationFrame', vi.fn((callback: FrameRequestCallback) => { frames.push(callback); return frames.length; }));
+  vi.stubGlobal('cancelAnimationFrame', vi.fn());
+  render(<PongChannel active />);
+  const canvas = screen.getByRole('application', { name: /playable pong/i });
+  const paddleY = () => [...(context.fillRect as ReturnType<typeof vi.fn>).mock.calls].filter(([x, , width, height]) => x === 2 && width === 4 && height === 22).at(-1)?.[1] as number;
+  const initialY = paddleY();
+
+  fireEvent.keyDown(canvas, { key });
+  act(() => frames[0](0));
+
+  expect(paddleY()).toSatisfy((nextY) => direction === 'up' ? nextY < initialY : nextY > initialY);
+  fireEvent.keyUp(canvas, { key });
 });
