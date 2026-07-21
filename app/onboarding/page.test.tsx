@@ -17,5 +17,5 @@ it('keeps Credits in the onboarding top bar', async () => {
 
   render(await OnboardingPage());
 
-  expect(screen.getByRole('link', { name: 'Credits' })).toHaveAttribute('href', '/credits');
+  expect(screen.getByRole('link', { name: /credits/i })).toHaveAttribute('href', '/credits');
 });

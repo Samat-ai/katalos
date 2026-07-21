@@ -4,14 +4,22 @@ import Home from './page';
 
 afterEach(cleanup);
 
-it('mounts the literal Katalos landing handoff', () => {
+it('introduces Katalos', () => {
   render(<Home />);
-  expect(screen.getByTitle('Katalos landing')).toHaveAttribute('src', '/handoff/landing.dc.html');
+  expect(screen.getByRole('heading', { name: /katalos/i })).toBeInTheDocument();
 });
 
-it('keeps the source document in an accessible named frame', () => {
+it('lets visitors explore a featured room before signing in', () => {
   render(<Home />);
-  expect(screen.getByTitle('Katalos landing')).toBeVisible();
+  expect(screen.getAllByRole('region', { name: /reading nook/i }).at(-1)).toBeVisible();
+  expect(screen.getAllByRole('button', { name: /spirited away/i }).at(-1)).toBeVisible();
+});
+
+it('pairs the demo room with a wall-side sign-in invitation', () => {
+  render(<Home />);
+
+  expect(screen.getAllByRole('link', { name: /make your room/i }).at(-1)).toHaveAttribute('href', '/signin');
+  expect(screen.getByRole('link', { name: /already have a room/i })).toHaveAttribute('href', '/signin');
 });
 
 it('uses the handoff hero with a separate taste-tangible badge', () => {

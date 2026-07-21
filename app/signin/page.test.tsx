@@ -1,13 +1,11 @@
-import { expect, it, vi } from 'vitest';
-
-const { redirect } = vi.hoisted(() => ({ redirect: vi.fn() }));
-
-vi.mock('next/navigation', () => ({ redirect }));
-
+import { render, screen } from '@testing-library/react';
+import { expect, it } from 'vitest';
 import SignInPage from './page';
 
-it('redirects legacy sign-in links to the landing magic-link section', () => {
-  SignInPage();
+it('renders a direct magic-link sign-in page', () => {
+  render(<SignInPage />);
 
-  expect(redirect).toHaveBeenCalledWith('/#sign-in');
+  expect(screen.getByRole('heading', { name: /sign in to your room/i })).toBeVisible();
+  expect(screen.getByLabelText('EMAIL')).toBeVisible();
+  expect(screen.getByRole('link', { name: 'BACK HOME' })).toHaveAttribute('href', '/');
 });
