@@ -14,6 +14,13 @@ export function findSignInControls(document: Document) {
     .filter((element) => element.matches('a[href="/signin"], [data-katalos-signin]') || element.textContent?.trim() === 'MAKE YOUR ROOM');
 }
 
+export function wireLiteralControls(document: Document, onMakeRoom: () => void) {
+  const listener = (event: Event) => { event.preventDefault(); onMakeRoom(); };
+  const controls = findSignInControls(document);
+  controls.forEach((element) => element.addEventListener('click', listener));
+  return () => controls.forEach((element) => element.removeEventListener('click', listener));
+}
+
 /** Mounts a supplied Design Canvas document unchanged. */
 export function HandoffFrame({ src, title, shelves }: HandoffFrameProps) {
   const frameRef = useRef<HTMLIFrameElement>(null);
@@ -34,12 +41,7 @@ export function HandoffFrame({ src, title, shelves }: HandoffFrameProps) {
     const onLoad = () => {
       const document = frame.contentDocument;
       if (!document) return;
-      findSignInControls(document).forEach((element) => {
-        element.addEventListener('click', (event) => {
-          event.preventDefault();
-          window.location.assign('/signin');
-        });
-      });
+      wireLiteralControls(document, () => window.location.assign('/signin'));
     };
     frame.addEventListener('load', onLoad);
     return () => frame.removeEventListener('load', onLoad);

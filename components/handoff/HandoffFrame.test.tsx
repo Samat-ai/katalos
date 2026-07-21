@@ -23,3 +23,18 @@ it('recognizes literal make-your-room controls as sign-in actions', () => {
 
   expect(findSignInControls(document)).toHaveLength(2);
 });
+
+it('exports a document-level literal control wiring helper', async () => {
+  const module = await import('./HandoffFrame');
+  expect(module).toHaveProperty('wireLiteralControls');
+  const wireLiteralControls = (module as typeof module & { wireLiteralControls: (document: Document, onMakeRoom: () => void) => () => void }).wireLiteralControls;
+  const document = window.document.implementation.createHTMLDocument();
+  document.body.innerHTML = '<div>MAKE YOUR ROOM</div>';
+  const onMakeRoom = vi.fn();
+
+  const removeListeners = wireLiteralControls(document, onMakeRoom);
+  document.querySelector('div')!.click();
+  removeListeners();
+
+  expect(onMakeRoom).toHaveBeenCalledOnce();
+});
