@@ -12,7 +12,7 @@ it('shows idle, sending, and sent labels while a magic link is requested', async
   render(<MagicLinkForm />);
 
   expect(screen.getByRole('button', { name: 'SEND LINK' })).toBeEnabled();
-  fireEvent.change(screen.getByLabelText('EMAIL ADDRESS'), { target: { value: 'momo@example.com' } });
+  fireEvent.change(screen.getByLabelText('EMAIL'), { target: { value: 'momo@example.com' } });
   fireEvent.click(screen.getByRole('button', { name: 'SEND LINK' }));
   expect(screen.getByRole('button', { name: 'SENDING…' })).toBeDisabled();
 
@@ -24,7 +24,7 @@ it('shows an error label when the magic-link request fails', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, json: async () => ({ error: 'Unable to send link.' }) }));
   render(<MagicLinkForm />);
 
-  fireEvent.change(screen.getByLabelText('EMAIL ADDRESS'), { target: { value: 'momo@example.com' } });
+  fireEvent.change(screen.getByLabelText('EMAIL'), { target: { value: 'momo@example.com' } });
   fireEvent.click(screen.getByRole('button', { name: 'SEND LINK' }));
 
   await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('Unable to send link.'));

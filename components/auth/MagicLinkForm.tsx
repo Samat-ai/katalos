@@ -23,8 +23,8 @@ export function MagicLinkForm() {
     }
   }
 
-  return <form className="magic-link-form" onSubmit={submit} noValidate>
-    <label htmlFor="email">EMAIL ADDRESS</label>
+  return <form className="magic-link-form handoff-magic-form" onSubmit={submit} noValidate>
+    <label htmlFor="email">EMAIL</label>
     <div className="magic-link-controls"><input id="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@somewhere.com" required /><button disabled={sending} type="submit">{sending ? 'SENDING…' : 'SEND LINK'}</button></div>
     {result && <p role={result.kind === 'error' ? 'alert' : 'status'}>{result.message}</p>}
   </form>;
