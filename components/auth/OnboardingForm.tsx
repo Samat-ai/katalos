@@ -30,14 +30,14 @@ export function OnboardingForm() {
     } finally { setSaving(false); }
   }
 
-  return <form className="entry-form onboarding-form" onSubmit={submit} noValidate>
-    <h2>NAME YOUR ROOM</h2>
-    <label>Display name<input value={displayName} onChange={(event) => setDisplayName(event.target.value)} maxLength={80} /></label>
-    <label>Username<input value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} maxLength={32} aria-describedby="username-help" /></label>
+  return <form className="entry-form onboarding-form handoff-onboarding-form" onSubmit={submit} noValidate>
+    <header className="handoff-onboarding-heading"><span aria-hidden="true" /><div><h2>NAME YOUR ROOM</h2><p>Two things and the door opens.</p></div></header>
+    <label>DISPLAY NAME<input value={displayName} onChange={(event) => setDisplayName(event.target.value)} maxLength={80} /></label>
+    <label>USERNAME · <small>lowercase, becomes your public address</small><input value={username} onChange={(event) => setUsername(event.target.value.toLowerCase())} maxLength={32} aria-describedby="username-help" /></label>
     <p id="username-help">Use 3–32 lowercase letters, numbers, underscores, or dashes — this becomes your public room link.</p>
     <p className="room-url">www.katalos.tech/u/{username || '<username>'}</p>
     <AvatarPicker value={avatar} onChange={setAvatar} />
     {error && <p role="alert">{error}</p>}
-    <div><button type="submit" disabled={saving}>{saving ? 'Saving…' : 'Create my room'}</button></div>
+    <div><button type="submit" disabled={saving}>{saving ? 'SAVING…' : 'OPEN MY ROOM'}</button></div>
   </form>;
 }

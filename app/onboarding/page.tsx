@@ -10,5 +10,5 @@ export default async function OnboardingPage() {
   if (!user) redirect('/');
   const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).maybeSingle();
   if (profile) redirect('/room');
-  return <main className="owner-page"><header><div><p className="eyebrow">Welcome to Katalos</p><h1>Set up your room.</h1><p>Choose the name visitors will see and your public handle.</p></div></header><OnboardingForm /></main>;
+  return <main className="handoff-auth-page"><nav className="handoff-topbar"><a className="handoff-wordmark" href="/">KATALOS</a></nav><section className="handoff-onboarding-shell"><OnboardingForm /></section></main>;
 }

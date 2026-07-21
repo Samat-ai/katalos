@@ -17,9 +17,9 @@ afterEach(cleanup);
 it('posts the avatar selected during onboarding', async () => {
   render(<OnboardingForm />);
 
-  fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'momo-room' } });
+  fireEvent.change(screen.getByLabelText(/USERNAME/i), { target: { value: 'momo-room' } });
   fireEvent.click(screen.getByRole('button', { name: 'BOY' }));
-  fireEvent.click(screen.getByRole('button', { name: 'Create my room' }));
+  fireEvent.click(screen.getByRole('button', { name: 'OPEN MY ROOM' }));
 
   await waitFor(() => expect(fetch).toHaveBeenCalled());
   expect(JSON.parse(vi.mocked(fetch).mock.calls[0][1]?.body as string)).toEqual({
