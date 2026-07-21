@@ -199,6 +199,7 @@ small { color:var(--k-panelDim); font-size:17px; line-height:1.15; }
   max-width:1100px;
   margin:0 auto 24px;
 }
+.site-nav > [role=group] { justify-self:center; }
 .brand.logo-badge {
   display:inline-flex;
   width:max-content;
@@ -1032,7 +1033,7 @@ input:focus,textarea:focus,select:focus { border-color:var(--k-accent); }
     grid-template-columns:minmax(0,1fr) auto;
     align-items:start;
   }
-  .theme-switcher { grid-column:1 / -1; grid-row:2; justify-self:stretch; }
+  .site-nav > [role=group] { grid-column:1 / -1; grid-row:2; justify-self:stretch; }
   .theme-switcher button { flex:1; }
   .theme-switcher-label { display:inline; }
   .hero,.landing-hero { grid-template-columns:1fr; gap:18px; margin-bottom:28px; padding:22px; }

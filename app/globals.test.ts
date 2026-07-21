@@ -38,3 +38,7 @@ it('styles upstream room controls with the same dark handoff palette', () => {
   expect(css).toContain('.handoff-owner-actions { color:var(--k-panelText);');
   expect(css).toContain('.editor-layer { position:fixed;');
 });
+
+it('keeps the theme switcher together on the mobile navigation row', () => {
+  expect(css).toContain('.site-nav > [role=group] { grid-column:1 / -1; grid-row:2; justify-self:stretch; }');
+});
