@@ -58,6 +58,14 @@ it('offers the small room toys as keyboard-accessible controls', () => {
   expect(screen.getByRole('button', { name: /change channel/i })).toBeVisible();
 });
 
+it('layers a woven rug and lamp wedge into the reading scene', () => {
+  render(<MediaRoom entries={demoEntries} readOnly />);
+
+  const readingNook = screen.getByRole('region', { name: /reading nook/i });
+  expect(readingNook.querySelector('.scene-rug')).not.toBeNull();
+  expect(screen.getByRole('button', { name: /toggle reading lamp/i }).querySelector('.lamp-wedge')).not.toBeNull();
+});
+
 it('cycles the TV into its playable Pong channel', () => {
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
   render(<MediaRoom entries={demoEntries} readOnly />);
