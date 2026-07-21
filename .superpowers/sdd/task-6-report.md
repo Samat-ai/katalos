@@ -11,3 +11,9 @@ Verification:
 - `npm run build` — passing.
 
 Note: direct `npx tsc --noEmit` reports existing test typing errors outside this task (layout/catalog/CoverBlock test helpers); the production build's TypeScript step passes.
+
+Follow-up fix:
+
+- Returned `chooseCatalogItem` directly to `CatalogSearchPicker` so its `USING…` state stays locked until the catalog-details prefill request resolves.
+- Added a picker-to-form asynchronous regression test with a deferred details response.
+- `npm test -- components/media/MediaEntryForm.test.tsx components/media/CatalogSearchPicker.test.tsx` — 7 passing.
