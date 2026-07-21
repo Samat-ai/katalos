@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import { expect, it } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
+import { afterEach, expect, it } from 'vitest';
 import Home from './page';
+
+afterEach(cleanup);
 
 it('introduces Katalos', () => {
   render(<Home />);
@@ -11,4 +13,11 @@ it('lets visitors explore a featured room before signing in', () => {
   render(<Home />);
   expect(screen.getAllByRole('region', { name: /reading nook/i }).at(-1)).toBeVisible();
   expect(screen.getAllByRole('button', { name: /spirited away/i }).at(-1)).toBeVisible();
+});
+
+it('pairs the demo room with a wall-side sign-in invitation', () => {
+  render(<Home />);
+
+  expect(screen.getAllByRole('link', { name: /make your room/i }).at(-1)).toHaveAttribute('href', '/signin');
+  expect(screen.getByRole('link', { name: /already have a room/i })).toHaveAttribute('href', '/signin');
 });

@@ -5,6 +5,7 @@ import { ThemeManager } from '@/components/ui/ThemeSwitcher';
 export const metadata: Metadata = {
   title: 'Katalos',
   description: 'Your taste, made explorable.',
+  icons: { icon: '/icon.svg' },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
