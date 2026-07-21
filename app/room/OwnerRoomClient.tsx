@@ -3,15 +3,18 @@
 import { useState } from 'react';
 import { MediaEntryForm, type MediaEntryInput } from '@/components/media/MediaEntryForm';
 import { MediaRoom } from '@/components/room/MediaRoom';
-import type { MediaEntry } from '@/lib/media/types';
+import type { MediaEntry, MediaStatus } from '@/lib/media/types';
+import { getRoomZone } from '@/lib/room/placement';
 
 type ApiResult = { entry?: MediaEntry; error?: string };
 
-export function OwnerRoomClient({ initialEntries, username, avatar = 'girl' }: { initialEntries: MediaEntry[]; username: string; avatar?: 'girl' | 'boy' }) {
+export function OwnerRoomClient({ initialEntries, username, avatar = 'girl', initialAdd = false }: { initialEntries: MediaEntry[]; username: string; avatar?: 'girl' | 'boy'; initialAdd?: boolean }) {
   const [entries, setEntries] = useState(initialEntries);
-  const [editing, setEditing] = useState<MediaEntry | null | undefined>(initialEntries.length ? undefined : null);
+  const [editing, setEditing] = useState<MediaEntry | null | undefined>(initialAdd || !initialEntries.length ? null : undefined);
   const [message, setMessage] = useState('');
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [manageZone, setManageZone] = useState<ReturnType<typeof getRoomZone> | null>(null);
+  const [activeFilter, setActiveFilter] = useState<'all' | MediaStatus | 'private'>('all');
 
   async function save(entry: MediaEntryInput) {
     const endpoint = editing ? `/api/media/${editing.id}` : '/api/media';
@@ -20,13 +23,14 @@ export function OwnerRoomClient({ initialEntries, username, avatar = 'girl' }: {
     if (!response.ok || !body.entry) { setMessage(body.error ?? 'We could not save that entry.'); return; }
     setEntries((current) => editing ? current.map((item) => item.id === editing.id ? body.entry! : item) : [body.entry!, ...current]);
     setEditing(undefined);
-    setMessage('Saved.');
+    setMessage('Shelved.');
   }
 
   async function remove(entry: MediaEntry) {
     const response = await fetch(`/api/media/${entry.id}`, { method: 'DELETE' });
     if (!response.ok) { const body = await response.json() as ApiResult; setMessage(body.error ?? 'We could not delete that entry.'); return; }
     setEntries((current) => current.filter((item) => item.id !== entry.id));
+    setPendingDelete(null);
     setMessage('Deleted.');
   }
 
@@ -36,11 +40,11 @@ export function OwnerRoomClient({ initialEntries, username, avatar = 'girl' }: {
   }
 
   return <>
-    <header className="owner-header"><div><p className="eyebrow">Your room</p><h1>{username}&apos;S ROOM</h1><p className="room-url">katalos.app/u/{username}</p></div><div className="owner-actions"><button onClick={() => setEditing(null)}>+ ADD MEDIA</button><button onClick={() => void copyPublicLink()}>COPY PUBLIC LINK</button></div></header>
+    <header className="owner-header"><div><p className="eyebrow">Your room</p><h1>{username}&apos;S ROOM</h1><p className="room-url">/u/{username}</p></div><div className="owner-actions"><button onClick={() => setEditing(null)}>+ ADD MEDIA</button><button onClick={() => void copyPublicLink()}>COPY PUBLIC LINK</button></div></header>
     {message && <p role="status">{message}</p>}
-    {editing !== undefined && <MediaEntryForm initialEntry={editing ?? undefined} onSave={(entry) => void save(entry)} onCancel={() => setEditing(undefined)} />}
-    <MediaRoom entries={entries} readOnly={false} avatar={avatar} />
+    {editing !== undefined && <MediaEntryForm initialEntry={editing ?? undefined} onSave={save} onCancel={() => setEditing(undefined)} />}
+    <MediaRoom entries={entries} readOnly={false} owner avatar={avatar} onZoneOverflow={setManageZone} />
     {!entries.length && <section className="empty-state"><h2>Your room is ready for its first story.</h2><p>Nothing here yet—and that&apos;s fine. Add a book, manga, anime, or movie to start the scene.</p></section>}
-    <section className="entry-list" aria-label="Your media"><h2>MANAGE MEDIA</h2>{entries.map((entry) => <div key={entry.id} className="manage-row"><span className="type-chip">{entry.type}</span><strong>{entry.title}</strong><span className={`status-chip ${entry.status}`}>{entry.status.replace('_', ' ')}</span><span className="visibility-chip">{entry.visibility === 'public' ? 'PUB' : 'PRI'}</span>{pendingDelete === entry.id ? <span className="delete-confirm">DELETE? <button onClick={() => void remove(entry)}>DELETE</button><button onClick={() => setPendingDelete(null)}>KEEP</button></span> : <span><button onClick={() => setEditing(entry)}>EDIT</button><button onClick={() => setPendingDelete(entry.id)}>DELETE</button></span>}</div>)}</section>
+    <section className="entry-list" aria-label="Your media"><h2>MANAGE MEDIA{manageZone ? ` · ${manageZone.replace(/-/g, ' ')}` : ''}</h2><div className="manage-filters" aria-label="Media filters"><button type="button" aria-pressed={activeFilter === 'all'} onClick={() => setActiveFilter('all')}>ALL MEDIA</button>{(['planned', 'in_progress', 'finished', 'abandoned'] as const).map((status) => <button key={status} type="button" aria-pressed={activeFilter === status} onClick={() => setActiveFilter(status)}>{status.replace('_', ' ')}</button>)}<button type="button" aria-pressed={activeFilter === 'private'} onClick={() => setActiveFilter('private')}>PRIVATE</button>{manageZone && <button type="button" onClick={() => setManageZone(null)}>SHOW ALL</button>}</div>{entries.filter((entry) => (!manageZone || getRoomZone(entry) === manageZone) && (activeFilter === 'all' || activeFilter === 'private' ? activeFilter === 'all' || entry.visibility === 'private' : entry.status === activeFilter)).map((entry) => <div key={entry.id} className="manage-row"><span className="type-chip">{entry.type}</span><strong>{entry.title}</strong><span className={`status-chip ${entry.status}`}>{entry.status.replace('_', ' ')}</span>{entry.visibility === 'private' ? <span className="visibility-chip" aria-label="Private">PRIVATE</span> : <span className="visibility-chip">PUBLIC</span>}{pendingDelete === entry.id ? <span className="delete-confirm">DELETE? <button onClick={() => void remove(entry)}>DELETE</button><button onClick={() => setPendingDelete(null)}>KEEP</button></span> : <span><button onClick={() => setEditing(entry)}>EDIT</button><button onClick={() => setPendingDelete(entry.id)}>DELETE</button></span>}</div>)}</section>
   </>;
 }

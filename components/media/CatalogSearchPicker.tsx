@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import type { MediaType } from '@/lib/media/types';
 import type { CatalogCandidate } from '@/lib/catalog/schema';
 
-export function CatalogSearchPicker({ type, onSelect, fetcher = fetch }: { type: MediaType; onSelect: (candidate: CatalogCandidate) => void; fetcher?: typeof fetch }) {
+export function CatalogSearchPicker({ type, onSelect, fetcher = fetch }: { type: MediaType; onSelect: (candidate: CatalogCandidate) => void | Promise<void>; fetcher?: typeof fetch }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<CatalogCandidate[]>([]);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [using, setUsing] = useState<string | null>(null);
   const lastSearch = useRef('');
   const label = type === 'manga' ? 'manga' : `${type}s`;
 
@@ -40,6 +41,6 @@ export function CatalogSearchPicker({ type, onSelect, fetcher = fetch }: { type:
     <label>Search {label}<input aria-label={`Search ${label}`} value={query} minLength={3} onChange={(event) => setQuery(event.target.value)} /></label>
     <button type="button" onClick={() => { lastSearch.current = ''; void search(); }} disabled={query.trim().length < 3 || loading}>{loading ? 'SEARCHING…' : 'SEARCH CATALOG'}</button>
     {message && <p role="status">{message}</p>}
-    <ul className="catalog-results">{results.map((result) => <li key={`${result.source}-${result.externalId}`}>{result.thumbnailUrl ? <img src={result.thumbnailUrl} alt="" /> : <span className="catalog-cover-fallback" aria-hidden="true">{result.title.slice(0, 1)}</span>}<span><strong>{result.title}</strong>{result.subtitle && <small>{result.subtitle}</small>}</span><button type="button" onClick={() => onSelect(result)} aria-label={`Select ${result.title}`}>USE</button></li>)}</ul>
+    <ul className="catalog-results">{results.map((result) => { const key = `${result.source}-${result.externalId}`; const isUsing = using === key; return <li className="catalog-result-row" key={key}>{result.thumbnailUrl ? <img src={result.thumbnailUrl} alt="" /> : <span className="catalog-cover-fallback" aria-hidden="true">{result.title.slice(0, 1)}</span>}<span><strong>{result.title}</strong>{result.subtitle && <small>{result.subtitle}</small>}</span><button type="button" disabled={Boolean(using)} onClick={async () => { setUsing(key); try { await onSelect(result); } finally { setUsing(null); } }} aria-label={isUsing ? 'USING…' : `Select ${result.title}`}>{isUsing ? 'USING…' : 'USE'}</button></li>; })}</ul>
   </section>;
 }

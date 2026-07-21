@@ -2,11 +2,14 @@
 
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
+import { CoverBlock } from '@/components/pixel/CoverBlock';
+import { PixelTooltip, type TooltipAnchorRect } from '@/components/pixel/PixelTooltip';
 import type { MediaEntry } from '@/lib/media/types';
 
-export function MediaCover({ entry, index, onSelect, onShowTooltip, onHideTooltip }: { entry: MediaEntry; index: number; onSelect: (entry: MediaEntry) => void; onShowTooltip?: (entry: MediaEntry, anchor: DOMRect) => void; onHideTooltip?: () => void }) {
+export function MediaCover({ entry, index, onSelect, showPrivateMarker = false }: { entry: MediaEntry; index: number; onSelect: (entry: MediaEntry) => void; showPrivateMarker?: boolean }) {
   const style = { '--cover-offset': `${index * 12}px` } as CSSProperties;
-  const [coverFailed, setCoverFailed] = useState(false);
-  const showTooltip = (target: HTMLElement) => onShowTooltip?.(entry, target.getBoundingClientRect());
-  return <button className={`media-cover ${entry.type} ${entry.visibility === 'private' ? 'is-private' : ''}`} style={style} onClick={() => onSelect(entry)} onMouseEnter={(event) => showTooltip(event.currentTarget)} onMouseLeave={onHideTooltip} onFocus={(event) => showTooltip(event.currentTarget)} onBlur={onHideTooltip} aria-label={`Open ${entry.title}`}>{entry.coverUrl && !coverFailed ? <img src={entry.coverUrl} alt={entry.title} onError={() => setCoverFailed(true)} /> : <span>{entry.title.slice(0, 18)}</span>}{entry.visibility === 'private' && <b aria-label="Private">P</b>}</button>;
+  const [anchorRect, setAnchorRect] = useState<TooltipAnchorRect | null>(null);
+  const showTooltip = (target: HTMLElement) => setAnchorRect(target.getBoundingClientRect());
+  const privateEntry = showPrivateMarker && entry.visibility === 'private';
+  return <><button className={`media-cover ${entry.type} ${privateEntry ? 'is-private' : ''}`} style={style} onClick={() => onSelect(entry)} onMouseEnter={(event) => showTooltip(event.currentTarget)} onMouseLeave={() => setAnchorRect(null)} onFocus={(event) => showTooltip(event.currentTarget)} onBlur={() => setAnchorRect(null)} aria-label={`Open ${entry.title}`}><CoverBlock title={entry.title} coverUrl={entry.coverUrl} />{privateEntry && <b aria-label="Private">P</b>}</button>{anchorRect && <PixelTooltip label={`${entry.title} · ${entry.type}`} anchorRect={anchorRect} />}</>;
 }
