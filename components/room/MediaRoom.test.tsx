@@ -1,10 +1,10 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, expect, it } from 'vitest';
+import { afterEach, expect, it, vi } from 'vitest';
 import { demoEntries } from '@/lib/media/demo-data';
 import { MediaRoom } from './MediaRoom';
 
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
 it('opens a selected media entry in the detail drawer', async () => {
   const user = userEvent.setup();
@@ -22,4 +22,28 @@ it('exposes labeled reading and TV regions with selectable media covers', () => 
   expect(screen.getByRole('region', { name: /reading nook/i })).toBeVisible();
   expect(screen.getByRole('region', { name: /tv nook/i })).toBeVisible();
   expect(screen.getAllByRole('button').length).toBeGreaterThan(0);
+  expect(screen.getByRole('region', { name: /reading nook/i }).closest('.knookwrap')).not.toBeNull();
+});
+
+it('shows a themed title tooltip instead of relying on a browser title tooltip', () => {
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  fireEvent.mouseEnter(screen.getByRole('button', { name: /spirited away/i }));
+
+  expect(screen.getByRole('tooltip')).toHaveTextContent(/spirited away.*movie/i);
+});
+
+it('offers the small room toys as keyboard-accessible controls', () => {
+  render(<MediaRoom entries={demoEntries} readOnly />);
+
+  expect(screen.getByRole('button', { name: /pet the cat/i })).toBeVisible();
+  expect(screen.getByRole('button', { name: /toggle reading lamp/i })).toBeVisible();
+  expect(screen.getByRole('button', { name: /change channel/i })).toBeVisible();
+});
+
+it('cycles the TV into its playable Pong channel', () => {
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
+  render(<MediaRoom entries={demoEntries} readOnly />);
+  fireEvent.click(screen.getByRole('button', { name: /change channel/i }));
+
+  expect(screen.getByRole('application', { name: /playable pong/i })).toBeVisible();
 });

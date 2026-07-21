@@ -84,6 +84,8 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 TASTE_PROFILER_URL=https://YOUR-CLOUD-RUN-URL
 TASTE_PROFILER_SHARED_TOKEN=a-long-random-shared-secret
+TMDB_READ_ACCESS_TOKEN=your-tmdb-read-access-token
+OPEN_LIBRARY_CONTACT_EMAIL=you@example.com
 ```
 
 <details>
@@ -91,7 +93,7 @@ TASTE_PROFILER_SHARED_TOKEN=a-long-random-shared-secret
 
 <br>
 
-1. Run `supabase/migrations/001_initial_schema.sql` in the Supabase SQL editor.
+1. Run `supabase/migrations/001_initial_schema.sql` through `004_harden_catalog_rpcs.sql` in the Supabase SQL editor, in order.
 2. In **Authentication → URL Configuration**, add `http://localhost:3000/auth/callback` and `https://YOUR-VERCEL-DOMAIN/auth/callback` to the redirect URLs.
 3. Enable Email authentication and configure your production email sender as needed.
 4. Follow [supabase/README.md](supabase/README.md) to verify row-level security with both an owner session and an anonymous one.
@@ -127,7 +129,13 @@ npm run test     # vitest — placement rules, profiler schema, forms
 npm run build
 ```
 
-The privacy path is worth checking by hand, since it's the claim that matters most: sign in as a new user, create a profile, add one public and one private entry, then open `/u/<username>` in a private window. The private entry should be **entirely absent** — no placeholder, no count. Generate a Taste Profile, and confirm the card degrades gracefully if Cloud Run is unavailable.
+The privacy path is worth checking by hand, since it's the claim that matters most: sign in as a new user, create a profile and avatar, add one public and one private entry, then open `/u/<username>` in a private window. The private entry should be **entirely absent** — no placeholder, no count. Copy the room link, generate a Taste Profile, and confirm the card degrades gracefully if Cloud Run is unavailable.
+
+## Catalog credits and delivery
+
+Catalog search is available to signed-in owners: Open Library powers books, Jikan powers manga and anime, and TMDB powers movies. Add the TMDB token and Open Library contact address only to Vercel/server environments. See [/credits](/credits) for provider attribution and disclaimers.
+
+GitHub Actions runs tests, a production build, and a Cloud Run container build on pull requests and `master`. Connect the repository to Vercel for preview deployments and production deployment from `master`.
 
 ## Project layout
 
@@ -139,11 +147,9 @@ supabase/migrations/      schema and row-level security policies
 cloud-run-taste-profiler/ standalone Gemini service
 ```
 
-## Roadmap
+## Room details
 
-The pixel room above is built on [`feat/katalos-build-week-launch`](https://github.com/Samat-ai/katalos/tree/feat/katalos-build-week-launch) and lands on `master` next — hand-placed CSS sprites with no image assets, three time-of-day themes that follow the visitor's clock, and catalog search against Open Library, Jikan and TMDB with caching and per-user quota.
-
-Still ahead: the interactive CRT (channel-switching and a playable Pong on CH2) and the clickable toys tucked into each nook.
+The pixel room is hand-placed CSS with no bundled art assets, three time-of-day themes, catalog search through Open Library, Jikan and TMDB, and caching with per-user quota. The CRT includes channel switching and playable Pong on CH2; the cat, plant, lamp, and antenna are interactive.
 
 <div align="center">
 <br>

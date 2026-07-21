@@ -7,10 +7,11 @@ import type { MediaEntry } from '@/lib/media/types';
 
 type ApiResult = { entry?: MediaEntry; error?: string };
 
-export function OwnerRoomClient({ initialEntries, username }: { initialEntries: MediaEntry[]; username: string }) {
+export function OwnerRoomClient({ initialEntries, username, avatar = 'girl' }: { initialEntries: MediaEntry[]; username: string; avatar?: 'girl' | 'boy' }) {
   const [entries, setEntries] = useState(initialEntries);
-  const [editing, setEditing] = useState<MediaEntry | null | undefined>(undefined);
+  const [editing, setEditing] = useState<MediaEntry | null | undefined>(initialEntries.length ? undefined : null);
   const [message, setMessage] = useState('');
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   async function save(entry: MediaEntryInput) {
     const endpoint = editing ? `/api/media/${editing.id}` : '/api/media';
@@ -30,15 +31,16 @@ export function OwnerRoomClient({ initialEntries, username }: { initialEntries: 
   }
 
   async function copyPublicLink() {
-    await navigator.clipboard.writeText(`${window.location.origin}/u/${username}`);
-    setMessage('Public room link copied.');
+    try { await navigator.clipboard.writeText(`${window.location.origin}/u/${username}`); setMessage('✓ copied'); }
+    catch { setMessage("Couldn’t copy — long-press the URL."); }
   }
 
   return <>
-    <header><div><p className="eyebrow">Your room</p><h1>Make your taste tangible.</h1><p>Share only what belongs in public: <a href={`/u/${username}`}>/u/{username}</a></p></div><div><button onClick={() => void copyPublicLink()}>Copy public link</button><button onClick={() => setEditing(null)}>Add media</button></div></header>
+    <header className="owner-header"><div><p className="eyebrow">Your room</p><h1>{username}&apos;S ROOM</h1><p className="room-url">katalos.app/u/{username}</p></div><div className="owner-actions"><button onClick={() => setEditing(null)}>+ ADD MEDIA</button><button onClick={() => void copyPublicLink()}>COPY PUBLIC LINK</button></div></header>
     {message && <p role="status">{message}</p>}
     {editing !== undefined && <MediaEntryForm initialEntry={editing ?? undefined} onSave={(entry) => void save(entry)} onCancel={() => setEditing(undefined)} />}
-    {entries.length ? <MediaRoom entries={entries} readOnly={false} /> : <section className="empty-state"><h2>Your room is ready for its first story.</h2><p>Add a book, manga, anime, or movie. Set it private to keep it out of your public room and Taste Profile.</p></section>}
-    <section className="entry-list" aria-label="Your media"><h2>Manage media</h2>{entries.map((entry) => <div key={entry.id}><span>{entry.title} <small>({entry.visibility})</small></span><button onClick={() => setEditing(entry)}>Edit</button><button onClick={() => void remove(entry)}>Delete</button></div>)}</section>
+    <MediaRoom entries={entries} readOnly={false} avatar={avatar} />
+    {!entries.length && <section className="empty-state"><h2>Your room is ready for its first story.</h2><p>Nothing here yet—and that&apos;s fine. Add a book, manga, anime, or movie to start the scene.</p></section>}
+    <section className="entry-list" aria-label="Your media"><h2>MANAGE MEDIA</h2>{entries.map((entry) => <div key={entry.id} className="manage-row"><span className="type-chip">{entry.type}</span><strong>{entry.title}</strong><span className={`status-chip ${entry.status}`}>{entry.status.replace('_', ' ')}</span><span className="visibility-chip">{entry.visibility === 'public' ? 'PUB' : 'PRI'}</span>{pendingDelete === entry.id ? <span className="delete-confirm">DELETE? <button onClick={() => void remove(entry)}>DELETE</button><button onClick={() => setPendingDelete(null)}>KEEP</button></span> : <span><button onClick={() => setEditing(entry)}>EDIT</button><button onClick={() => setPendingDelete(entry.id)}>DELETE</button></span>}</div>)}</section>
   </>;
 }
