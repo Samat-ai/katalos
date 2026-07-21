@@ -83,7 +83,7 @@ a{color:var(--k-accent,#f2a65a)}a:hover{opacity:.8}
 <button onClick="{{ setNight }}" style="display:flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:17px;padding:9px 12px;background:none;border-left:3px solid var(--k-ink);border-top:none;border-right:none;border-bottom:none;color:var(--k-panelText);cursor:pointer" style-focus="outline:3px solid var(--k-accent);outline-offset:-3px">{{ dotNight }}NIGHT</button>
 </div>
 <div style="flex:1"></div>
-<a href="#credits" style="font-size:17px;text-decoration:underline">Credits</a>
+<a href="/credits" style="font-size:17px;text-decoration:underline">Credits</a>
 <div style="font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 12px;background:var(--k-accent);color:var(--k-accentT);border:3px solid var(--k-ink);box-shadow:0 4px 0 var(--k-ink);cursor:pointer;transition:transform .1s,box-shadow .1s,background .1s,color .1s" style-hover="transform:translateY(-2px);box-shadow:0 6px 0 var(--k-ink);background:var(--k-accentT);color:var(--k-accent)" style-active="transform:translateY(3px);box-shadow:0 1px 0 var(--k-ink);background:var(--k-ink);color:var(--k-accent)">MAKE YOUR ROOM</div>
 </div>
 
@@ -196,7 +196,7 @@ a{color:var(--k-accent,#f2a65a)}a:hover{opacity:.8}
 </div>
 </div>
 
-<div data-screen-label="Sign in" style="max-width:520px;margin:14px auto 0;padding:0 20px">
+<div id="sign-in" data-screen-label="Sign in" style="max-width:520px;margin:14px auto 0;padding:0 20px">
 <div style="background:var(--k-panel);color:var(--k-panelText);border:3px solid var(--k-ink);box-shadow:6px 6px 0 var(--k-sh);padding:20px;display:flex;flex-direction:column;gap:12px">
 <div style="font-family:'Press Start 2P',monospace;font-size:10px;letter-spacing:1px">GOT A ROOM ALREADY?</div>
 <div style="font-size:18px;color:var(--k-panelDim)">We&#8217;ll email you a magic link &#8212; no password to remember.</div>
@@ -206,12 +206,6 @@ a{color:var(--k-accent,#f2a65a)}a:hover{opacity:.8}
 </div>
 <div style="font-size:18px;min-height:22px">{{ siMessage }}</div>
 </div>
-</div>
-
-<div id="credits" data-screen-label="Footer" style="max-width:760px;margin:36px auto 0;padding:18px 20px 30px;border-top:3px solid var(--k-ink);display:flex;flex-direction:column;gap:8px;text-align:center">
-<div style="font-size:17px">Catalog search powered by <a href="https://openlibrary.org" target="_blank" rel="noreferrer">Open Library</a>, <a href="https://jikan.moe" target="_blank" rel="noreferrer">Jikan</a> and <a href="https://www.themoviedb.org" target="_blank" rel="noreferrer">TMDB</a>.</div>
-<div style="font-size:15px;color:var(--k-panelDim)">This product uses the TMDB API but is not endorsed or certified by TMDB. Jikan is not affiliated with MyAnimeList.net.</div>
-<div style="font-size:15px;color:var(--k-panelDim)">KATALOS &#183; a cozy room for your media &#183; <a href="#credits">Full credits</a></div>
 </div>
 
 <sc-if value="{{ tipOn }}" hint-placeholder-val="{{ false }}">

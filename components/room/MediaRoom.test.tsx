@@ -34,6 +34,17 @@ it('opens a selected media entry in the detail drawer', async () => {
   expect(screen.getByText(/a beloved fantasy/i)).toBeVisible();
 });
 
+it('routes owner drawer edits back to the selected live entry', async () => {
+  const user = userEvent.setup();
+  const onEdit = vi.fn();
+
+  render(<MediaRoom entries={demoEntries} onEdit={onEdit} />);
+  await user.click(screen.getByRole('button', { name: /spirited away/i }));
+  await user.click(screen.getByRole('button', { name: 'EDIT' }));
+
+  expect(onEdit).toHaveBeenCalledWith(expect.objectContaining({ title: 'Spirited Away' }));
+});
+
 it('exposes labeled reading and TV regions with selectable media covers', () => {
   render(<MediaRoom entries={demoEntries} readOnly />);
 

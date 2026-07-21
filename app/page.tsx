@@ -3,6 +3,10 @@
 import { HandoffFrame, type MagicLinkResult } from '@/components/handoff/HandoffFrame';
 
 export default function Home() {
+  function scrollToMagicLink() {
+    document.getElementById('sign-in')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   async function sendMagicLink(email: string): Promise<MagicLinkResult> {
     try {
       const response = await fetch('/api/auth/magic-link', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email }) });
@@ -14,5 +18,5 @@ export default function Home() {
     }
   }
 
-  return <HandoffFrame src="/handoff/landing.dc.html" title="Katalos landing" onMagicLink={sendMagicLink} />;
+  return <HandoffFrame src="/handoff/landing.dc.html" title="Katalos landing" onMakeRoom={scrollToMagicLink} onMagicLink={sendMagicLink} />;
 }

@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import type { MediaEntry } from '@/lib/media/types';
 import { CoverBlock } from '@/components/pixel/CoverBlock';
 
-export function MediaDetailDrawer({ entry, onClose }: { entry: MediaEntry | null; onClose: () => void }) {
+export function MediaDetailDrawer({ entry, onClose, onEdit, onDelete }: { entry: MediaEntry | null; onClose: () => void; onEdit?: (entry: MediaEntry) => void; onDelete?: (entry: MediaEntry) => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
@@ -26,5 +26,5 @@ export function MediaDetailDrawer({ entry, onClose }: { entry: MediaEntry | null
   }, [entry, onClose]);
   if (!entry) return null;
   const rating = entry.rating ? `${'★'.repeat(entry.rating)}${'☆'.repeat(5 - entry.rating)}` : 'No rating yet';
-  return <div className="drawer-layer"><button className="drawer-scrim" aria-label="Close details" onClick={onClose} /><aside ref={drawerRef} className="detail-drawer drawer-responsive" role="dialog" aria-modal="true" aria-label={`${entry.title} details`}><header className="drawer-header"><p className="eyebrow">{entry.type} · {entry.status.replace('_', ' ')}</p><button ref={closeButtonRef} className="drawer-close" onClick={onClose} aria-label="Close details">×</button></header><div className="drawer-body"><div className="drawer-content"><CoverBlock className="drawer-cover" title={entry.title} coverUrl={entry.coverUrl} /><div><h2>{entry.title}</h2><p className="drawer-rating">{rating}</p></div></div><p className="drawer-synopsis">{entry.synopsis}</p>{entry.note && <p className="drawer-note"><strong>My note</strong>{entry.note}</p>}</div></aside></div>;
+  return <div className="drawer-layer"><button className="drawer-scrim" aria-label="Close details" onClick={onClose} /><aside ref={drawerRef} className="detail-drawer drawer-responsive" role="dialog" aria-modal="true" aria-label={`${entry.title} details`}><header className="drawer-header"><p className="eyebrow">{entry.type} · {entry.status.replace('_', ' ')}</p><button ref={closeButtonRef} className="drawer-close" onClick={onClose} aria-label="Close details">×</button></header><div className="drawer-body"><div className="drawer-content"><CoverBlock className="drawer-cover" title={entry.title} coverUrl={entry.coverUrl} /><div><h2>{entry.title}</h2><p className="drawer-rating">{rating}</p></div></div><p className="drawer-synopsis">{entry.synopsis}</p>{entry.note && <p className="drawer-note"><strong>My note</strong>{entry.note}</p>}{(onEdit || onDelete) && <div className="drawer-actions">{onEdit && <button type="button" onClick={() => onEdit(entry)}>EDIT</button>}{onDelete && <button type="button" onClick={() => onDelete(entry)}>DELETE</button>}</div>}</div></aside></div>;
 }
