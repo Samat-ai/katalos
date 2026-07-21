@@ -15,3 +15,11 @@ it('includes required catalog-provider attribution', () => {
   expect(aniList.parentElement).toHaveTextContent('AniList as an outage fallback.');
   expect(screen.getByRole('img', { name: /tmdb/i })).toHaveAttribute('src', expect.stringContaining('themoviedb.org/assets'));
 });
+
+it('keeps catalog credits inside the shared handoff page shell', () => {
+  const { container } = render(<CreditsPage />);
+
+  expect(container.querySelector('.app-stage')).not.toBeNull();
+  expect(container.querySelector('.credits-stack')).not.toBeNull();
+  expect(screen.getByRole('link', { name: /back home/i })).toHaveAttribute('href', '/');
+});

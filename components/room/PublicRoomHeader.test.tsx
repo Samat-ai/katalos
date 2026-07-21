@@ -11,5 +11,5 @@ it('keeps public sharing and the make-your-own path in a compact room header', (
   expect(screen.getByText('@momo')).toBeVisible();
   expect(screen.getByText('3 THINGS SHARED')).toBeVisible();
   expect(screen.getByRole('button', { name: /copy room link/i })).toBeVisible();
-  expect(screen.getByRole('link', { name: /make your own/i })).toHaveAttribute('href', '/#sign-in');
+  expect(screen.getByRole('link', { name: /make your own/i })).toHaveAttribute('href', '/signin');
 });

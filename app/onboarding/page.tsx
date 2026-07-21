@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { OnboardingForm } from '@/components/auth/OnboardingForm';
+import { SiteNav } from '@/components/ui/SiteNav';
 import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
@@ -10,5 +11,5 @@ export default async function OnboardingPage() {
   if (!user) redirect('/');
   const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).maybeSingle();
   if (profile) redirect('/room');
-  return <main className="handoff-auth-page"><nav className="handoff-topbar"><a className="handoff-wordmark" href="/">KATALOS</a><a className="handoff-credits-link" href="/credits">Credits</a></nav><section className="handoff-onboarding-shell"><OnboardingForm /></section></main>;
+  return <main className="owner-page app-stage"><SiteNav actionHref="/" actionLabel="BACK HOME" /><header className="owner-header"><div><p className="eyebrow">Welcome to Katalos</p><h1>Set up your room.</h1><p>Choose the name visitors will see and your public handle.</p></div></header><OnboardingForm /></main>;
 }

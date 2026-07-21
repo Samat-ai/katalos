@@ -395,6 +395,11 @@ input:focus,textarea:focus,select:focus { border-color:var(--k-accent); }
 }
 .owner-header h1 { margin:3px 0 0; font-size:clamp(24px,5vw,42px); }
 .room-url { color:var(--k-panelDim); font-family:var(--k-font-head); font-size:8px; }
+.app-stage > header:not(.owner-header) {
+  margin:0 0 24px;
+  padding:0 0 17px;
+  border-bottom:3px solid var(--k-ink);
+}
 .owner-actions,.public-room .owner-header > div:last-child {
   display:flex;
   flex-wrap:wrap;
@@ -986,6 +991,8 @@ input:focus,textarea:focus,select:focus { border-color:var(--k-accent); }
   margin:30px auto;
   padding:22px;
 }
+.credits-stack { display:grid; gap:18px; }
+.credits-stack .taste-card { max-width:none; margin:0; }
 .taste-card h2 { margin:6px 0 12px; }
 .taste-card p + p { margin-top:12px; }
 .taste-card ul { padding-left:24px; color:var(--k-panelDim); }
@@ -1063,7 +1070,6 @@ input:focus,textarea:focus,select:focus { border-color:var(--k-accent); }
   .media-cover,.media-cover:hover,.media-cover:focus-visible { transform:none !important; }
   button:hover:not(:disabled),button:active,.pixel-link-button:hover,.site-nav > a:last-child:hover { transform:none !important; }
 }
-
 /* Media management completion states. */
 .detail-drawer { display:flex; flex-direction:column; overflow:hidden; }
 .drawer-actions { display:flex; gap:8px; margin-top:14px; padding-top:14px; border-top:3px solid var(--k-ink); }.drawer-actions button { min-width:44px; min-height:44px; padding:9px 12px; font-family:var(--k-font-head); font-size:7px; }.drawer-actions button:last-child { background:var(--k-err); color:#fff; }
