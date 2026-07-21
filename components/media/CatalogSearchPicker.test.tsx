@@ -28,3 +28,18 @@ it('keeps the query editable while showing its search state', async () => {
   expect(screen.getByRole('status')).toHaveTextContent(/searching/i);
   expect(screen.getByLabelText(/search movies/i)).not.toBeDisabled();
 });
+
+it('locks the selected compact result row while it is being used', async () => {
+  const user = userEvent.setup();
+  let resolveSelection: (() => void) | undefined;
+  const onSelect = vi.fn(() => new Promise<void>((resolve) => { resolveSelection = resolve; }));
+  const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({ results: [{ source: 'open_library', externalId: 'OL1W', title: 'Dune' }] }), { status: 200 }));
+  render(<CatalogSearchPicker type="book" onSelect={onSelect} fetcher={fetcher} />);
+
+  await user.type(screen.getByLabelText(/search books/i), 'Dune');
+  await user.click(screen.getByRole('button', { name: /search catalog/i }));
+  await user.click(await screen.findByRole('button', { name: /select dune/i }));
+
+  expect(screen.getByRole('button', { name: 'USING…' })).toBeDisabled();
+  resolveSelection?.();
+});

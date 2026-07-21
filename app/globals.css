@@ -105,3 +105,12 @@ h1,h2,h3 { font-family:var(--k-font-head); line-height:1.65; letter-spacing:1px;
 @media (max-width:847px) { .media-room { grid-template-columns:minmax(0,416px); }.knookwrap { justify-self:center; } }
 @media (max-width:447px) { .knookwrap { width:calc(100vw - 24px); height:calc(430px * var(--kscale, 1)); }.room-nook.knook { transform:scale(var(--kscale, 1)); transform-origin:top left; } }
 @media (prefers-reduced-motion: reduce) { .nook-window span,.watcher .nook-window span,.scene-sprite--reader,.scene-sprite--watcher,.scene-sprite--cat .sprite-tail,.tv-screen::after,.tv-screen.channel-1 .tv-image { animation:none !important; } }
+
+/* Media management completion states. */
+.detail-drawer { display:flex; flex-direction:column; overflow:hidden; }
+.drawer-header { position:sticky; z-index:1; top:0; display:flex; align-items:flex-start; justify-content:space-between; min-height:48px; padding-right:48px; background:var(--k-panel); }
+.drawer-header .eyebrow { margin:0; padding-top:8px; }.drawer-body { min-height:0; overflow:auto; padding-right:3px; }.drawer-synopsis { white-space:pre-wrap; }.drawer-cover.cover-block { width:82px; height:104px; box-shadow:none; }
+.form-step { display:grid; gap:10px; align-content:start; }.form-step h3 { margin:0; }.choice-group { display:grid; gap:6px; min-width:0; margin:0; padding:0; border:0; }.choice-group legend { padding:0; font-family:var(--k-font-head); font-size:7px; }.choice-group button[aria-pressed=true],.type-tiles button[aria-pressed=true],.visibility-toggle button[aria-pressed=true] { outline:3px solid var(--k-accent); outline-offset:1px; }.rating-stars,.visibility-toggle,.manage-filters { display:flex; flex-wrap:wrap; gap:6px; }.rating-stars button { min-width:44px; min-height:44px; padding:4px; font-size:20px; }.visibility-toggle button { min-width:44px; min-height:44px; }.manage-filters { margin-bottom:12px; }.manage-filters button[aria-pressed=true] { background:var(--k-accent); color:var(--k-accentT); }
+.catalog-result-row { grid-template-columns:30px minmax(0,1fr) auto; }.catalog-result-row > span { min-width:0; }
+@media (max-width:767px) { .detail-drawer.drawer-responsive { right:0; bottom:0; left:0; top:auto; width:100%; height:80vh; max-height:80vh; padding:16px; border-right:0; border-bottom:0; animation:kbottomsheet .28s cubic-bezier(.2,.9,.3,1) both; }.drawer-header { min-height:44px; }.entry-form .form-step { grid-column:1 / -1; } }
+@keyframes kbottomsheet { from { transform:translateY(30px); opacity:0; } to { transform:translateY(0); opacity:1; } }
