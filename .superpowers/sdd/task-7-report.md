@@ -14,3 +14,9 @@ TDD evidence:
 - Full: `npm test` — 108 passing. jsdom emits its existing Canvas `getContext()` implementation notice, but the run exits 0.
 - Build: `npm run build` — passing. Next reports its existing multiple-lockfile workspace-root warning.
 - Visual: local dev server checked with Playwright at `http://localhost:3017`; landing page content, demo-room link, and shared footer render, with no console errors or framework error overlay.
+
+## Review coverage follow-up
+
+- Added public-page integration coverage for the privacy-safe empty-room copy and for a profiler failure retaining the rendered `MediaRoom` plus its retry action.
+- Added a canonical-link test from a nested runtime path and an assertion that RootLayout renders exactly one shared footer.
+- `npm test -- app/u/[username]/page.test.tsx components/room/PublicRoomActions.test.tsx app/layout.test.tsx` — 5 passing.

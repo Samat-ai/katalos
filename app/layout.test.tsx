@@ -23,6 +23,7 @@ afterEach(() => {
 it('renders the Credits footer link as a 44px target', () => {
   document.body.innerHTML = renderToStaticMarkup(<RootLayout><main>Page content</main></RootLayout>);
 
+  expect(document.querySelectorAll('footer.site-footer')).toHaveLength(1);
   const creditsLink = screen.getByRole('link', { name: 'Credits' });
   expect(creditsLink).toHaveClass('site-footer-link');
   expect(getComputedStyle(creditsLink).minWidth).toBe('44px');
