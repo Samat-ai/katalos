@@ -3,6 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, it, vi } from 'vitest';
 import type { MediaEntry } from '@/lib/media/types';
 
+vi.mock('@/components/handoff/HandoffFrame', () => ({
+  HandoffFrame: ({ onEntryOpen, onMakeRoom }: { onEntryOpen?: (entryId: string) => void; onMakeRoom?: () => void }) => <><button type="button" onClick={() => onEntryOpen?.('book')}>OPEN SCENE ENTRY</button><button type="button" onClick={onMakeRoom}>MAKE SCENE ADD</button></>,
+}));
+
 import { OwnerRoomClient } from './OwnerRoomClient';
 
 afterEach(cleanup);
@@ -11,15 +15,6 @@ it('opens the first-add flow for a new room', () => {
   render(<OwnerRoomClient initialEntries={[]} username="katalos" />);
   expect(screen.getByRole('heading', { name: /add media/i })).toBeVisible();
   expect(screen.getByText(/room is ready for its first story/i)).toBeVisible();
-});
-
-it('renders the display-name owner bar above the live reading and TV nooks', () => {
-  render(<OwnerRoomClient initialEntries={[]} displayName="Momo" username="momo" />);
-
-  expect(screen.getByRole('heading', { name: "Momo's room" })).toBeVisible();
-  expect(screen.getByRole('region', { name: 'Reading nook' })).toBeVisible();
-  expect(screen.getByRole('region', { name: 'TV nook' })).toBeVisible();
-  expect(document.querySelector('.handoff-frame')).toBeNull();
 });
 
 it('opens the add form from the initial add query state even when the room has entries', () => {
@@ -31,35 +26,35 @@ it('opens the live edit form when a scene entry is selected', async () => {
   const user = userEvent.setup();
   render(<OwnerRoomClient initialEntries={[{ id: 'book', title: 'Book', type: 'book', status: 'finished', synopsis: '', visibility: 'public' }]} username="katalos" />);
 
-  await user.click(screen.getByRole('button', { name: 'Open Book' }));
-  await user.click(screen.getByRole('button', { name: 'EDIT' }));
+  await user.click(screen.getByRole('button', { name: 'OPEN SCENE ENTRY' }));
 
   expect(screen.getByRole('heading', { name: 'EDIT MEDIA' })).toBeVisible();
   expect(screen.getByLabelText('Title')).toHaveValue('Book');
 });
 
-it('opens the live add form from the room action bar', async () => {
+it('opens the live add form from the handoff make control', async () => {
   const user = userEvent.setup();
   render(<OwnerRoomClient initialEntries={[{ id: 'book', title: 'Book', type: 'book', status: 'finished', synopsis: '', visibility: 'public' }]} username="katalos" />);
 
-  await user.click(screen.getByRole('button', { name: /add media/i }));
+  await user.click(screen.getByRole('button', { name: 'MAKE SCENE ADD' }));
 
   expect(screen.getByRole('heading', { name: 'ADD MEDIA' })).toBeVisible();
 });
 
-it('filters a selected overflow shelf and shows private entries with a private badge', async () => {
+it('filters by a selected status chip and shows private entries with a private badge', async () => {
   const user = userEvent.setup();
-  const initialEntries: MediaEntry[] = Array.from({ length: 13 }, (_, index) => ({ id: `book-${index}`, title: `Book ${index + 1}`, type: 'book' as const, status: 'finished' as const, synopsis: '', visibility: 'public' as const }));
-  initialEntries.push({ id: 'private', title: 'Private', type: 'book', status: 'finished', synopsis: '', visibility: 'private' });
+  const initialEntries: MediaEntry[] = [
+    { id: 'planned', title: 'Planned', type: 'book', status: 'planned', synopsis: '', visibility: 'public' },
+    { id: 'private', title: 'Private', type: 'movie', status: 'finished', synopsis: '', visibility: 'private' },
+  ];
   render(<OwnerRoomClient initialEntries={initialEntries} username="katalos" />);
 
-  await user.click(screen.getByRole('button', { name: '+2 more' }));
   const media = screen.getByRole('region', { name: 'Your media' });
-  await user.click(within(media).getByRole('button', { name: /^finished$/i }));
-  expect(within(media).getByText('Book 1')).toBeVisible();
-  expect(within(media).getByLabelText('Private')).toBeVisible();
+  await user.click(within(media).getByRole('button', { name: /^planned$/i }));
+  expect(within(media).getByText('Planned')).toBeVisible();
+  expect(within(media).queryByText('Private')).not.toBeInTheDocument();
   await user.click(within(media).getByRole('button', { name: /all media/i }));
-  expect(within(media).getByText('Book 1')).toBeVisible();
+  expect(within(media).getByText('Planned')).toBeVisible();
   expect(within(media).getByLabelText('Private')).toBeVisible();
 });
 

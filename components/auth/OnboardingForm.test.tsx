@@ -17,7 +17,6 @@ afterEach(cleanup);
 it('posts the avatar selected during onboarding', async () => {
   render(<OnboardingForm />);
 
-  fireEvent.change(screen.getByLabelText(/DISPLAY NAME/i), { target: { value: 'Momo' } });
   fireEvent.change(screen.getByLabelText(/USERNAME/i), { target: { value: 'momo-room' } });
   fireEvent.click(screen.getByRole('button', { name: 'BOY' }));
   fireEvent.click(screen.getByRole('button', { name: 'OPEN MY ROOM' }));
@@ -29,12 +28,6 @@ it('posts the avatar selected during onboarding', async () => {
     avatar: 'boy',
   });
   expect(replace).toHaveBeenCalledWith('/room?add=1');
-});
-
-it('starts with an empty display name instead of a demo person', () => {
-  render(<OnboardingForm />);
-
-  expect(screen.getByLabelText(/DISPLAY NAME/i)).toHaveValue('');
 });
 
 it('shows the public room URL preview', () => {

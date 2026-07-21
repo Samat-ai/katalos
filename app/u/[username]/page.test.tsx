@@ -56,18 +56,17 @@ it('uses privacy-safe copy for a room with no public entries', async () => {
   expect(screen.queryByText(/private/i)).not.toBeInTheDocument();
 });
 
-it('keeps the native public nooks rendered when profiler generation fails and can retry', async () => {
+it('keeps the public handoff room rendered when profiler generation fails and can retry', async () => {
   const user = userEvent.setup();
   mockPublicPage();
-  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ error: 'The profiler is taking a tea break. Please retry.' }), { status: 502 })));
+  vi.stubGlobal('fetch', vi.fn((input: RequestInfo | URL) => String(input).includes('/handoff/landing.dc.html')
+    ? Promise.resolve(new Response('<html><head></head><body></body></html>'))
+    : Promise.resolve(new Response(JSON.stringify({ error: 'The profiler is taking a tea break. Please retry.' }), { status: 502 }))));
   render(await PublicProfilePage({ params: Promise.resolve({ username: 'momo' }) }));
 
   await user.click(screen.getByRole('button', { name: "READ MOMO'S TASTE" }));
 
   expect(await screen.findByRole('alert')).toHaveTextContent('The profiler is taking a tea break. Please retry.');
   expect(screen.getByRole('button', { name: 'TRY AGAIN' })).toBeVisible();
-  expect(screen.getByText('3 THINGS SHARED')).toBeVisible();
-  expect(screen.getByRole('region', { name: 'Reading nook' })).toBeVisible();
-  expect(screen.getByRole('button', { name: 'Open Book One' })).toBeVisible();
-  expect(document.querySelector('.handoff-frame')).toBeNull();
+  expect(screen.getByTitle("Momo's room")).toHaveAttribute('srcdoc', expect.stringContaining('window.__KATALOS_ENTRIES'));
 });

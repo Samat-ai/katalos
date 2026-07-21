@@ -17,15 +17,6 @@ it('requires a title before saving an entry', async () => {
   expect(onSave).not.toHaveBeenCalled();
 });
 
-it('uses readable labeled type tiles instead of text-glyph icons', () => {
-  render(<MediaEntryForm onSave={vi.fn()} />);
-
-  expect(screen.getByRole('button', { name: /book/i })).toBeVisible();
-  expect(screen.getByRole('button', { name: /manga/i })).toBeVisible();
-  expect(screen.queryByText('▤')).not.toBeInTheDocument();
-  expect(screen.queryByText('▥')).not.toBeInTheDocument();
-});
-
 it('uses status chips, star buttons, and a public/private toggle without changing its submitted payload', async () => {
   const user = userEvent.setup();
   const onSave = vi.fn();
