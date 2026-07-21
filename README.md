@@ -34,7 +34,7 @@ OPEN_LIBRARY_CONTACT_EMAIL=you@example.com
 
 ## Supabase
 
-1. Run `supabase/migrations/001_initial_schema.sql`, `002_catalog_search_safeguards.sql`, and `003_profile_avatar.sql` in the Supabase SQL editor, in order.
+1. Run `supabase/migrations/001_initial_schema.sql` through `004_harden_catalog_rpcs.sql` in the Supabase SQL editor, in order.
 2. In **Authentication → URL Configuration**, add `http://localhost:3000/auth/callback` and `https://YOUR-VERCEL-DOMAIN/auth/callback` to redirect URLs.
 3. Enable Email authentication and configure your production email sender as needed.
 4. Follow [supabase/README.md](supabase/README.md) to verify row-level security with owner and anonymous sessions.

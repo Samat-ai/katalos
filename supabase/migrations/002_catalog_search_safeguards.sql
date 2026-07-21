@@ -62,6 +62,9 @@ begin
 end;
 $$;
 
+revoke all on function public.catalog_get_cached_results(text, text) from public;
+revoke all on function public.catalog_put_cached_results(text, text, jsonb) from public;
+revoke all on function public.catalog_consume_quota() from public;
 grant execute on function public.catalog_get_cached_results(text, text) to authenticated;
 grant execute on function public.catalog_put_cached_results(text, text, jsonb) to authenticated;
 grant execute on function public.catalog_consume_quota() to authenticated;

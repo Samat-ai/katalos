@@ -1,6 +1,6 @@
 # Supabase verification
 
-1. Apply `migrations/001_initial_schema.sql`, then `migrations/002_catalog_search_safeguards.sql`, then `migrations/003_profile_avatar.sql`, in the Supabase SQL editor.
+1. Apply `migrations/001_initial_schema.sql` through `migrations/004_harden_catalog_rpcs.sql`, in order.
 2. As an authenticated owner, create, update, and delete only rows whose `profile_id` matches the signed-in user.
 3. In an anonymous browser session, confirm a public entry can be selected.
 4. In the same anonymous session, confirm a private entry cannot be selected.
