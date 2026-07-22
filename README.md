@@ -4,7 +4,7 @@
 
 # Katalos
 
-**Your media taste, made tangible and shareable — without sharing what you keep private.**
+**Your media taste, made tangible and shareable - without sharing what you keep private.**
 
 Curate the books, manga, anime and movies you love into a cozy two-nook room,<br>
 then share it with one public link. Private entries never leave your side of the wall.
@@ -31,7 +31,7 @@ then share it with one public link. Private entries never leave your side of the
 
 ## Hackathon submission snapshot
 
-**Suggested category:** Consumer / social apps — Katalos turns personal media tracking into a visual, shareable room.
+**Suggested category:** Consumer / social apps - Katalos turns personal media tracking into a visual, shareable room.
 
 **Code repository:** [github.com/Samat-ai/katalos](https://github.com/Samat-ai/katalos)
 
@@ -53,9 +53,9 @@ At runtime, the Taste Profiler uses Gemini 2.5 Flash through the Cloud Run servi
 
 ## The room
 
-Katalos replaces the card grid every media tracker gives you. Your entries live as objects in a room, and **where a thing sits is its status** — no badges to read, just a glance.
+Katalos replaces the card grid every media tracker gives you. Your entries live as objects in a room, and **where a thing sits is its status** - no badges to read, just a glance.
 
-| | Reading nook — books & manga | TV nook — anime & movies |
+| | Reading nook - books & manga | TV nook - anime & movies |
 |---|---|---|
 | **finished** | on the shelf | in the cabinet |
 | **in progress** | reading nearby | now playing |
@@ -64,19 +64,19 @@ Katalos replaces the card grid every media tracker gives you. Your entries live 
 
 ## What it does
 
-- 🔑 **Passwordless sign-in** — one email magic link, no password to forget or leak.
-- 🚪 **A room of your own** — name it, claim a username, and it lives at `/u/<username>`.
-- 📚 **Four media types** — books, manga, anime and movies, each with status, rating, synopsis and a private note.
-- 🔒 **Public / private per entry** — private items are never shown, hinted at, or *counted* in your public room.
-- ✨ **Taste Profile** — Gemini reads the public shelves and writes a short prose read on someone's taste.
-- 🔗 **One link to share** — visitors need no account to walk through your room.
+- 🔑 **Passwordless sign-in** - one email magic link, no password to forget or leak.
+- 🚪 **A room of your own** - name it, claim a username, and it lives at `/u/<username>`.
+- 📚 **Four media types** - books, manga, anime and movies, each with status, rating, synopsis and a private note.
+- 🔒 **Public / private per entry** - private items are never shown, hinted at, or *counted* in your public room.
+- ✨ **Taste Profile** - Gemini reads the public shelves and writes a short prose read on someone's taste.
+- 🔗 **One link to share** - visitors need no account to walk through your room.
 
 ## How privacy actually works
 
-The interesting problem here isn't the CRUD — it's making "private" mean private all the way down the stack.
+The interesting problem here isn't the CRUD - it's making "private" mean private all the way down the stack.
 
 - **Postgres row-level security** is the source of truth. Owners read their own rows; anonymous visitors can only ever reach rows marked public.
-- **The public room query** selects public rows only, so private entries are absent from the page — not hidden with CSS, not filtered in the browser.
+- **The public room query** selects public rows only, so private entries are absent from the page - not hidden with CSS, not filtered in the browser.
 - **The Taste Profiler receives public entries only**, and only a bounded set of fields. Gemini is never shown a private note.
 - **No secret ever reaches the browser.** The Cloud Run bearer token, Google credentials and any privileged Supabase key stay server-side.
 
@@ -147,11 +147,11 @@ Grant the attached service account the minimum Vertex AI role needed to generate
 ## Verifying
 
 ```bash
-npm run test     # vitest — placement rules, profiler schema, forms
+npm run test     # vitest - placement rules, profiler schema, forms
 npm run build
 ```
 
-The privacy path is worth checking by hand, since it's the claim that matters most: sign in as a new user, create a profile and avatar, add one public and one private entry, then open `/u/<username>` in a private window. The private entry should be **entirely absent** — no placeholder, no count. Copy the room link, generate a Taste Profile, and confirm the card degrades gracefully if Cloud Run is unavailable.
+The privacy path is worth checking by hand, since it's the claim that matters most: sign in as a new user, create a profile and avatar, add one public and one private entry, then open `/u/<username>` in a private window. The private entry should be **entirely absent** - no placeholder, no count. Copy the room link, generate a Taste Profile, and confirm the card degrades gracefully if Cloud Run is unavailable.
 
 ## Catalog credits and delivery
 
@@ -162,7 +162,7 @@ GitHub Actions runs tests, a production build, and a Cloud Run container build o
 ## Project layout
 
 ```text
-app/                      Next.js routes — /, /room, /u/[username], /onboarding, /api
+app/                      Next.js routes - /, /room, /u/[username], /onboarding, /api
 components/               auth · media · room (MediaRoom, DetailDrawer, TasteProfilerCard)
 lib/                      placement rules, Supabase clients, taste prompt + schema
 supabase/migrations/      schema and row-level security policies
